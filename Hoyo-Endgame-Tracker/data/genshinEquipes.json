@@ -1,0 +1,41 @@
+{
+  "version" : 1,
+  "teams" : [ {
+    "id" : "t-example-1",
+    "name" : "Exemple - Hydro Furina",
+    "usage" : "Abysses · seconde moitié",
+    "members" : [ {
+      "characterId" : "c-furina",
+      "name" : "Furina",
+      "element" : "HYDRO",
+      "level" : 90,
+      "constellation" : 2,
+      "weapon" : "",
+      "refinement" : 1
+    }, {
+      "characterId" : "c-nahida",
+      "name" : "Nahida",
+      "element" : "DENDRO",
+      "level" : 90,
+      "constellation" : 0,
+      "weapon" : "",
+      "refinement" : 1
+    }, {
+      "characterId" : "c-raiden",
+      "name" : "Raiden Shogun",
+      "element" : "ELECTRO",
+      "level" : 90,
+      "constellation" : 1,
+      "weapon" : "",
+      "refinement" : 1
+    }, {
+      "characterId" : "c-zhongli",
+      "name" : "Zhongli",
+      "element" : "GEO",
+      "level" : 81,
+      "constellation" : 0,
+      "weapon" : "",
+      "refinement" : 3
+    } ]
+  } ]
+}

@@ -1,0 +1,68 @@
+{
+  "version" : 1,
+  "characters" : [ {
+    "id" : "c-mavuika",
+    "name" : "Mavuika",
+    "element" : "PYRO",
+    "level" : 90,
+    "constellation" : 0,
+    "weapon" : "",
+    "refinement" : 1
+  }, {
+    "id" : "c-xilonen",
+    "name" : "Xilonen",
+    "element" : "GEO",
+    "level" : 90,
+    "constellation" : 1,
+    "weapon" : "",
+    "refinement" : 1
+  }, {
+    "id" : "c-kazuha",
+    "name" : "Kazuha",
+    "element" : "ANEMO",
+    "level" : 90,
+    "constellation" : 0,
+    "weapon" : "",
+    "refinement" : 5
+  }, {
+    "id" : "c-citlali",
+    "name" : "Citlali",
+    "element" : "CRYO",
+    "level" : 89,
+    "constellation" : 0,
+    "weapon" : "",
+    "refinement" : 1
+  }, {
+    "id" : "c-furina",
+    "name" : "Furina",
+    "element" : "HYDRO",
+    "level" : 90,
+    "constellation" : 2,
+    "weapon" : "",
+    "refinement" : 1
+  }, {
+    "id" : "c-nahida",
+    "name" : "Nahida",
+    "element" : "DENDRO",
+    "level" : 90,
+    "constellation" : 0,
+    "weapon" : "",
+    "refinement" : 1
+  }, {
+    "id" : "c-raiden",
+    "name" : "Raiden Shogun",
+    "element" : "ELECTRO",
+    "level" : 90,
+    "constellation" : 1,
+    "weapon" : "",
+    "refinement" : 1
+  }, {
+    "id" : "c-zhongli",
+    "name" : "Zhongli",
+    "element" : "GEO",
+    "level" : 81,
+    "constellation" : 0,
+    "weapon" : "",
+    "refinement" : 3
+  } ]
+}
