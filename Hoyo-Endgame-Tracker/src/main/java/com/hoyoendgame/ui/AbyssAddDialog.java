@@ -63,8 +63,8 @@ public final class AbyssAddDialog {
         VBox team1 = teamBox("Équipe 1 · première moitié", store.teams, pane1);
         VBox team2 = teamBox("Équipe 2 · seconde moitié", store.teams, pane2);
         HBox teams = new HBox(18, team1, team2);
-        VBox section2 = section("2. Équipes utilisées (étages 11 et 12)", teams,
-                Ui.label("Choisir une équipe enregistrée remplit les 4 emplacements ; chacun reste modifiable.", "muted", "small"));
+        VBox section2 = section("2. Équipes utilisées (pour l'étage clear le plus haut)", teams,
+                Ui.label("Choisir une équipe enregistrée remplit les 4 emplacements, elles restent toutefois modifiables", "muted", "small"));
 
         AbyssClear[] result = new AbyssClear[1];
         Stage[] stage = new Stage[1];

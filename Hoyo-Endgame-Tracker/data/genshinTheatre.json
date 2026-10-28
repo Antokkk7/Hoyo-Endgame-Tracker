@@ -1,59 +1,21 @@
 {
   "version" : 1,
   "clears" : [ {
-    "id" : "1955e869-c7cb-4f30-a5af-ab3d2fb239ea",
+    "id" : "ca05d1a4-0a30-4c83-a49b-701e403dc747",
     "year" : 2026,
     "month" : 10,
     "patch" : "7.1",
-    "mode" : "LUNAR",
-    "elements" : [ "PYRO", "HYDRO", "ANEMO" ],
-    "stars" : 12,
-    "arcanum" : 2,
-    "bestAct" : 12,
-    "mvp" : {
-      "characterId" : "c-mavuika",
-      "name" : "Mavuika",
-      "element" : "PYRO",
-      "level" : 90,
-      "constellation" : 0,
-      "weapon" : "",
-      "refinement" : 1
-    }
-  }, {
-    "id" : "99ced272-7a18-46e3-8a34-81331e9aecfe",
-    "year" : 2026,
-    "month" : 9,
-    "patch" : "7.0",
     "mode" : "LUNAR",
     "elements" : [ "HYDRO", "ANEMO", "CRYO" ],
     "stars" : 12,
     "arcanum" : 2,
     "bestAct" : 12,
     "mvp" : {
-      "characterId" : "c-citlali",
-      "name" : "Citlali",
+      "characterId" : "c-sandrone",
+      "name" : "Sandrone",
       "element" : "CRYO",
-      "level" : 89,
-      "constellation" : 0,
-      "weapon" : "",
-      "refinement" : 1
-    }
-  }, {
-    "id" : "27a12fc4-8c79-461f-98f5-ffc0e2db9b44",
-    "year" : 2026,
-    "month" : 8,
-    "patch" : "6.7",
-    "mode" : "LUNAR",
-    "elements" : [ "ELECTRO", "CRYO", "GEO" ],
-    "stars" : 12,
-    "arcanum" : 1,
-    "bestAct" : 12,
-    "mvp" : {
-      "characterId" : "c-raiden",
-      "name" : "Raiden Shogun",
-      "element" : "ELECTRO",
       "level" : 90,
-      "constellation" : 1,
+      "constellation" : 0,
       "weapon" : "",
       "refinement" : 1
     }

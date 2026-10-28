@@ -21,7 +21,8 @@ Dans IntelliJ : ouvrir le `pom.xml`, puis lancer `com.hoyoendgame.App` (réperto
 
 ```
 data/                        <- vos données (même niveau que src/)
-  genshinCharacters.json     roster de personnages
+  genshinCharacters.json     personnages (nom + élément uniquement)
+  genshinWeapons.json        catalogue d'armes (lecture seule pour l'app)
   genshinEquipes.json        équipes enregistrées (format PLACEHOLDER, voir ci-dessous)
   genshinAbysses.json        historique des Abysses spiralées
   genshinTheatre.json        historique du Théâtre de l'imaginarium
@@ -50,11 +51,25 @@ Les champs inconnus sont ignorés.
 ### `genshinCharacters.json` (clé `characters`)
 
 ```json
-{ "id": "c-furina", "name": "Furina", "element": "HYDRO", "level": 90, "constellation": 2, "weapon": "", "refinement": 1 }
+{ "id": "c-furina", "name": "Furina", "element": "HYDRO" }
 ```
 
-`element` : PYRO, HYDRO, ANEMO, ELECTRO, DENDRO, CRYO, GEO (les noms français, avec ou sans accent, sont acceptés).
-Alias acceptés en lecture : `nom`, `niveau`, `doublons`, `arme`, `raffinement`. L'`id` est généré s'il manque.
+Uniquement l'identité et l'élément : niveau, doublons, arme et raffinement se règlent **par équipe**
+(voir ci-dessous), car un même personnage change selon la situation.
+`element` : PYRO, HYDRO, ANEMO, ELECTRO, DENDRO, CRYO, GEO (les noms français sont acceptés aussi).
+Un ancien fichier qui contient encore `level`, `constellation`... est lu sans erreur (champs ignorés).
+
+Le fichier fourni contient les 127 personnages de la liste (patch 7.2). Mitya et Valeriy n'y figurent pas :
+leur élément n'était pas dans la liste et ils n'étaient pas encore confirmés. Ajoutez-les via le bouton « Ajouter » de l'onglet Personnages.
+
+### `genshinWeapons.json`
+
+```json
+{ "weapons": { "5_star": ["Aquila Favonia", "..."], "4_star": ["..."], "3_star": ["..."] } }
+```
+
+Catalogue lu au démarrage pour le sélecteur d'arme (avec recherche). Il n'est jamais réécrit par l'app :
+ajoutez-y les nouvelles armes à la main à chaque patch.
 
 ### `genshinEquipes.json` (clé `teams`) : PLACEHOLDER
 
@@ -65,12 +80,12 @@ Format provisoire, à remplacer par le vôtre (adapter `model/Team.java` et `mod
   "id": "t-1", "name": "Hydro Furina", "usage": "Abysses · seconde moitié",
   "members": [
     { "characterId": "c-furina", "name": "Furina", "element": "HYDRO",
-      "level": 90, "constellation": 2, "weapon": "", "refinement": 1 }
+      "level": 90, "constellation": 2, "weapon": "Splendor of Tranquil Waters", "refinement": 1 }
   ]
 }
 ```
 
-Chaque membre est un instantané autonome (niveau, doublons, arme, raffinement) ; `characterId` est optionnel.
+Chaque membre est un instantané autonome (niveau, doublons, nom de l'arme tel qu'écrit dans `genshinWeapons.json`, raffinement) ; `characterId` est optionnel.
 
 ### Endgames (clé `clears`)
 
@@ -83,7 +98,7 @@ Chaque membre est un instantané autonome (niveau, doublons, arme, raffinement) 
 
 Page Genshin, boutons en haut à droite. Le classeur contient deux feuilles :
 
-- `Personnages` : Nom | Élément | Niveau | Doublons | Arme | Raffinement
+- `Personnages` : Nom | Élément
 - `Equipes` : Équipe | Usage | Emplacement | Personnage | Élément | Niveau | Doublons | Arme | Raffinement
 
 À l'import, vous choisissez **Fusionner** (mise à jour par nom) ou **Remplacer**.

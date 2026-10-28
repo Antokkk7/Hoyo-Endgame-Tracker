@@ -1,4 +1,118 @@
 {
   "version" : 1,
-  "clears" : [ ]
+  "clears" : [ {
+    "id" : "1a9dabb0-237e-440a-9b69-5bef171ffc27",
+    "patch" : "7.1",
+    "period" : "2026.09.30-2026.11.03",
+    "difficulty" : 5,
+    "bosses" : [ {
+      "name" : "Churin",
+      "seconds" : 67,
+      "team" : [ {
+        "characterId" : "c-sandrone",
+        "name" : "Sandrone",
+        "element" : "CRYO",
+        "level" : 90,
+        "constellation" : 0,
+        "weapon" : "Gest of the Mighty Wolf",
+        "refinement" : 1
+      }, {
+        "characterId" : "c-alyosha",
+        "name" : "Alyosha",
+        "element" : "ELECTRO",
+        "level" : 81,
+        "constellation" : 6,
+        "weapon" : "Favonius Lance",
+        "refinement" : 5
+      }, {
+        "characterId" : "c-odette",
+        "name" : "Odette",
+        "element" : "CRYO",
+        "level" : 90,
+        "constellation" : 0,
+        "weapon" : "Exaiphanes Blade",
+        "refinement" : 3
+      }, {
+        "characterId" : "c-xilonen",
+        "name" : "Xilonen",
+        "element" : "GEO",
+        "level" : 82,
+        "constellation" : 2,
+        "weapon" : "Favonius Sword",
+        "refinement" : 5
+      } ]
+    }, {
+      "name" : "Automaton",
+      "seconds" : 37,
+      "team" : [ {
+        "characterId" : "c-skirk",
+        "name" : "Skirk",
+        "element" : "CRYO",
+        "level" : 90,
+        "constellation" : 2,
+        "weapon" : "Azurelight",
+        "refinement" : 1
+      }, {
+        "characterId" : "c-furina",
+        "name" : "Furina",
+        "element" : "HYDRO",
+        "level" : 90,
+        "constellation" : 2,
+        "weapon" : "Favonius Sword",
+        "refinement" : 5
+      }, {
+        "characterId" : "c-escoffier",
+        "name" : "Escoffier",
+        "element" : "CRYO",
+        "level" : 90,
+        "constellation" : 0,
+        "weapon" : "Symphonist of Scents",
+        "refinement" : 1
+      }, {
+        "characterId" : "c-mona",
+        "name" : "Mona",
+        "element" : "HYDRO",
+        "level" : 81,
+        "constellation" : 3,
+        "weapon" : "Thrilling Tales of Dragon Slayers",
+        "refinement" : 5
+      } ]
+    }, {
+      "name" : "Pavlina",
+      "seconds" : 66,
+      "team" : [ {
+        "characterId" : "c-mavuika",
+        "name" : "Mavuika",
+        "element" : "PYRO",
+        "level" : 90,
+        "constellation" : 2,
+        "weapon" : "A Thousand Blazing Suns",
+        "refinement" : 1
+      }, {
+        "characterId" : "c-ororon",
+        "name" : "Ororon",
+        "element" : "ELECTRO",
+        "level" : 81,
+        "constellation" : 5,
+        "weapon" : "Favonius Warbow",
+        "refinement" : 5
+      }, {
+        "characterId" : "c-chevreuse",
+        "name" : "Chevreuse",
+        "element" : "PYRO",
+        "level" : 90,
+        "constellation" : 6,
+        "weapon" : "Dialogues of the Desert Sages",
+        "refinement" : 5
+      }, {
+        "characterId" : "c-durin",
+        "name" : "Durin",
+        "element" : "PYRO",
+        "level" : 89,
+        "constellation" : 1,
+        "weapon" : "Athame Artis",
+        "refinement" : 1
+      } ]
+    } ]
+  } ]
 }

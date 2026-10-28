@@ -133,6 +133,17 @@ public final class TheatreAddDialog {
         if (store.characters.isEmpty()) {
             candidates.getChildren().add(Ui.label("Ajoutez d'abord des personnages dans la page Genshin.", "muted"));
         }
+        ScrollPane candidatesScroll = new ScrollPane(candidates);
+        candidatesScroll.setFitToWidth(true);
+        candidatesScroll.setPrefViewportHeight(210);
+        candidatesScroll.setMaxHeight(230);
+
+        // Parameters of the MVP for this clear (they are not stored in the roster).
+        Spinner<Integer> mvpLevel = Ui.spinner(1, 90, existing != null && existing.mvp != null ? existing.mvp.level : 90);
+        Spinner<Integer> mvpCons = Ui.spinner(0, 6, existing != null && existing.mvp != null ? existing.mvp.constellation : 0);
+        HBox mvpParams = new HBox(18, field("Niveau du MVP", mvpLevel), field("Doublons du MVP (C0 à C6)", mvpCons));
+        mvpParams.setAlignment(Pos.BOTTOM_LEFT);
+        VBox mvpContent = new VBox(14, candidatesScroll, mvpParams);
 
         // ---- layout
         VBox s1 = section("1. Les 3 éléments du mois", elementsRow, elementCount);
@@ -140,7 +151,7 @@ public final class TheatreAddDialog {
         VBox s3 = section("3. Mode", modes, null);
         VBox s4 = section("4. Résultat", starsRow,
                 Ui.label("Astres maximum : Facile 3 · Normal 6 · Difficile 8 · Visionnaire 10 · Lunaire 12. Exemple : 6/6 en mode Normal.", "muted", "small"));
-        VBox s5 = section("5. Personnage MVP", candidates,
+        VBox s5 = section("5. Personnage MVP", mvpContent,
                 Ui.label("Choisi parmi vos personnages enregistrés (cliquez à nouveau pour désélectionner).", "muted", "small"));
 
         TheatreClear[] result = new TheatreClear[1];
@@ -169,8 +180,13 @@ public final class TheatreAddDialog {
             c.stars = stars.getValue();
             c.bestAct = best.getValue();
             c.arcanum = c.mode.hasArcanum() ? arcanum.getValue() : 0;
-            c.mvp = mvpGroup.getSelectedToggle() == null ? null
-                    : TeamMember.from((GenshinCharacter) mvpGroup.getSelectedToggle().getUserData());
+            if (mvpGroup.getSelectedToggle() == null) {
+                c.mvp = null;
+            } else {
+                c.mvp = TeamMember.from((GenshinCharacter) mvpGroup.getSelectedToggle().getUserData());
+                c.mvp.level = mvpLevel.getValue() == null ? 90 : mvpLevel.getValue();
+                c.mvp.constellation = mvpCons.getValue() == null ? 0 : mvpCons.getValue();
+            }
             result[0] = c;
             stage[0].close();
         });

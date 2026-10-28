@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.hoyoendgame.model.Weapon;
 
 import java.io.IOException;
 import java.nio.file.AtomicMoveNotSupportedException;
@@ -44,6 +45,37 @@ final class JsonStore {
             } catch (IOException ignored) {
                 // nothing more we can do
             }
+            out.clear();
+        }
+        return out;
+    }
+
+    /**
+     * Reads genshinWeapons.json: {"weapons": {"5_star": ["..."], "4_star": [...]}}.
+     * A bare array of names, or an array under "weapons", is accepted too (rarity 0). Missing file = empty list.
+     */
+    static List<Weapon> readWeapons(Path file) {
+        List<Weapon> out = new ArrayList<>();
+        if (!Files.exists(file)) return out;
+        try {
+            JsonNode root = MAPPER.readTree(file.toFile());
+            JsonNode w = root == null ? null : (root.isArray() ? root : root.get("weapons"));
+            if (w == null) return out;
+            if (w.isObject()) {
+                var fields = w.fields();
+                while (fields.hasNext()) {
+                    var e = fields.next();
+                    int rarity = 0;
+                    String digits = e.getKey().replaceAll("\\D", "");
+                    if (!digits.isEmpty()) rarity = Integer.parseInt(digits);
+                    for (JsonNode n : e.getValue()) out.add(new Weapon(n.asText(), rarity));
+                }
+            } else if (w.isArray()) {
+                for (JsonNode n : w) out.add(new Weapon(n.isObject() && n.has("name") ? n.get("name").asText() : n.asText(),
+                        n.isObject() && n.has("rarity") ? n.get("rarity").asInt() : 0));
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.err.println("Impossible de lire " + file + " : " + e.getMessage());
             out.clear();
         }
         return out;

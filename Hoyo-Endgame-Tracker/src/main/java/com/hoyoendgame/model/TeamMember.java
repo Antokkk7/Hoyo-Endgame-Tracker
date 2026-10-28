@@ -20,15 +20,12 @@ public class TeamMember {
     @JsonAlias({"raffinement"})
     public int refinement = 1;
 
+    /** New member with default parameters (level 90, C0, no weapon, R1) to be adjusted per situation. */
     public static TeamMember from(GenshinCharacter c) {
         TeamMember m = new TeamMember();
         m.characterId = c.id;
         m.name = c.name;
         m.element = c.element;
-        m.level = c.level;
-        m.constellation = c.constellation;
-        m.weapon = c.weapon;
-        m.refinement = c.refinement;
         return m;
     }
 
@@ -44,8 +41,8 @@ public class TeamMember {
         return m;
     }
 
-    /** "C2 · R1" style summary. */
+    /** "C2 · R1" style summary ("C2" alone when no weapon is set). */
     public String meta() {
-        return "C" + constellation + " · R" + refinement;
+        return weapon == null || weapon.isBlank() ? "C" + constellation : "C" + constellation + " · R" + refinement;
     }
 }

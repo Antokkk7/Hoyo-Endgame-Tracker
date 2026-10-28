@@ -3,9 +3,9 @@ package com.hoyoendgame.ui;
 import com.hoyoendgame.data.DataStore;
 import com.hoyoendgame.model.GenshinCharacter;
 import com.hoyoendgame.model.TeamMember;
-import javafx.scene.control.ComboBox;
+import com.hoyoendgame.model.Weapon;
+import javafx.geometry.Pos;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
@@ -19,11 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Editor for the 4 slots of a team: character (from the roster), level, constellation ("doublons"),
- * weapon and weapon refinement. Picking a roster character pre-fills its saved values, which stay editable.
+ * Editor for the 4 slots of a team. For each slot: character (picked from the roster), level,
+ * constellation ("doublons"), weapon (picked from the weapon catalog) and weapon refinement.
+ * These parameters belong to the team, so the same character can have different ones in each team.
  */
 public final class TeamPane extends GridPane {
     private static final GenshinCharacter NONE = new GenshinCharacter();
+    private static final Weapon NO_WEAPON = new Weapon("", 0);
 
     static {
         NONE.id = "none";
@@ -65,30 +67,56 @@ public final class TeamPane extends GridPane {
         }
     }
 
+    static String characterLabel(GenshinCharacter c) {
+        return c.element == null ? c.name : c.name + " · " + c.element.label();
+    }
+
+    static String weaponLabel(Weapon w) {
+        if (w.name().isEmpty()) return "— Aucune —";
+        return w.rarity() > 0 ? w.name() + " (" + w.rarity() + "★)" : w.name();
+    }
+
+    private static Weapon weaponByName(String name) {
+        for (Weapon w : DataStore.get().weapons) {
+            if (w.name().equalsIgnoreCase(name)) return w;
+        }
+        return new Weapon(name, 0);
+    }
+
     private final class Slot {
         final VBox node = new VBox(10);
-        final ComboBox<GenshinCharacter> combo = new ComboBox<>();
+        final PickerButton<GenshinCharacter> charBtn;
+        final PickerButton<Weapon> weaponBtn;
         final StackPane tile = new StackPane();
         final javafx.scene.control.Label initials = Ui.label("?", "tile-text");
         final Spinner<Integer> level = Ui.spinner(1, 90, 90);
         final ToggleGroup cons = new ToggleGroup();
         final ToggleGroup refine = new ToggleGroup();
-        final TextField weapon = new TextField();
 
         Slot(int n) {
             node.getStyleClass().add("inner-box");
             node.setStyle("-fx-padding:14;");
-            combo.getItems().add(NONE);
-            combo.getItems().addAll(DataStore.get().characters);
-            combo.setValue(NONE);
-            combo.setMaxWidth(Double.MAX_VALUE);
+
+            charBtn = new PickerButton<>("Choisir un personnage", "Choisir un personnage…", TeamPane::characterLabel, () -> {
+                List<GenshinCharacter> l = new ArrayList<>();
+                l.add(NONE);
+                l.addAll(DataStore.get().characters);
+                return l;
+            });
+            charBtn.setValue(NONE);
+            charBtn.setOnPick(this::updateTile);
+
+            weaponBtn = new PickerButton<>("Choisir une arme", "Choisir une arme…", TeamPane::weaponLabel, () -> {
+                List<Weapon> l = new ArrayList<>();
+                l.add(NO_WEAPON);
+                l.addAll(DataStore.get().weapons);
+                return l;
+            });
 
             tile.setPrefSize(44, 52);
             tile.setMinSize(44, 52);
             tile.getChildren().add(initials);
             Ui.tileStyle(tile, null);
-
-            weapon.setPromptText("Arme");
 
             FlowPane consRow = new FlowPane(4, 4);
             for (int k = 0; k <= 6; k++) consRow.getChildren().add(Ui.pill("C" + k, cons, k));
@@ -100,31 +128,20 @@ public final class TeamPane extends GridPane {
             Ui.keepOneSelected(refine);
             Ui.select(refine, 1);
 
-            VBox comboBox = new VBox(4, Ui.label("Personnage " + n, "muted", "small"), combo);
-            HBox.setHgrow(comboBox, Priority.ALWAYS);
+            VBox charBox = new VBox(4, Ui.label("Personnage " + n, "muted", "small"), charBtn);
+            HBox.setHgrow(charBox, Priority.ALWAYS);
             VBox levelBox = new VBox(4, Ui.label("Niveau", "muted", "small"), level);
-            HBox top = new HBox(10, tile, comboBox, levelBox);
-            top.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
+            HBox top = new HBox(10, tile, charBox, levelBox);
+            top.setAlignment(Pos.BOTTOM_LEFT);
 
             VBox consBox = new VBox(4, Ui.label("Doublons du personnage", "muted", "small"), consRow);
-            HBox.setHgrow(weapon, Priority.ALWAYS);
-            VBox weaponBox = new VBox(4, Ui.label("Arme", "muted", "small"), weapon);
+            VBox weaponBox = new VBox(4, Ui.label("Arme", "muted", "small"), weaponBtn);
             HBox.setHgrow(weaponBox, Priority.ALWAYS);
             VBox refBox = new VBox(4, Ui.label("Raffinement", "muted", "small"), refRow);
             HBox weaponRow = new HBox(10, weaponBox, refBox);
-            weaponRow.setAlignment(javafx.geometry.Pos.BOTTOM_LEFT);
+            weaponRow.setAlignment(Pos.BOTTOM_LEFT);
 
             node.getChildren().addAll(top, consBox, weaponRow);
-
-            combo.valueProperty().addListener((o, old, c) -> {
-                updateTile(c);
-                if (c != null && c != NONE) {
-                    level.getValueFactory().setValue(Math.max(1, Math.min(90, c.level)));
-                    Ui.select(cons, c.constellation);
-                    weapon.setText(c.weapon == null ? "" : c.weapon);
-                    Ui.select(refine, c.refinement);
-                }
-            });
         }
 
         void updateTile(GenshinCharacter c) {
@@ -138,7 +155,7 @@ public final class TeamPane extends GridPane {
         }
 
         TeamMember toMember() {
-            GenshinCharacter c = combo.getValue();
+            GenshinCharacter c = charBtn.getValue();
             if (c == null || c == NONE) return null;
             TeamMember m = new TeamMember();
             m.characterId = c.id;
@@ -146,40 +163,41 @@ public final class TeamPane extends GridPane {
             m.element = c.element;
             m.level = level.getValue() == null ? 90 : level.getValue();
             m.constellation = Ui.selectedInt(cons, 0);
-            m.weapon = weapon.getText() == null ? "" : weapon.getText().trim();
+            Weapon w = weaponBtn.getValue();
+            m.weapon = w == null ? "" : w.name();
             m.refinement = Ui.selectedInt(refine, 1);
             return m;
         }
 
         void setMember(TeamMember m) {
             if (m == null) {
-                combo.setValue(NONE);
+                charBtn.setValue(NONE);
+                updateTile(NONE);
                 level.getValueFactory().setValue(90);
                 Ui.select(cons, 0);
                 Ui.select(refine, 1);
-                weapon.setText("");
+                weaponBtn.setValue(null);
                 return;
             }
             GenshinCharacter found = null;
-            for (GenshinCharacter c : combo.getItems()) {
-                if (c == NONE) continue;
+            for (GenshinCharacter c : DataStore.get().characters) {
                 if ((m.characterId != null && m.characterId.equals(c.id)) || c.name.equalsIgnoreCase(m.name)) {
                     found = c;
                     break;
                 }
             }
             if (found == null) {
-                // The character is not in the roster (anymore): keep it selectable for this slot only.
+                // Not in the roster (anymore): keep the member as saved.
                 found = new GenshinCharacter();
                 if (m.characterId != null) found.id = m.characterId;
                 found.name = m.name;
                 found.element = m.element;
-                combo.getItems().add(found);
             }
-            combo.setValue(found);
+            charBtn.setValue(found);
+            updateTile(found);
             level.getValueFactory().setValue(Math.max(1, Math.min(90, m.level)));
             Ui.select(cons, m.constellation);
-            weapon.setText(m.weapon == null ? "" : m.weapon);
+            weaponBtn.setValue(m.weapon == null || m.weapon.isBlank() ? null : weaponByName(m.weapon));
             Ui.select(refine, m.refinement);
         }
     }

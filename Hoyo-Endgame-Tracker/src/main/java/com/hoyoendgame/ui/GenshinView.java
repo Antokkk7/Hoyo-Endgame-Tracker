@@ -20,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -114,8 +115,7 @@ public final class GenshinView extends VBox {
             newTeam.setManaged(teams);
         });
 
-        Label legend = Ui.label("C = doublons du personnage · R = raffinement de l'arme", "muted", "small");
-        VBox box = new VBox(14, top, search, content, legend);
+        VBox box = new VBox(14, top, search, content);
         box.getStyleClass().add("glass");
         box.setPadding(new Insets(20));
         box.setPrefWidth(540);
@@ -126,8 +126,8 @@ public final class GenshinView extends VBox {
     }
 
     private void refreshTeams() {
-        teamsTab.setText("Équipes (" + store.teams.size() + ")");
-        charsTab.setText("Personnages (" + store.characters.size() + ")");
+        teamsTab.setText("Équipes enregistrées (" + store.teams.size() + ")");
+        charsTab.setText("Personnages disponibles (" + store.characters.size() + ")");
         String q = search.getText() == null ? "" : search.getText().trim().toLowerCase();
         teamsBox.getChildren().clear();
         int shown = 0;
@@ -164,7 +164,11 @@ public final class GenshinView extends VBox {
         head.setAlignment(Pos.CENTER_LEFT);
         FlowPane members = new FlowPane(8, 8);
         for (TeamMember m : t.members) {
-            members.getChildren().add(Ui.avatar(m.name, m.element, "Niv." + m.level, m.meta(), 56, 64));
+            VBox av = Ui.avatar(m.name, m.element, "Niv." + m.level, m.meta(), 56, 64);
+            if (m.weapon != null && !m.weapon.isBlank()) {
+                Tooltip.install(av, new Tooltip(m.name + "\n" + m.weapon + " (R" + m.refinement + ")"));
+            }
+            members.getChildren().add(av);
         }
         VBox card = new VBox(12, head, members);
         card.getStyleClass().add("card");
@@ -175,12 +179,8 @@ public final class GenshinView extends VBox {
     private Node buildCharactersPane() {
         TableView<GenshinCharacter> table = new TableView<>(filteredChars);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        table.getColumns().add(col("Nom", c -> c.name, 150));
-        table.getColumns().add(col("Élément", c -> c.element == null ? "" : c.element.label(), 80));
-        table.getColumns().add(col("Niv.", c -> String.valueOf(c.level), 50));
-        table.getColumns().add(col("Dbl.", c -> "C" + c.constellation, 50));
-        table.getColumns().add(col("Arme", c -> c.weapon, 120));
-        table.getColumns().add(col("R", c -> "R" + c.refinement, 40));
+        table.getColumns().add(col("Nom", c -> c.name, 220));
+        table.getColumns().add(col("Élément", c -> c.element == null ? "" : c.element.label(), 120));
         table.setPlaceholder(Ui.label("Aucun personnage. Ajoutez-en ou importez un fichier Excel.", "muted"));
 
         Button add = Ui.button("Ajouter", "btn-small", "btn-primary");

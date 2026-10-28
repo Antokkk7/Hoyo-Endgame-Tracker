@@ -5,6 +5,7 @@ import com.hoyoendgame.model.CarnageClear;
 import com.hoyoendgame.model.GenshinCharacter;
 import com.hoyoendgame.model.Team;
 import com.hoyoendgame.model.TheatreClear;
+import com.hoyoendgame.model.Weapon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -33,6 +34,8 @@ public final class DataStore {
     public static final String ABYSS_FILE = "genshinAbysses.json";
     public static final String THEATRE_FILE = "genshinTheatre.json";
     public static final String CARNAGE_FILE = "genshinCarnage.json";
+    /** Weapon catalog, maintained by hand: the app only reads it. */
+    public static final String WEAPONS_FILE = "genshinWeapons.json";
 
     private final Path dir = Paths.get(System.getProperty("hoyo.data.dir", "data")).toAbsolutePath();
 
@@ -41,6 +44,8 @@ public final class DataStore {
     public final ObservableList<AbyssClear> abyss = FXCollections.observableArrayList();
     public final ObservableList<TheatreClear> theatre = FXCollections.observableArrayList();
     public final ObservableList<CarnageClear> carnage = FXCollections.observableArrayList();
+    /** Read-only weapon catalog (rarity 5 first, as in the file). */
+    public final ObservableList<Weapon> weapons = FXCollections.observableArrayList();
 
     /** Called when a file cannot be written (the UI shows an alert). */
     private Consumer<String> errorHandler = msg -> System.err.println(msg);
@@ -62,6 +67,10 @@ public final class DataStore {
             Files.createDirectories(dir);
         } catch (IOException e) {
             errorHandler.accept("Impossible de créer le dossier " + dir + " : " + e.getMessage());
+        }
+        weapons.setAll(JsonStore.readWeapons(file(WEAPONS_FILE)));
+        if (weapons.isEmpty()) {
+            System.err.println("Aucune arme chargée : placez genshinWeapons.json dans " + dir);
         }
         characters.setAll(JsonStore.readList(file(CHARACTERS_FILE), "characters", GenshinCharacter.class));
         characters.forEach(GenshinCharacter::normalize);

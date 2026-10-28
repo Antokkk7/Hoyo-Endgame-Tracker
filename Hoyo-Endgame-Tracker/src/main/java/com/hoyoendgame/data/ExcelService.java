@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * Excel (.xlsx) import / export of the roster and the teams.
- * Sheet "Personnages": Nom | Élément | Niveau | Doublons | Arme | Raffinement
+ * Sheet "Personnages": Nom | Élément (extra columns of older exports are ignored)
  * Sheet "Equipes": Équipe | Usage | Emplacement | Personnage | Élément | Niveau | Doublons | Arme | Raffinement
  */
 public final class ExcelService {
@@ -45,18 +45,14 @@ public final class ExcelService {
             head.setFont(bold);
 
             Sheet sc = wb.createSheet(SHEET_CHARACTERS);
-            header(sc, head, "Nom", "Élément", "Niveau", "Doublons", "Arme", "Raffinement");
+            header(sc, head, "Nom", "Élément");
             int r = 1;
             for (GenshinCharacter c : characters) {
                 Row row = sc.createRow(r++);
                 row.createCell(0).setCellValue(c.name);
                 row.createCell(1).setCellValue(c.element == null ? "" : c.element.label());
-                row.createCell(2).setCellValue(c.level);
-                row.createCell(3).setCellValue(c.constellation);
-                row.createCell(4).setCellValue(c.weapon == null ? "" : c.weapon);
-                row.createCell(5).setCellValue(c.refinement);
             }
-            for (int i = 0; i < 6; i++) sc.autoSizeColumn(i);
+            for (int i = 0; i < 2; i++) sc.autoSizeColumn(i);
 
             Sheet st = wb.createSheet(SHEET_TEAMS);
             header(st, head, "Équipe", "Usage", "Emplacement", "Personnage", "Élément", "Niveau", "Doublons", "Arme", "Raffinement");
@@ -101,10 +97,6 @@ public final class ExcelService {
                     c.name = name;
                     Element e = Element.parse(str(fmt, row, 1));
                     c.element = e == null ? Element.GEO : e;
-                    c.level = num(fmt, row, 2, 90);
-                    c.constellation = num(fmt, row, 3, 0);
-                    c.weapon = str(fmt, row, 4);
-                    c.refinement = num(fmt, row, 5, 1);
                     c.normalize();
                     characters.add(c);
                 }

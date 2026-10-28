@@ -1,68 +1,512 @@
 {
   "version" : 1,
   "characters" : [ {
-    "id" : "c-mavuika",
-    "name" : "Mavuika",
-    "element" : "PYRO",
-    "level" : 90,
-    "constellation" : 0,
-    "weapon" : "",
-    "refinement" : 1
+    "id" : "c-aino",
+    "name" : "Aino",
+    "element" : "HYDRO"
   }, {
-    "id" : "c-xilonen",
-    "name" : "Xilonen",
-    "element" : "GEO",
-    "level" : 90,
-    "constellation" : 1,
-    "weapon" : "",
-    "refinement" : 1
+    "id" : "c-albedo",
+    "name" : "Albedo",
+    "element" : "GEO"
   }, {
-    "id" : "c-kazuha",
-    "name" : "Kazuha",
-    "element" : "ANEMO",
-    "level" : 90,
-    "constellation" : 0,
-    "weapon" : "",
-    "refinement" : 5
+    "id" : "c-alhaitham",
+    "name" : "Alhaitham",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-aloy",
+    "name" : "Aloy",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-alyosha",
+    "name" : "Alyosha",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-amber",
+    "name" : "Amber",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-arlecchino",
+    "name" : "Arlecchino",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-ayaka",
+    "name" : "Ayaka",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-ayato",
+    "name" : "Ayato",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-baizhu",
+    "name" : "Baizhu",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-barbara",
+    "name" : "Barbara",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-beidou",
+    "name" : "Beidou",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-bennett",
+    "name" : "Bennett",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-candace",
+    "name" : "Candace",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-charlotte",
+    "name" : "Charlotte",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-chasca",
+    "name" : "Chasca",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-chevreuse",
+    "name" : "Chevreuse",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-childe",
+    "name" : "Childe",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-chiori",
+    "name" : "Chiori",
+    "element" : "GEO"
+  }, {
+    "id" : "c-chongyun",
+    "name" : "Chongyun",
+    "element" : "CRYO"
   }, {
     "id" : "c-citlali",
     "name" : "Citlali",
-    "element" : "CRYO",
-    "level" : 89,
-    "constellation" : 0,
-    "weapon" : "",
-    "refinement" : 1
+    "element" : "CRYO"
+  }, {
+    "id" : "c-clorinde",
+    "name" : "Clorinde",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-collei",
+    "name" : "Collei",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-columbina",
+    "name" : "Columbina",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-cyno",
+    "name" : "Cyno",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-dahlia",
+    "name" : "Dahlia",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-dehya",
+    "name" : "Dehya",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-diluc",
+    "name" : "Diluc",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-diona",
+    "name" : "Diona",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-dori",
+    "name" : "Dori",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-durin",
+    "name" : "Durin",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-emilie",
+    "name" : "Emilie",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-escoffier",
+    "name" : "Escoffier",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-eula",
+    "name" : "Eula",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-faruzan",
+    "name" : "Faruzan",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-fischl",
+    "name" : "Fischl",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-flins",
+    "name" : "Flins",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-freminet",
+    "name" : "Freminet",
+    "element" : "CRYO"
   }, {
     "id" : "c-furina",
     "name" : "Furina",
-    "element" : "HYDRO",
-    "level" : 90,
-    "constellation" : 2,
-    "weapon" : "",
-    "refinement" : 1
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-gaming",
+    "name" : "Gaming",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-ganyu",
+    "name" : "Ganyu",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-gorou",
+    "name" : "Gorou",
+    "element" : "GEO"
+  }, {
+    "id" : "c-heizou",
+    "name" : "Heizou",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-hu-tao",
+    "name" : "Hu Tao",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-iansan",
+    "name" : "Iansan",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-ifa",
+    "name" : "Ifa",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-illuga",
+    "name" : "Illuga",
+    "element" : "GEO"
+  }, {
+    "id" : "c-ineffa",
+    "name" : "Ineffa",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-itto",
+    "name" : "Itto",
+    "element" : "GEO"
+  }, {
+    "id" : "c-jahoda",
+    "name" : "Jahoda",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-jean",
+    "name" : "Jean",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-kachina",
+    "name" : "Kachina",
+    "element" : "GEO"
+  }, {
+    "id" : "c-kaeya",
+    "name" : "Kaeya",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-kaveh",
+    "name" : "Kaveh",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-kazuha",
+    "name" : "Kazuha",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-keqing",
+    "name" : "Keqing",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-kinich",
+    "name" : "Kinich",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-kirara",
+    "name" : "Kirara",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-klee",
+    "name" : "Klee",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-kokomi",
+    "name" : "Kokomi",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-kuki-shinobu",
+    "name" : "Kuki Shinobu",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-lan-yan",
+    "name" : "Lan Yan",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-lauma",
+    "name" : "Lauma",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-layla",
+    "name" : "Layla",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-linnea",
+    "name" : "Linnea",
+    "element" : "GEO"
+  }, {
+    "id" : "c-lisa",
+    "name" : "Lisa",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-lohen",
+    "name" : "Lohen",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-lynette",
+    "name" : "Lynette",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-lyney",
+    "name" : "Lyney",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-mavuika",
+    "name" : "Mavuika",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-mika",
+    "name" : "Mika",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-mona",
+    "name" : "Mona",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-mualani",
+    "name" : "Mualani",
+    "element" : "HYDRO"
   }, {
     "id" : "c-nahida",
     "name" : "Nahida",
-    "element" : "DENDRO",
-    "level" : 90,
-    "constellation" : 0,
-    "weapon" : "",
-    "refinement" : 1
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-navia",
+    "name" : "Navia",
+    "element" : "GEO"
+  }, {
+    "id" : "c-nefer",
+    "name" : "Nefer",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-neuvillette",
+    "name" : "Neuvillette",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-nicole",
+    "name" : "Nicole",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-nilou",
+    "name" : "Nilou",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-ningguang",
+    "name" : "Ningguang",
+    "element" : "GEO"
+  }, {
+    "id" : "c-noelle",
+    "name" : "Noelle",
+    "element" : "GEO"
+  }, {
+    "id" : "c-odette",
+    "name" : "Odette",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-ororon",
+    "name" : "Ororon",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-prune",
+    "name" : "Prune",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-qiqi",
+    "name" : "Qiqi",
+    "element" : "CRYO"
   }, {
     "id" : "c-raiden",
-    "name" : "Raiden Shogun",
-    "element" : "ELECTRO",
-    "level" : 90,
-    "constellation" : 1,
-    "weapon" : "",
-    "refinement" : 1
+    "name" : "Raiden",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-razor",
+    "name" : "Razor",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-rosaria",
+    "name" : "Rosaria",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-sandrone",
+    "name" : "Sandrone",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-sara",
+    "name" : "Sara",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-sayu",
+    "name" : "Sayu",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-sethos",
+    "name" : "Sethos",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-shenhe",
+    "name" : "Shenhe",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-sigewinne",
+    "name" : "Sigewinne",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-skirk",
+    "name" : "Skirk",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-sucrose",
+    "name" : "Sucrose",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-thoma",
+    "name" : "Thoma",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-tighnari",
+    "name" : "Tighnari",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-traveler-anemo",
+    "name" : "Traveler (Anemo)",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-traveler-cryo",
+    "name" : "Traveler (Cryo)",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-traveler-dendro",
+    "name" : "Traveler (Dendro)",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-traveler-electro",
+    "name" : "Traveler (Electro)",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-traveler-geo",
+    "name" : "Traveler (Geo)",
+    "element" : "GEO"
+  }, {
+    "id" : "c-traveler-hydro",
+    "name" : "Traveler (Hydro)",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-traveler-pyro",
+    "name" : "Traveler (Pyro)",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-varesa",
+    "name" : "Varesa",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-varka",
+    "name" : "Varka",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-venti",
+    "name" : "Venti",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-vesna",
+    "name" : "Vesna",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-vodyanitsa",
+    "name" : "Vodyanitsa",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-wanderer",
+    "name" : "Wanderer",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-wriothesley",
+    "name" : "Wriothesley",
+    "element" : "CRYO"
+  }, {
+    "id" : "c-xiangling",
+    "name" : "Xiangling",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-xianyun",
+    "name" : "Xianyun",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-xiao",
+    "name" : "Xiao",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-xilonen",
+    "name" : "Xilonen",
+    "element" : "GEO"
+  }, {
+    "id" : "c-xingqiu",
+    "name" : "Xingqiu",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-xinyan",
+    "name" : "Xinyan",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-yae-miko",
+    "name" : "Yae Miko",
+    "element" : "ELECTRO"
+  }, {
+    "id" : "c-yanfei",
+    "name" : "Yanfei",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-yaoyao",
+    "name" : "Yaoyao",
+    "element" : "DENDRO"
+  }, {
+    "id" : "c-yelan",
+    "name" : "Yelan",
+    "element" : "HYDRO"
+  }, {
+    "id" : "c-yoimiya",
+    "name" : "Yoimiya",
+    "element" : "PYRO"
+  }, {
+    "id" : "c-yumemizuki-mizuki",
+    "name" : "Yumeglorp Glorp",
+    "element" : "ANEMO"
+  }, {
+    "id" : "c-yun-jin",
+    "name" : "Yun Jin",
+    "element" : "GEO"
   }, {
     "id" : "c-zhongli",
     "name" : "Zhongli",
-    "element" : "GEO",
-    "level" : 81,
-    "constellation" : 0,
-    "weapon" : "",
-    "refinement" : 3
+    "element" : "GEO"
+  }, {
+    "id" : "c-zibai",
+    "name" : "Zibai",
+    "element" : "GEO"
   } ]
 }

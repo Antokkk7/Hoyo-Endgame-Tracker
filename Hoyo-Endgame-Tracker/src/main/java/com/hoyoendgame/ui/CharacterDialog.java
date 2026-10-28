@@ -6,9 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -16,7 +14,7 @@ import javafx.stage.Window;
 
 import java.util.Optional;
 
-/** Add / edit a roster character. */
+/** Add / edit a character of the roster (name and element only; the other parameters are set per team). */
 public final class CharacterDialog {
     private CharacterDialog() {
     }
@@ -29,27 +27,7 @@ public final class CharacterDialog {
         ComboBox<Element> element = new ComboBox<>();
         element.getItems().addAll(Element.values());
         element.setValue(base.element);
-        Spinner<Integer> level = Ui.spinner(1, 90, base.level);
-        Spinner<Integer> cons = Ui.spinner(0, 6, base.constellation);
-        TextField weapon = new TextField(base.weapon);
-        weapon.setPromptText("Arme");
-        Spinner<Integer> refine = Ui.spinner(1, 5, base.refinement);
-
-        GridPane form = new GridPane();
-        form.setHgap(14);
-        form.setVgap(12);
-        form.add(Ui.label("Nom", "muted", "small"), 0, 0);
-        form.add(name, 0, 1, 2, 1);
-        form.add(Ui.label("Élément", "muted", "small"), 0, 2);
-        form.add(element, 0, 3);
-        form.add(Ui.label("Niveau", "muted", "small"), 1, 2);
-        form.add(level, 1, 3);
-        form.add(Ui.label("Doublons (C0 à C6)", "muted", "small"), 0, 4);
-        form.add(cons, 0, 5);
-        form.add(Ui.label("Raffinement de l'arme", "muted", "small"), 1, 4);
-        form.add(refine, 1, 5);
-        form.add(Ui.label("Arme", "muted", "small"), 0, 6);
-        form.add(weapon, 0, 7, 2, 1);
+        element.setMaxWidth(Double.MAX_VALUE);
 
         GenshinCharacter[] result = new GenshinCharacter[1];
         Stage[] stage = new Stage[1];
@@ -63,19 +41,20 @@ public final class CharacterDialog {
             }
             base.name = name.getText().trim();
             base.element = element.getValue();
-            base.level = level.getValue();
-            base.constellation = cons.getValue();
-            base.weapon = weapon.getText() == null ? "" : weapon.getText().trim();
-            base.refinement = refine.getValue();
             result[0] = base;
             stage[0].close();
         });
         HBox actions = new HBox(12, Ui.grow(), cancel, save);
         actions.setAlignment(Pos.CENTER_RIGHT);
 
-        VBox root = new VBox(18, Ui.label(existing == null ? "Ajouter un personnage" : "Modifier le personnage", "h2"), form, actions);
+        VBox root = new VBox(16,
+                Ui.label(existing == null ? "Ajouter un personnage" : "Modifier le personnage", "h2"),
+                Ui.label("Niveau, doublons et arme se règlent dans chaque équipe.", "muted", "small"),
+                new VBox(4, Ui.label("Nom", "muted", "small"), name),
+                new VBox(4, Ui.label("Élément", "muted", "small"), element),
+                actions);
         root.setPadding(new Insets(28));
-        stage[0] = Ui.modal(owner, "Personnage", root, 520, 470);
+        stage[0] = Ui.modal(owner, "Personnage", root, 460, 360);
         stage[0].showAndWait();
         return Optional.ofNullable(result[0]);
     }

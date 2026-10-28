@@ -32,7 +32,7 @@ public final class HomeView extends VBox {
         HBox cards = new HBox(24, genshinCard(openGenshin), hsrCard());
         cards.setFillHeight(true);
 
-        Label foot = Ui.label("Tout est enregistré en local dans le dossier data/ ; import et export Excel depuis chaque jeu.", "muted", "small");
+        Label foot = Ui.label("Tout est enregistré en local dans le dossier data/ ", "muted", "small");
         getChildren().addAll(intro, cards, foot);
     }
 
