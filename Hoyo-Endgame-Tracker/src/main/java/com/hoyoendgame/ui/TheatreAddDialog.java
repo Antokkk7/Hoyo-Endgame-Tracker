@@ -10,17 +10,20 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -33,10 +36,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Add / edit a Theater clear: the 3 elements of the month, month + patch, mode, stars (and Arcanum for
- * Défi Lunaire), best act and the MVP character.
+ * Add / edit a Theater clear: the 3 elements of the month, month + patch, mode (single-line
+ * carousel), clickable stars (and Arcanum for Défi Lunaire), best act and the MVP character
+ * (with an intro / borrowed precision).
  */
 public final class TheatreAddDialog {
+    private static final String ASTRE_COLOR = "#B79BFF";
+    private static final String ARCANUM_COLOR = "#F6D77B";
+    private static final int VISIBLE_MODES = 3;
+
     private TheatreAddDialog() {
     }
 
@@ -73,49 +81,124 @@ public final class TheatreAddDialog {
         patch.setPromptText("ex. 6.1");
         patch.setPrefWidth(120);
 
-        // ---- 3. mode
+        // ---- 3. mode: single-line carousel < [mode] [mode] [mode] >
+        TheatreMode[] modes = TheatreMode.values();
         ToggleGroup modeGroup = new ToggleGroup();
-        FlowPane modes = new FlowPane(12, 12);
-        TheatreMode initialMode = existing == null ? TheatreMode.LUNAR : existing.mode;
-        for (TheatreMode m : TheatreMode.values()) {
-            Label title = Ui.label(m.label, "strong");
-            Label req = Ui.label(m.requirements(), "muted", "small");
-            ToggleButton card = new ToggleButton();
-            card.setGraphic(new VBox(6, title, req));
-            card.getStyleClass().add("mode-card");
-            card.setToggleGroup(modeGroup);
-            card.setUserData(m);
-            card.setPrefWidth(190);
-            card.setSelected(m == initialMode);
-            modes.getChildren().add(card);
-        }
         Ui.keepOneSelected(modeGroup);
+        FlowPane modeStrip = new FlowPane(8, 8);
+        modeStrip.setAlignment(Pos.CENTER_LEFT);
+        Label modeReq = Ui.label("", "muted", "small");
 
-        // ---- 4. result
-        Spinner<Integer> stars = Ui.spinner(0, initialMode.acts, existing == null ? initialMode.acts : existing.stars);
-        Label starsMax = Ui.label("/" + initialMode.acts, "violet");
-        Spinner<Integer> best = Ui.spinner(0, initialMode.acts, existing == null ? initialMode.acts : existing.bestAct);
-        Spinner<Integer> arcanum = Ui.spinner(0, Math.max(2, initialMode.arcanum), existing == null ? 0 : existing.arcanum);
-        Label arcMax = Ui.label("/2", "violet");
-        VBox arcBox = new VBox(4, Ui.label("Arcanum (Défi Lunaire)", "muted", "small"), new HBox(8, arcanum, arcMax));
-        ((HBox) arcBox.getChildren().get(1)).setAlignment(Pos.CENTER_LEFT);
+        TheatreMode initialMode = existing == null ? TheatreMode.VISIONARY : existing.mode;
+        // state[]: 0 = first visible mode index, 1 = selected mode index
+        int[] state = {1, initialMode.ordinal()};
+        if (state[0] > modes.length - VISIBLE_MODES) state[0] = modes.length - VISIBLE_MODES;
+        if (state[1] > state[0] + VISIBLE_MODES - 1) state[0] = Math.min(state[1], modes.length - VISIBLE_MODES);
 
-        Runnable onMode = () -> {
-            TheatreMode m = (TheatreMode) modeGroup.getSelectedToggle().getUserData();
-            setMax(stars, m.acts);
-            setMax(best, m.acts);
-            starsMax.setText("/" + m.acts);
-            arcBox.setVisible(m.hasArcanum());
-            arcBox.setManaged(m.hasArcanum());
-            if (!m.hasArcanum()) arcanum.getValueFactory().setValue(0);
+        Button prev = Ui.button("<", "btn-small", "carousel-btn");
+        Button next = Ui.button(">", "btn-small", "carousel-btn");
+        Runnable updCarousel = () -> {
+            modeStrip.getChildren().clear();
+            for (int i = state[0]; i < state[0] + VISIBLE_MODES && i < modes.length; i++) {
+                TheatreMode m = modes[i];
+                ToggleButton tb = new ToggleButton(m.label);
+                tb.getStyleClass().add("pill");
+                tb.setToggleGroup(modeGroup);
+                tb.setUserData(m);
+                tb.setSelected(i == state[1]);
+                Tooltip t = new Tooltip(m.label + "\n" + m.requirements());
+                Tooltip.install(tb, t);
+                tb.setOnAction(e -> {
+                    state[1] = m.ordinal();
+                    modeReq.setText(m.requirements().replace("\n", " · "));
+                });
+                modeStrip.getChildren().add(tb);
+            }
+            prev.setDisable(state[0] == 0);
+            next.setDisable(state[0] >= modes.length - VISIBLE_MODES);
+            // Blue glow on ">" when the next mode to reveal is the Défi Lunaire
+            boolean lunarNext = state[0] + VISIBLE_MODES < modes.length
+                    && modes[state[0] + VISIBLE_MODES] == TheatreMode.LUNAR;
+            next.getStyleClass().remove("glow-blue");
+            if (lunarNext) next.getStyleClass().add("glow-blue");
         };
-        modeGroup.selectedToggleProperty().addListener((o, a, b) -> onMode.run());
-        onMode.run();
+        prev.setOnAction(e -> {
+            if (state[0] > 0) {
+                state[0]--;
+                updCarousel.run();
+            }
+        });
+        next.setOnAction(e -> {
+            if (state[0] < modes.length - VISIBLE_MODES) {
+                state[0]++;
+                updCarousel.run();
+            }
+        });
+        modeGroup.selectedToggleProperty().addListener((o, a, b) -> {
+            if (b != null) {
+                TheatreMode m = (TheatreMode) b.getUserData();
+                state[1] = m.ordinal();
+                modeReq.setText(m.requirements().replace("\n", " · "));
+            }
+        });
+        HBox carousel = new HBox(8, prev, modeStrip, next);
+        carousel.setAlignment(Pos.CENTER_LEFT);
+        updCarousel.run();
+        TheatreMode current = modes[state[1]];
+        modeReq.setText(current.requirements().replace("\n", " · "));
+
+        // ---- 4. result: clickable stars
+        List<Boolean> starFlags = new ArrayList<>();
+        if (existing != null) starFlags.addAll(existing.starFlagsOrFallback());
+        while (starFlags.size() < current.acts) starFlags.add(starFlags.size() < existingStars(existing));
+        HBox starsBox = new HBox(8);
+        starsBox.setAlignment(Pos.CENTER_LEFT);
+        Label starsLabel = Ui.label("", "h3", "violet");
+        Runnable[] rebuildStars = new Runnable[1];
+        rebuildStars[0] = () -> {
+            starsBox.getChildren().clear();
+            TheatreMode m = modes[state[1]];
+            int acts = m.acts;
+            // In Défi Lunaire, the last stars (11 and 12) are the Arcanum ones: gold + separator.
+            int arcStart = acts - (m.hasArcanum() ? m.arcanum : 0);
+            while (starFlags.size() > acts) starFlags.remove(starFlags.size() - 1);
+            while (starFlags.size() < acts) starFlags.add(false);
+            for (int i = 0; i < acts; i++) {
+                final int idx = i;
+                final String onColor = idx >= arcStart ? ARCANUM_COLOR : ASTRE_COLOR;
+                if (m.hasArcanum() && idx == arcStart) {
+                    Region divider = new Region();
+                    divider.setMinSize(2, 26);
+                    divider.setPrefSize(2, 26);
+                    divider.setStyle("-fx-background-color:rgba(255,255,255,0.35);-fx-background-radius:1;");
+                    HBox.setMargin(divider, new Insets(0, 4, 0, 4));
+                    starsBox.getChildren().add(divider);
+                }
+                javafx.scene.shape.Polygon star = Ui.star(28, flag(starFlags, idx), onColor);
+                star.getStyleClass().add("clickable-star");
+                star.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+                    starFlags.set(idx, !flag(starFlags, idx));
+                    star.setFill(Color.web(flag(starFlags, idx) ? onColor : "#3C3B5A"));
+                    starsLabel.setText(countTrue(starFlags) + "/" + acts);
+                });
+                starsBox.getChildren().add(star);
+            }
+            starsLabel.setText(countTrue(starFlags) + "/" + acts);
+        };
+        modeGroup.selectedToggleProperty().addListener((o, a, b) -> rebuildStars[0].run());
+        rebuildStars[0].run();
+
+        Spinner<Integer> best = Ui.spinner(0, current.acts, existing == null ? current.acts : existing.bestAct);
+        modeGroup.selectedToggleProperty().addListener((o, a, b) -> {
+            if (b == null) return;
+            TheatreMode m = (TheatreMode) b.getUserData();
+            setMax(best, m.acts);
+        });
 
         HBox starsRow = new HBox(24,
-                new VBox(4, Ui.label("Astres (selon le mode)", "muted", "small"), hbox(8, stars, starsMax)),
-                new VBox(4, Ui.label("Meilleur acte atteint", "muted", "small"), best),
-                arcBox);
+                new VBox(4, Ui.label("Astres (cliquez sur les étoiles)", "muted", "small"),
+                        new HBox(12, starsBox, starsLabel)),
+                new VBox(4, Ui.label("Meilleur acte atteint", "muted", "small"), best));
         starsRow.setAlignment(Pos.BOTTOM_LEFT);
 
         // ---- 5. MVP
@@ -138,19 +221,19 @@ public final class TheatreAddDialog {
         candidatesScroll.setPrefViewportHeight(210);
         candidatesScroll.setMaxHeight(230);
 
-        // Parameters of the MVP for this clear (they are not stored in the roster).
-        Spinner<Integer> mvpLevel = Ui.spinner(1, 90, existing != null && existing.mvp != null ? existing.mvp.level : 90);
-        Spinner<Integer> mvpCons = Ui.spinner(0, 6, existing != null && existing.mvp != null ? existing.mvp.constellation : 0);
-        HBox mvpParams = new HBox(18, field("Niveau du MVP", mvpLevel), field("Doublons du MVP (C0 à C6)", mvpCons));
-        mvpParams.setAlignment(Pos.BOTTOM_LEFT);
-        VBox mvpContent = new VBox(14, candidatesScroll, mvpParams);
+        CheckBox trial = new CheckBox("Personnage d'introduction / de prêt");
+        trial.getStyleClass().add("mvp-trial");
+        if (existing != null) trial.setSelected(existing.mvpTrial);
+        VBox mvpContent = new VBox(14, candidatesScroll, trial);
 
         // ---- layout
         VBox s1 = section("1. Les 3 éléments du mois", elementsRow, elementCount);
         VBox s2 = section("2. Période", new HBox(18, field("Mois", month), field("Année", year), field("Patch", patch)), null);
-        VBox s3 = section("3. Mode", modes, null);
+        VBox s3 = section("3. Mode", new VBox(10, carousel, modeReq), null);
         VBox s4 = section("4. Résultat", starsRow,
-                Ui.label("Astres maximum : Facile 3 · Normal 6 · Difficile 8 · Visionnaire 10 · Lunaire 12. Exemple : 6/6 en mode Normal.", "muted", "small"));
+                Ui.label("Astres maximum : Facile 3 · Normal 6 · Difficile 8 · Visionnaire 10 · Lunaire 12. "
+                        + "Une étoile violette = obtenue, une étoile grise = manquée. "
+                        + "En Défi Lunaire, les étoiles dorées comptent comme arcanum (1 étoile dorée = 1, 2 = 2).", "muted", "small"));
         VBox s5 = section("5. Personnage MVP", mvpContent,
                 Ui.label("Choisi parmi vos personnages enregistrés (cliquez à nouveau pour désélectionner).", "muted", "small"));
 
@@ -177,16 +260,17 @@ public final class TheatreAddDialog {
             c.year = year.getValue();
             c.patch = patch.getText().trim();
             c.mode = (TheatreMode) modeGroup.getSelectedToggle().getUserData();
-            c.stars = stars.getValue();
+            c.starFlags = new ArrayList<>(starFlags);
+            c.stars = countTrue(starFlags);
             c.bestAct = best.getValue();
-            c.arcanum = c.mode.hasArcanum() ? arcanum.getValue() : 0;
+            c.arcanum = countArcanum(starFlags, c.mode);
+            c.mvpTrial = trial.isSelected();
             if (mvpGroup.getSelectedToggle() == null) {
                 c.mvp = null;
             } else {
                 c.mvp = TeamMember.from((GenshinCharacter) mvpGroup.getSelectedToggle().getUserData());
-                c.mvp.level = mvpLevel.getValue() == null ? 90 : mvpLevel.getValue();
-                c.mvp.constellation = mvpCons.getValue() == null ? 0 : mvpCons.getValue();
             }
+            c.normalize();
             result[0] = c;
             stage[0].close();
         });
@@ -206,16 +290,33 @@ public final class TheatreAddDialog {
         return Optional.ofNullable(result[0]);
     }
 
-    private static void setMax(Spinner<Integer> s, int max) {
-        SpinnerValueFactory.IntegerSpinnerValueFactory f = (SpinnerValueFactory.IntegerSpinnerValueFactory) s.getValueFactory();
-        f.setMax(max);
-        if (f.getValue() != null && f.getValue() > max) f.setValue(max);
+    private static boolean flag(List<Boolean> flags, int i) {
+        return flags.get(i) != null && flags.get(i);
     }
 
-    private static HBox hbox(double gap, Node... nodes) {
-        HBox h = new HBox(gap, nodes);
-        h.setAlignment(Pos.CENTER_LEFT);
-        return h;
+    private static int countTrue(List<Boolean> flags) {
+        int n = 0;
+        for (Boolean b : flags) if (b != null && b) n++;
+        return n;
+    }
+
+    private static int existingStars(TheatreClear existing) {
+        return existing == null ? 0 : Math.max(0, Math.min(existing.mode == null ? 0 : existing.mode.acts, existing.stars));
+    }
+
+    private static int countArcanum(List<Boolean> flags, TheatreMode m) {
+        if (m == null || !m.hasArcanum()) return 0;
+        int arcStart = m.acts - m.arcanum;
+        int n = 0;
+        for (int i = arcStart; i < m.acts; i++) if (flag(flags, i)) n++;
+        return n;
+    }
+
+    private static void setMax(Spinner<Integer> s, int max) {
+        javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory f =
+                (javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory) s.getValueFactory();
+        f.setMax(max);
+        if (f.getValue() != null && f.getValue() > max) f.setValue(max);
     }
 
     private static VBox field(String label, Node control) {

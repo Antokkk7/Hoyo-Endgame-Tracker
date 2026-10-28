@@ -1,8 +1,11 @@
 package com.hoyoendgame;
 
 import com.hoyoendgame.data.DataStore;
+import com.hoyoendgame.ui.AbyssView;
+import com.hoyoendgame.ui.CarnageView;
 import com.hoyoendgame.ui.GenshinView;
 import com.hoyoendgame.ui.HomeView;
+import com.hoyoendgame.ui.TheatreView;
 import com.hoyoendgame.ui.Ui;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -12,10 +15,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 /** Entry point: top navigation bar (Accueil / Genshin Impact / Honkai: Star Rail soon) and page switching. */
 public class App extends Application {
@@ -31,10 +38,13 @@ public class App extends Application {
         store.setErrorHandler(msg -> Platform.runLater(() -> Ui.error(msg)));
         store.load();
 
-        Region logo = new Region();
-        logo.setMinSize(36, 36);
-        logo.setPrefSize(36, 36);
-        logo.setStyle("-fx-background-radius:10;-fx-background-color:linear-gradient(to bottom right,#9B8CFF,#F6D77B);");
+        // Application icon (top-left logo + window/taskbar icon instead of the default Java one).
+        Image icon = new Image(Objects.requireNonNull(App.class.getResourceAsStream("/icon.png")));
+        stage.getIcons().add(icon);
+        ImageView logo = new ImageView(icon);
+        logo.setFitWidth(36);
+        logo.setFitHeight(36);
+        logo.setPreserveRatio(true);
         Label name = Ui.label("EndTracker", "h2");
         HBox brand = new HBox(12, logo, name);
         brand.setAlignment(Pos.CENTER_LEFT);
@@ -54,7 +64,7 @@ public class App extends Application {
         root.setTop(bar);
 
         home = new HomeView(this::showGenshin);
-        genshin = new GenshinView();
+        genshin = new GenshinView(this::showAbyss, this::showTheatre, this::showCarnage);
         showHome();
 
         stage.setTitle("Hoyo Endgame Tracker");
@@ -77,6 +87,22 @@ public class App extends Application {
 
     private void showGenshin() {
         setPage(genshin);
+        setActive(genshinBtn);
+    }
+
+    /** The endgame pages replace the current page inside the main window (no extra window). */
+    private void showAbyss() {
+        root.setCenter(new AbyssView(this::showGenshin));
+        setActive(genshinBtn);
+    }
+
+    private void showTheatre() {
+        root.setCenter(new TheatreView(this::showGenshin));
+        setActive(genshinBtn);
+    }
+
+    private void showCarnage() {
+        root.setCenter(new CarnageView(this::showGenshin));
         setActive(genshinBtn);
     }
 

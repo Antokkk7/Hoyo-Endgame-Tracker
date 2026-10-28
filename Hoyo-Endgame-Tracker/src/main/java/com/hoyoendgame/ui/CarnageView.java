@@ -17,28 +17,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
-/** Stygian Onslaught window: difficulty (1~6) and fight duration are the headline figures. */
-public final class CarnageWindow {
-    private static Stage instance;
-
-    public static void open(Window owner) {
-        if (instance != null && instance.isShowing()) {
-            instance.toFront();
-            return;
-        }
-        instance = new CarnageWindow(owner).stage;
-        instance.show();
-    }
-
+/**
+ * Stygian Onslaught page (inside the main window): difficulty (1~6) and fight
+ * duration are the headline figures.
+ */
+public final class CarnageView extends VBox {
     private final DataStore store = DataStore.get();
-    private final Stage stage;
     private final ListView<CarnageClear> list = new ListView<>(store.carnage);
     private final VBox detail = new VBox(14);
 
-    private CarnageWindow(Window owner) {
+    public CarnageView(Runnable onBack) {
+        setSpacing(20);
+        setPadding(new Insets(28, 48, 40, 48));
+
         list.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(CarnageClear c, boolean empty) {
@@ -61,6 +53,8 @@ public final class CarnageWindow {
         list.setPlaceholder(Ui.label("Aucun clear enregistré.", "muted"));
         list.getSelectionModel().selectedItemProperty().addListener((o, a, b) -> showDetail(b));
 
+        Button back = Ui.button("← Retour", "btn-small");
+        back.setOnAction(e -> onBack.run());
         Button add = Ui.button("+ Ajouter un clear", "btn-primary");
         add.setOnAction(e -> CarnageAddDialog.show(add.getScene().getWindow(), null).ifPresent(c -> {
             store.carnage.add(0, c);
@@ -70,7 +64,7 @@ public final class CarnageWindow {
 
         HBox header = new HBox(16,
                 new VBox(8, Ui.label("Genshin Impact", "chip", "chip-gold"), Ui.label("Carnage chtonien", "h1")),
-                Ui.grow(), add);
+                Ui.grow(), add, back);
         header.setAlignment(Pos.BOTTOM_LEFT);
 
         VBox left = new VBox(14, Ui.label("Historique", "h3"), list);
@@ -92,12 +86,12 @@ public final class CarnageWindow {
         detail.setPadding(new Insets(12));
 
         HBox body = new HBox(24, left, right);
+        HBox.setHgrow(body, Priority.ALWAYS);
         VBox.setVgrow(body, Priority.ALWAYS);
-        VBox root = new VBox(20, header, body);
-        root.setPadding(new Insets(28, 36, 32, 36));
+        getChildren().addAll(header, body);
 
-        stage = Ui.window(owner, "Carnage chtonien", root, 1240, 860);
         list.getSelectionModel().selectFirst();
+
         if (store.carnage.isEmpty()) showDetail(null);
     }
 

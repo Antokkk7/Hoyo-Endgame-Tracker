@@ -7,8 +7,9 @@
     "patch" : "7.1",
     "mode" : "LUNAR",
     "elements" : [ "HYDRO", "ANEMO", "CRYO" ],
-    "stars" : 12,
-    "arcanum" : 2,
+    "stars" : 11,
+    "starFlags" : [ true, true, true, true, true, true, true, true, true, true, true, false ],
+    "arcanum" : 1,
     "bestAct" : 12,
     "mvp" : {
       "characterId" : "c-sandrone",
@@ -18,6 +19,7 @@
       "constellation" : 0,
       "weapon" : "",
       "refinement" : 1
-    }
+    },
+    "mvpTrial" : false
   } ]
 }

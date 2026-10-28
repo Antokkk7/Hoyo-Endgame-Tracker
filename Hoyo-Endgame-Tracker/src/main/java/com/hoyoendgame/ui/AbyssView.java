@@ -11,37 +11,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.util.List;
 
-/** Spiral Abyss window: clear history on the left, room-by-room detail on the right. */
-public final class AbyssWindow {
-    private static Stage instance;
-
-    public static void open(Window owner) {
-        if (instance != null && instance.isShowing()) {
-            instance.toFront();
-            return;
-        }
-        instance = new AbyssWindow(owner).stage;
-        instance.show();
-    }
-
+/**
+ * Spiral Abyss page (inside the main window): clear history on the left,
+ * room-by-room detail of the cleared floor on the right.
+ */
+public final class AbyssView extends VBox {
     private final DataStore store = DataStore.get();
-    private final Stage stage;
     private final ListView<AbyssClear> list = new ListView<>(store.abyss);
     private final VBox detail = new VBox(16);
-    private int floor = 12;
 
-    private AbyssWindow(Window owner) {
+    public AbyssView(Runnable onBack) {
+        setSpacing(20);
+        setPadding(new Insets(28, 48, 40, 48));
+
         list.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(AbyssClear c, boolean empty) {
@@ -51,8 +40,8 @@ public final class AbyssWindow {
                     setText(null);
                     return;
                 }
-                boolean full = c.total() == 36;
-                Label stars = Ui.label(c.total() + "/36", full ? "gold" : "strong");
+                boolean full = c.total() == c.maxTotal();
+                Label stars = Ui.label(c.total() + "/" + c.maxTotal(), full ? "gold" : "strong");
                 HBox row = new HBox(10,
                         new VBox(2, Ui.label("Patch " + c.patch, "strong"), Ui.label(c.rotation, "muted", "small")),
                         Ui.grow(), Ui.star(18, true, null), stars);
@@ -64,6 +53,8 @@ public final class AbyssWindow {
         list.setPlaceholder(Ui.label("Aucun clear enregistré.", "muted"));
         list.getSelectionModel().selectedItemProperty().addListener((o, a, b) -> showDetail(b));
 
+        Button back = Ui.button("← Retour", "btn-small");
+        back.setOnAction(e -> onBack.run());
         Button add = Ui.button("+ Ajouter un clear", "btn-primary");
         add.setOnAction(e -> AbyssAddDialog.show(add.getScene().getWindow(), null).ifPresent(c -> {
             store.abyss.add(0, c);
@@ -73,7 +64,7 @@ public final class AbyssWindow {
 
         HBox header = new HBox(16,
                 new VBox(8, Ui.label("Genshin Impact", "chip", "chip-gold"), Ui.label("Abysses spiralées", "h1")),
-                Ui.grow(), add);
+                Ui.grow(), add, back);
         header.setAlignment(Pos.BOTTOM_LEFT);
 
         VBox left = new VBox(14, Ui.label("Historique", "h3"), list);
@@ -95,11 +86,10 @@ public final class AbyssWindow {
         detail.setPadding(new Insets(12));
 
         HBox body = new HBox(24, left, right);
+        HBox.setHgrow(body, Priority.ALWAYS);
         VBox.setVgrow(body, Priority.ALWAYS);
-        VBox root = new VBox(20, header, body);
-        root.setPadding(new Insets(28, 36, 32, 36));
+        getChildren().addAll(header, body);
 
-        stage = Ui.window(owner, "Abysses spiralées", root, 1220, 880);
         list.getSelectionModel().selectFirst();
         if (store.abyss.isEmpty()) showDetail(null);
     }
@@ -110,21 +100,6 @@ public final class AbyssWindow {
             detail.getChildren().add(Ui.label("Sélectionnez un clear dans l'historique, ou ajoutez-en un.", "muted"));
             return;
         }
-        ToggleGroup g = new ToggleGroup();
-        ToggleButton t11 = tab("Étage 11", g);
-        ToggleButton t12 = tab("Étage 12", g);
-        (floor == 11 ? t11 : t12).setSelected(true);
-        Ui.keepOneSelected(g);
-        t11.setOnAction(e -> {
-            floor = 11;
-            showDetail(c);
-        });
-        t12.setOnAction(e -> {
-            floor = 12;
-            showDetail(c);
-        });
-        HBox tabs = new HBox(4, t11, t12);
-        tabs.getStyleClass().add("tab-bar");
 
         Button edit = Ui.button("Modifier", "btn-small");
         Button del = Ui.button("Supprimer", "btn-small", "btn-danger");
@@ -143,38 +118,32 @@ public final class AbyssWindow {
 
         HBox head = new HBox(16,
                 new VBox(4, Ui.label("Clear du patch " + c.patch, "h2"),
-                        Ui.label(c.total() + "/36 étoiles · " + c.rotation, "muted")),
-                Ui.grow(), tabs, edit, del);
+                        Ui.label(c.total() + "/" + c.maxTotal() + " étoiles · " + c.rotation, "muted")),
+                Ui.grow(), edit, del);
         head.setAlignment(Pos.CENTER_LEFT);
 
-        int stars = floor == 11 ? c.floor11 : c.floor12;
-        Label badge = Ui.label(String.valueOf(floor), "strong");
+        Label badge = Ui.label(String.valueOf(c.floor), "strong");
         badge.setMinSize(40, 40);
         badge.setAlignment(Pos.CENTER);
         badge.setStyle("-fx-background-radius:20;-fx-background-color:#E9E7F5;-fx-text-fill:#15142B;");
-        HBox floorBar = new HBox(12, badge, Ui.label("Étage " + floor, "h3"), Ui.grow(),
-                Ui.star(20, true, null), Ui.label(stars + "/9", "gold"));
+        HBox floorBar = new HBox(12, badge, Ui.label("Étage " + c.floor, "h3"), Ui.grow(),
+                Ui.star(20, true, null), Ui.label(c.total() + "/" + c.maxTotal(), "gold"));
         floorBar.setAlignment(Pos.CENTER_LEFT);
         floorBar.getStyleClass().add("inner-box");
         floorBar.setPadding(new Insets(12, 16, 12, 16));
 
-        detail.getChildren().addAll(head, floorBar);
+        Label baseInfo = Ui.label("Étoiles avant l'étage " + c.floor + " : " + c.baseStars + "/" + c.maxBase(), "muted");
+
+        detail.getChildren().addAll(head, floorBar, baseInfo);
         for (int i = 0; i < 3; i++) {
-            int roomStars = Math.max(0, Math.min(3, stars - 3 * i));
+            int roomStars = c.roomStars(i);
             HBox starRow = new HBox(4);
             for (int k = 0; k < 3; k++) starRow.getChildren().add(Ui.star(20, k < roomStars, null));
             HBox roomHead = new HBox(Ui.label("Salle " + (i + 1), "gold"), Ui.grow(), starRow);
             roomHead.setAlignment(Pos.CENTER_LEFT);
-            HBox halves = new HBox(12, half("Première moitié", c.team1), half("Seconde moitié", c.team2));
+            HBox halves = new HBox(12, half("Équipe utilisée", c.team));
             detail.getChildren().add(new VBox(8, roomHead, halves));
         }
-    }
-
-    private static ToggleButton tab(String text, ToggleGroup g) {
-        ToggleButton b = new ToggleButton(text);
-        b.getStyleClass().add("tab");
-        b.setToggleGroup(g);
-        return b;
     }
 
     private Node half(String title, List<TeamMember> team) {

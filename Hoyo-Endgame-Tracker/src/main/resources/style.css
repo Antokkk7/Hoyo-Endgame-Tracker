@@ -248,3 +248,14 @@
 
 .separator .line { -fx-border-color: rgba(255,255,255,0.1); }
 .tooltip { -fx-background-color: #2A2950; -fx-text-fill: #F2F1FA; }
+
+/* Mode carousel (Théâtre) */
+.carousel-btn { -fx-font-size: 16px; -fx-min-width: 40; }
+.carousel-btn.glow-blue {
+    -fx-background-color: rgba(108,155,255,0.35);
+    -fx-border-color: #6C9BFF;
+    -fx-effect: dropshadow(gaussian, rgba(108,155,255,0.9), 14, 0.7, 0, 0);
+}
+.clickable-star { -fx-cursor: hand; }
+.mvp-trial .label { -fx-text-fill: #F2F1FA; }
+.mvp-trial .box { -fx-background-color: rgba(255,255,255,0.08); -fx-border-color: rgba(255,255,255,0.3); -fx-border-radius: 4; -fx-background-radius: 4; }

@@ -36,6 +36,9 @@ import java.util.Optional;
 /** Genshin Impact page: Excel import/export, teams and roster on the left, endgame entries on the right. */
 public final class GenshinView extends VBox {
     private final DataStore store = DataStore.get();
+    private final Runnable openAbyss;
+    private final Runnable openTheatre;
+    private final Runnable openCarnage;
 
     private final ToggleButton teamsTab = new ToggleButton();
     private final ToggleButton charsTab = new ToggleButton();
@@ -44,7 +47,11 @@ public final class GenshinView extends VBox {
     private final FilteredList<GenshinCharacter> filteredChars = new FilteredList<>(store.characters, c -> true);
     private final Button newTeam = Ui.button("+ Nouvelle équipe", "btn-primary");
 
-    public GenshinView() {
+    /** Each endgame opens inside the main window: the three runnables switch the current page. */
+    public GenshinView(Runnable openAbyss, Runnable openTheatre, Runnable openCarnage) {
+        this.openAbyss = openAbyss;
+        this.openTheatre = openTheatre;
+        this.openCarnage = openCarnage;
         setSpacing(24);
         setPadding(new Insets(8, 48, 40, 48));
 
@@ -241,7 +248,7 @@ public final class GenshinView extends VBox {
                 abyssBig.setText("—");
                 abyssSub.setText("aucun clear");
             } else {
-                abyssBig.setText(store.abyss.get(0).total() + "/36");
+                abyssBig.setText(store.abyss.get(0).total() + "/" + store.abyss.get(0).maxTotal());
                 abyssSub.setText("étoiles · patch " + store.abyss.get(0).patch);
             }
             if (store.theatre.isEmpty()) {
@@ -268,12 +275,9 @@ public final class GenshinView extends VBox {
         refresh.run();
 
         VBox cards = new VBox(20,
-                endgameCard("Abysses spiralées", store.abyss, "clears enregistrés", abyssBig, abyssSub,
-                        () -> AbyssWindow.open(getScene().getWindow()), "glass-gold"),
-                endgameCard("Théâtre de l'imaginarium", store.theatre, "clears enregistrés", theatreBig, theatreSub,
-                        () -> TheatreWindow.open(getScene().getWindow()), "glass"),
-                endgameCard("Carnage chtonien", store.carnage, "clears enregistrés", carnageBig, carnageSub,
-                        () -> CarnageWindow.open(getScene().getWindow()), "glass"));
+                endgameCard("Abysses spiralées", store.abyss, "clears enregistrés", abyssBig, abyssSub, openAbyss, "glass-gold"),
+                endgameCard("Théâtre de l'imaginarium", store.theatre, "clears enregistrés", theatreBig, theatreSub, openTheatre, "glass"),
+                endgameCard("Carnage chtonien", store.carnage, "clears enregistrés", carnageBig, carnageSub, openCarnage, "glass"));
         HBox.setHgrow(cards, Priority.ALWAYS);
         cards.setMinWidth(420);
         return cards;
@@ -286,7 +290,7 @@ public final class GenshinView extends VBox {
         list.addListener((javafx.beans.InvalidationListener) o -> upd.run());
         upd.run();
 
-        Button btn = Ui.button("Ouvrir dans une fenêtre", "btn-primary");
+        Button btn = Ui.button("Ouvrir", "btn-primary");
         btn.setOnAction(e -> open.run());
         VBox left = new VBox(8, Ui.label(title, "h2"), count, spacer(6), btn);
         VBox right = new VBox(2, big, sub);
@@ -313,7 +317,8 @@ public final class GenshinView extends VBox {
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Classeur Excel (*.xlsx)", "*.xlsx"));
         fc.setInitialFileName("genshin-personnages-equipes.xlsx");
         File f = fc.showSaveDialog(getScene().getWindow());
-        if (f == null) return;
+ 
+       if (f == null) return;
         if (!f.getName().toLowerCase().endsWith(".xlsx")) f = new File(f.getParentFile(), f.getName() + ".xlsx");
         try {
             ExcelService.export(f, store.characters, store.teams);

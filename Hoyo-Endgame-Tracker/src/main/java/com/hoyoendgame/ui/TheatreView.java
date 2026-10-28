@@ -4,7 +4,6 @@ import com.hoyoendgame.data.DataStore;
 import com.hoyoendgame.model.Element;
 import com.hoyoendgame.model.TeamMember;
 import com.hoyoendgame.model.TheatreClear;
-import com.hoyoendgame.model.TheatreMode;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -18,29 +17,25 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
-/** Imaginarium Theater window: monthly history on the left, retrospective-style detail on the right. */
-public final class TheatreWindow {
+import java.util.List;
+
+/**
+ * Imaginarium Theater page (inside the main window): monthly history on the left
+ * (with a grey/violet star preview), retrospective-style detail on the right.
+ */
+public final class TheatreView extends VBox {
     private static final String ASTRE_COLOR = "#B79BFF";
-    private static Stage instance;
-
-    public static void open(Window owner) {
-        if (instance != null && instance.isShowing()) {
-            instance.toFront();
-            return;
-        }
-        instance = new TheatreWindow(owner).stage;
-        instance.show();
-    }
+    private static final String ARCANUM_COLOR = "#F6D77B";
 
     private final DataStore store = DataStore.get();
-    private final Stage stage;
     private final ListView<TheatreClear> list = new ListView<>(store.theatre);
     private final VBox detail = new VBox(8);
 
-    private TheatreWindow(Window owner) {
+    public TheatreView(Runnable onBack) {
+        setSpacing(20);
+        setPadding(new Insets(28, 48, 40, 48));
+
         list.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(TheatreClear c, boolean empty) {
@@ -51,11 +46,26 @@ public final class TheatreWindow {
                     return;
                 }
                 String arc = c.mode.hasArcanum() ? "Arcanum " + c.arcanum + "/" + c.mode.arcanum : "Arcanum —";
+                HBox starsPreview = new HBox(2);
+                List<Boolean> flags = c.starFlagsOrFallback();
+                int arcStart = c.mode.hasArcanum() ? flags.size() - c.mode.arcanum : flags.size();
+                for (int i = 0; i < flags.size(); i++) {
+                    if (i == arcStart) {
+                        Region sep = new Region();
+                        sep.setMinSize(1, 12);
+                        sep.setPrefSize(1, 12);
+                        sep.setStyle("-fx-background-color:rgba(255,255,255,0.35);");
+                        HBox.setMargin(sep, new Insets(0, 3, 0, 3));
+                        starsPreview.getChildren().add(sep);
+                    }
+                    starsPreview.getChildren().add(Ui.star(14, flags.get(i), i >= arcStart ? ARCANUM_COLOR : ASTRE_COLOR));
+                }
                 HBox row = new HBox(10,
                         new VBox(2, Ui.label(c.monthLabel(), "strong"),
                                 Ui.label("Patch " + c.patch + " · " + c.mode.label, "muted", "small")),
                         Ui.grow(),
-                        new VBox(2, Ui.label("Astres " + c.stars + "/" + c.mode.acts, "violet"), Ui.label(arc, "muted", "small")));
+                        new VBox(4, starsPreview,
+                                new VBox(2, Ui.label("Astres " + c.stars + "/" + c.mode.acts, "violet"), Ui.label(arc, "muted", "small"))));
                 row.setAlignment(Pos.CENTER_LEFT);
                 setGraphic(row);
                 setText(null);
@@ -64,6 +74,8 @@ public final class TheatreWindow {
         list.setPlaceholder(Ui.label("Aucun clear enregistré.", "muted"));
         list.getSelectionModel().selectedItemProperty().addListener((o, a, b) -> showDetail(b));
 
+        Button back = Ui.button("← Retour", "btn-small");
+        back.setOnAction(e -> onBack.run());
         Button add = Ui.button("+ Ajouter un clear", "btn-primary");
         add.setOnAction(e -> TheatreAddDialog.show(add.getScene().getWindow(), null).ifPresent(c -> {
             store.theatre.add(c);
@@ -74,7 +86,7 @@ public final class TheatreWindow {
 
         HBox header = new HBox(16,
                 new VBox(8, Ui.label("Genshin Impact", "chip", "chip-gold"), Ui.label("Théâtre de l'imaginarium", "h1")),
-                Ui.grow(), add);
+                Ui.grow(), add, back);
         header.setAlignment(Pos.BOTTOM_LEFT);
 
         VBox left = new VBox(14, Ui.label("Historique", "h3"), list);
@@ -96,11 +108,10 @@ public final class TheatreWindow {
         detail.setPadding(new Insets(14));
 
         HBox body = new HBox(24, left, right);
+        HBox.setHgrow(body, Priority.ALWAYS);
         VBox.setVgrow(body, Priority.ALWAYS);
-        VBox root = new VBox(20, header, body);
-        root.setPadding(new Insets(28, 36, 32, 36));
+        getChildren().addAll(header, body);
 
-        stage = Ui.window(owner, "Théâtre de l'imaginarium", root, 1220, 820);
         list.getSelectionModel().selectFirst();
         if (store.theatre.isEmpty()) showDetail(null);
     }
@@ -138,39 +149,48 @@ public final class TheatreWindow {
         String best = "Acte " + c.bestAct + (c.mode.hasArcanum() ? " · Arcanum " + c.arcanum : "");
         Label bestLabel = Ui.label(best, "h3");
 
-        // Stars strip ("astres de défi de vedette"), with a divider before the Arcanum stars.
+        // Stars strip ("astres"), one grey or violet star per star actually earned or missed.
+        // In Défi Lunaire the last 2 stars (11 and 12) are the Arcanum ones: gold + separator.
         HBox strip = new HBox(6);
         strip.setAlignment(Pos.CENTER);
         strip.getStyleClass().add("strip");
-        int max = c.mode.acts;
-        int arcStart = c.mode.hasArcanum() ? max - c.mode.arcanum : max;
-        for (int i = 0; i < max; i++) {
+        List<Boolean> flags = c.starFlagsOrFallback();
+        int arcStart = c.mode.hasArcanum() ? flags.size() - c.mode.arcanum : flags.size();
+        for (int i = 0; i < flags.size(); i++) {
             if (c.mode.hasArcanum() && i == arcStart) {
                 Region divider = new Region();
-                divider.setMinSize(1, 22);
-                divider.setPrefSize(1, 22);
-                divider.setStyle("-fx-background-color:rgba(255,255,255,0.3);");
+                divider.setMinSize(2, 22);
+                divider.setPrefSize(2, 22);
+                divider.setStyle("-fx-background-color:rgba(255,255,255,0.35);-fx-background-radius:1;");
                 HBox.setMargin(divider, new Insets(0, 4, 0, 4));
                 strip.getChildren().add(divider);
             }
-            strip.getChildren().add(Ui.star(24, i < c.stars, ASTRE_COLOR));
+            strip.getChildren().add(Ui.star(24, flags.get(i), i >= arcStart ? ARCANUM_COLOR : ASTRE_COLOR));
         }
-        HBox starsValue = new HBox(16, strip, Ui.label(c.stars + "/" + max, "h3", "violet"));
+        HBox starsValue = new HBox(16, strip, Ui.label(c.stars + "/" + flags.size(), "h3", "violet"));
         starsValue.setAlignment(Pos.CENTER_RIGHT);
 
         detail.getChildren().addAll(head,
                 spacer(8),
                 line("Meilleur score", bestLabel),
-                line("Astres de défi de vedette", starsValue),
-                line("Personnage MVP", mvp(c.mvp)));
+                line("Astres", starsValue),
+                line("Personnage MVP", mvp(c)));
     }
 
-    private Node mvp(TeamMember m) {
+    private Node mvp(TheatreClear c) {
+        TeamMember m = c.mvp;
         if (m == null) return Ui.label("Non défini", "muted");
         Label name = Ui.label(m.name, "h3");
-        Label meta = Ui.label("Niv." + m.level + " · C" + m.constellation, "muted");
-        VBox text = new VBox(4, name, meta, Ui.chip(m.element == null ? "" : m.element.label(),
-                m.element == null ? null : m.element.color()));
+        VBox text;
+        if (c.mvpTrial) {
+            FlowPane badges = new FlowPane(6, 6,
+                    Ui.chip(m.element == null ? "" : m.element.label(), m.element == null ? null : m.element.color()),
+                    Ui.label("Introduction / prêt", "chip", "chip-gold"));
+            text = new VBox(4, name, badges);
+        } else {
+            text = new VBox(4, name, Ui.chip(m.element == null ? "" : m.element.label(),
+                    m.element == null ? null : m.element.color()));
+        }
         text.setAlignment(Pos.CENTER_RIGHT);
         HBox box = new HBox(16, text, Ui.avatar(m.name, m.element, null, null, 84, 96));
         box.setAlignment(Pos.CENTER_RIGHT);

@@ -4,11 +4,12 @@
     "id" : "be224bd5-a5ae-46d9-8dce-38567dc81038",
     "patch" : "7.1",
     "rotation" : "Rotation 1",
-    "floor9" : 9,
-    "floor10" : 9,
-    "floor11" : 9,
-    "floor12" : 8,
-    "team1" : [ {
+    "floor" : 12,
+    "baseStars" : 27,
+    "room1" : 3,
+    "room2" : 2,
+    "room3" : 2,
+    "team" : [ {
       "characterId" : "c-yumemizuki-mizuki",
       "name" : "Yumeglorp Glorp",
       "element" : "ANEMO",
@@ -38,39 +39,6 @@
       "element" : "HYDRO",
       "level" : 90,
       "constellation" : 0,
-      "weapon" : "Thrilling Tales of Dragon Slayers",
-      "refinement" : 5
-    } ],
-    "team2" : [ {
-      "characterId" : "c-skirk",
-      "name" : "Skirk",
-      "element" : "CRYO",
-      "level" : 90,
-      "constellation" : 2,
-      "weapon" : "Azurelight",
-      "refinement" : 1
-    }, {
-      "characterId" : "c-furina",
-      "name" : "Furina",
-      "element" : "HYDRO",
-      "level" : 90,
-      "constellation" : 2,
-      "weapon" : "Favonius Sword",
-      "refinement" : 5
-    }, {
-      "characterId" : "c-escoffier",
-      "name" : "Escoffier",
-      "element" : "CRYO",
-      "level" : 90,
-      "constellation" : 0,
-      "weapon" : "Symphonist of Scents",
-      "refinement" : 1
-    }, {
-      "characterId" : "c-mona",
-      "name" : "Mona",
-      "element" : "HYDRO",
-      "level" : 81,
-      "constellation" : 3,
       "weapon" : "Thrilling Tales of Dragon Slayers",
       "refinement" : 5
     } ]

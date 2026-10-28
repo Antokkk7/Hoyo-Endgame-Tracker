@@ -117,7 +117,7 @@ public final class HomeView extends VBox {
     }
 
     static String lastAbyss(AbyssClear c) {
-        return c.total() + "/36 · patch " + c.patch;
+        return c.total() + "/" + c.maxTotal() + " · patch " + c.patch;
     }
 
     static String lastTheatre(TheatreClear c) {
