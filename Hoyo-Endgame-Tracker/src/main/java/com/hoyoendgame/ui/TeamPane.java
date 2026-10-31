@@ -88,14 +88,13 @@ public final class TeamPane extends GridPane {
         final PickerButton<GenshinCharacter> charBtn;
         final PickerButton<Weapon> weaponBtn;
         final StackPane tile = new StackPane();
-        final javafx.scene.control.Label initials = Ui.label("?", "tile-text");
         final Spinner<Integer> level = Ui.spinner(1, 90, 90);
         final ToggleGroup cons = new ToggleGroup();
         final ToggleGroup refine = new ToggleGroup();
 
         Slot(int n) {
             node.getStyleClass().add("inner-box");
-            node.setStyle("-fx-padding:14;");
+            node.setPadding(new javafx.geometry.Insets(14));
 
             charBtn = new PickerButton<>("Choisir un personnage", "Choisir un personnage…", TeamPane::characterLabel, () -> {
                 List<GenshinCharacter> l = new ArrayList<>();
@@ -113,10 +112,7 @@ public final class TeamPane extends GridPane {
                 return l;
             });
 
-            tile.setPrefSize(44, 52);
-            tile.setMinSize(44, 52);
-            tile.getChildren().add(initials);
-            Ui.tileStyle(tile, null);
+            updateTile(NONE);
 
             FlowPane consRow = new FlowPane(4, 4);
             for (int k = 0; k <= 6; k++) consRow.getChildren().add(Ui.pill("C" + k, cons, k));
@@ -145,13 +141,8 @@ public final class TeamPane extends GridPane {
         }
 
         void updateTile(GenshinCharacter c) {
-            if (c == null || c == NONE) {
-                initials.setText("?");
-                Ui.tileStyle(tile, null);
-            } else {
-                initials.setText(Ui.initials(c.name));
-                Ui.tileStyle(tile, c.element);
-            }
+            boolean none = c == null || c == NONE;
+            tile.getChildren().setAll(Ui.portrait(none ? "?" : c.name, none ? null : c.element, 44, 52));
         }
 
         TeamMember toMember() {

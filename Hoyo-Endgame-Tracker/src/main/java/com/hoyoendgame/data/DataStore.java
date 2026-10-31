@@ -37,7 +37,7 @@ public final class DataStore {
     /** Weapon catalog, maintained by hand: the app only reads it. */
     public static final String WEAPONS_FILE = "genshinWeapons.json";
 
-    private final Path dir = Paths.get(System.getProperty("hoyo.data.dir", "data")).toAbsolutePath();
+    private final Path dir = Paths.get(System.getProperty("hoyo.data.dir", "data/genshin")).toAbsolutePath();
 
     public final ObservableList<GenshinCharacter> characters = FXCollections.observableArrayList();
     public final ObservableList<Team> teams = FXCollections.observableArrayList();
@@ -55,6 +55,11 @@ public final class DataStore {
 
     public void setErrorHandler(Consumer<String> handler) {
         this.errorHandler = handler;
+    }
+
+    /** Folder with the character pictures (personnagesIMG, next to the JSON files). */
+    public Path imagesDir() {
+        return dir.resolve("personnagesIMG");
     }
 
     public Path dataDir() {

@@ -41,8 +41,8 @@ import java.util.Optional;
  * (with an intro / borrowed precision).
  */
 public final class TheatreAddDialog {
-    private static final String ASTRE_COLOR = "#B79BFF";
-    private static final String ARCANUM_COLOR = "#F6D77B";
+    private static final String ASTRE_COLOR = "#FF1FE0";
+    private static final String ARCANUM_COLOR = "#00F0FF";
     private static final int VISIBLE_MODES = 3;
 
     private TheatreAddDialog() {
@@ -153,7 +153,7 @@ public final class TheatreAddDialog {
         while (starFlags.size() < current.acts) starFlags.add(starFlags.size() < existingStars(existing));
         HBox starsBox = new HBox(8);
         starsBox.setAlignment(Pos.CENTER_LEFT);
-        Label starsLabel = Ui.label("", "h3", "violet");
+        Label starsLabel = Ui.label("", "h3", "neon-magenta");
         Runnable[] rebuildStars = new Runnable[1];
         rebuildStars[0] = () -> {
             starsBox.getChildren().clear();
@@ -170,7 +170,7 @@ public final class TheatreAddDialog {
                     Region divider = new Region();
                     divider.setMinSize(2, 26);
                     divider.setPrefSize(2, 26);
-                    divider.setStyle("-fx-background-color:rgba(255,255,255,0.35);-fx-background-radius:1;");
+                    divider.getStyleClass().add("divider");
                     HBox.setMargin(divider, new Insets(0, 4, 0, 4));
                     starsBox.getChildren().add(divider);
                 }
@@ -178,7 +178,7 @@ public final class TheatreAddDialog {
                 star.getStyleClass().add("clickable-star");
                 star.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
                     starFlags.set(idx, !flag(starFlags, idx));
-                    star.setFill(Color.web(flag(starFlags, idx) ? onColor : "#3C3B5A"));
+                    star.setFill(Color.web(flag(starFlags, idx) ? onColor : Ui.STAR_OFF));
                     starsLabel.setText(countTrue(starFlags) + "/" + acts);
                 });
                 starsBox.getChildren().add(star);

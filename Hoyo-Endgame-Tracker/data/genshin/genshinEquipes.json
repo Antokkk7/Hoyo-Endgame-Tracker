@@ -111,5 +111,42 @@
       "weapon" : "Thrilling Tales of Dragon Slayers",
       "refinement" : 5
     } ]
+  }, {
+    "id" : "0e3f0614-0ea0-4fd9-8b03-66ac40cca19e",
+    "name" : "Sandrone",
+    "usage" : "Carnage chtonien",
+    "members" : [ {
+      "characterId" : "c-sandrone",
+      "name" : "Sandrone",
+      "element" : "CRYO",
+      "level" : 90,
+      "constellation" : 0,
+      "weapon" : "Gest of the Mighty Wolf",
+      "refinement" : 1
+    }, {
+      "characterId" : "c-alyosha",
+      "name" : "Alyosha",
+      "element" : "ELECTRO",
+      "level" : 81,
+      "constellation" : 6,
+      "weapon" : "Favonius Lance",
+      "refinement" : 5
+    }, {
+      "characterId" : "c-odette",
+      "name" : "Odette",
+      "element" : "CRYO",
+      "level" : 89,
+      "constellation" : 0,
+      "weapon" : "Exaiphanes Blade",
+      "refinement" : 1
+    }, {
+      "characterId" : "c-vodyanitsa",
+      "name" : "Vodyanitsa",
+      "element" : "HYDRO",
+      "level" : 90,
+      "constellation" : 0,
+      "weapon" : "Thrilling Tales of Dragon Slayers",
+      "refinement" : 5
+    } ]
   } ]
 }

@@ -25,8 +25,8 @@ import java.util.List;
  * (with a grey/violet star preview), retrospective-style detail on the right.
  */
 public final class TheatreView extends VBox {
-    private static final String ASTRE_COLOR = "#B79BFF";
-    private static final String ARCANUM_COLOR = "#F6D77B";
+    private static final String ASTRE_COLOR = "#FF1FE0";
+    private static final String ARCANUM_COLOR = "#00F0FF";
 
     private final DataStore store = DataStore.get();
     private final ListView<TheatreClear> list = new ListView<>(store.theatre);
@@ -54,7 +54,7 @@ public final class TheatreView extends VBox {
                         Region sep = new Region();
                         sep.setMinSize(1, 12);
                         sep.setPrefSize(1, 12);
-                        sep.setStyle("-fx-background-color:rgba(255,255,255,0.35);");
+                        sep.getStyleClass().add("divider");
                         HBox.setMargin(sep, new Insets(0, 3, 0, 3));
                         starsPreview.getChildren().add(sep);
                     }
@@ -65,7 +65,7 @@ public final class TheatreView extends VBox {
                                 Ui.label("Patch " + c.patch + " · " + c.mode.label, "muted", "small")),
                         Ui.grow(),
                         new VBox(4, starsPreview,
-                                new VBox(2, Ui.label("Astres " + c.stars + "/" + c.mode.acts, "violet"), Ui.label(arc, "muted", "small"))));
+                                new VBox(2, Ui.label("Astres " + c.stars + "/" + c.mode.acts, "neon-magenta"), Ui.label(arc, "muted", "small"))));
                 row.setAlignment(Pos.CENTER_LEFT);
                 setGraphic(row);
                 setText(null);
@@ -85,7 +85,7 @@ public final class TheatreView extends VBox {
         }));
 
         HBox header = new HBox(16,
-                new VBox(8, Ui.label("Genshin Impact", "chip", "chip-gold"), Ui.label("Théâtre de l'imaginarium", "h1")),
+                new VBox(8, Ui.label("Genshin Impact", "chip", "chip-accent"), Ui.label("Théâtre de l'imaginarium", "h1")),
                 Ui.grow(), add, back);
         header.setAlignment(Pos.BOTTOM_LEFT);
 
@@ -161,13 +161,13 @@ public final class TheatreView extends VBox {
                 Region divider = new Region();
                 divider.setMinSize(2, 22);
                 divider.setPrefSize(2, 22);
-                divider.setStyle("-fx-background-color:rgba(255,255,255,0.35);-fx-background-radius:1;");
+                divider.getStyleClass().add("divider");
                 HBox.setMargin(divider, new Insets(0, 4, 0, 4));
                 strip.getChildren().add(divider);
             }
             strip.getChildren().add(Ui.star(24, flags.get(i), i >= arcStart ? ARCANUM_COLOR : ASTRE_COLOR));
         }
-        HBox starsValue = new HBox(16, strip, Ui.label(c.stars + "/" + flags.size(), "h3", "violet"));
+        HBox starsValue = new HBox(16, strip, Ui.label(c.stars + "/" + flags.size(), "h3", "neon-magenta"));
         starsValue.setAlignment(Pos.CENTER_RIGHT);
 
         detail.getChildren().addAll(head,
@@ -185,7 +185,7 @@ public final class TheatreView extends VBox {
         if (c.mvpTrial) {
             FlowPane badges = new FlowPane(6, 6,
                     Ui.chip(m.element == null ? "" : m.element.label(), m.element == null ? null : m.element.color()),
-                    Ui.label("Introduction / prêt", "chip", "chip-gold"));
+                    Ui.label("Introduction / prêt", "chip", "chip-accent"));
             text = new VBox(4, name, badges);
         } else {
             text = new VBox(4, name, Ui.chip(m.element == null ? "" : m.element.label(),

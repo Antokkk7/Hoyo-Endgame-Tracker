@@ -41,7 +41,7 @@ public final class AbyssView extends VBox {
                     return;
                 }
                 boolean full = c.total() == c.maxTotal();
-                Label stars = Ui.label(c.total() + "/" + c.maxTotal(), full ? "gold" : "strong");
+                Label stars = Ui.label(c.total() + "/" + c.maxTotal(), full ? "neon-cyan" : "strong");
                 HBox row = new HBox(10,
                         new VBox(2, Ui.label("Patch " + c.patch, "strong"), Ui.label(c.rotation, "muted", "small")),
                         Ui.grow(), Ui.star(18, true, null), stars);
@@ -63,7 +63,7 @@ public final class AbyssView extends VBox {
         }));
 
         HBox header = new HBox(16,
-                new VBox(8, Ui.label("Genshin Impact", "chip", "chip-gold"), Ui.label("Abysses spiralées", "h1")),
+                new VBox(8, Ui.label("Genshin Impact", "chip", "chip-accent"), Ui.label("Abysses spiralées", "h1")),
                 Ui.grow(), add, back);
         header.setAlignment(Pos.BOTTOM_LEFT);
 
@@ -122,12 +122,12 @@ public final class AbyssView extends VBox {
                 Ui.grow(), edit, del);
         head.setAlignment(Pos.CENTER_LEFT);
 
-        Label badge = Ui.label(String.valueOf(c.floor), "strong");
+        Label badge = Ui.label(String.valueOf(c.floor));
         badge.setMinSize(40, 40);
         badge.setAlignment(Pos.CENTER);
-        badge.setStyle("-fx-background-radius:20;-fx-background-color:#E9E7F5;-fx-text-fill:#15142B;");
+        badge.getStyleClass().add("floor-badge");
         HBox floorBar = new HBox(12, badge, Ui.label("Étage " + c.floor, "h3"), Ui.grow(),
-                Ui.star(20, true, null), Ui.label(c.total() + "/" + c.maxTotal(), "gold"));
+                Ui.star(20, true, null), Ui.label(c.total() + "/" + c.maxTotal(), "neon-cyan"));
         floorBar.setAlignment(Pos.CENTER_LEFT);
         floorBar.getStyleClass().add("inner-box");
         floorBar.setPadding(new Insets(12, 16, 12, 16));
@@ -139,7 +139,7 @@ public final class AbyssView extends VBox {
             int roomStars = c.roomStars(i);
             HBox starRow = new HBox(4);
             for (int k = 0; k < 3; k++) starRow.getChildren().add(Ui.star(20, k < roomStars, null));
-            HBox roomHead = new HBox(Ui.label("Salle " + (i + 1), "gold"), Ui.grow(), starRow);
+            HBox roomHead = new HBox(Ui.label("Salle " + (i + 1), "neon-cyan"), Ui.grow(), starRow);
             roomHead.setAlignment(Pos.CENTER_LEFT);
             HBox halves = new HBox(12, half("Équipe utilisée", c.team));
             detail.getChildren().add(new VBox(8, roomHead, halves));

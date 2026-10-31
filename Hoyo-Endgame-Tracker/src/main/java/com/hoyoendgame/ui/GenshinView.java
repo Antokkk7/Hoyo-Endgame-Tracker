@@ -45,7 +45,7 @@ public final class GenshinView extends VBox {
     private final VBox teamsBox = new VBox(12);
     private final TextField search = new TextField();
     private final FilteredList<GenshinCharacter> filteredChars = new FilteredList<>(store.characters, c -> true);
-    private final Button newTeam = Ui.button("+ Nouvelle équipe", "btn-primary");
+    private final Button newTeam = Ui.button("+ NEW", "btn-primary");
 
     /** Each endgame opens inside the main window: the three runnables switch the current page. */
     public GenshinView(Runnable openAbyss, Runnable openTheatre, Runnable openCarnage) {
@@ -60,7 +60,7 @@ public final class GenshinView extends VBox {
         imp.setOnAction(e -> importExcel());
         exp.setOnAction(e -> exportExcel());
 
-        Label chip = Ui.label("Genshin Impact", "chip", "chip-gold");
+        Label chip = Ui.label("Genshin Impact", "chip", "chip-accent");
         VBox titles = new VBox(6, chip, Ui.label("Équipes et endgames", "h1"),
                 Ui.label("Personnages et équipes enregistrés, puis accès à chaque endgame.", "muted"));
         titles.setAlignment(Pos.TOP_LEFT);
@@ -80,7 +80,7 @@ public final class GenshinView extends VBox {
         refreshTeams();
     }
 
-    // ------------------------------------------------------------------ left: teams / roster
+    //   left: teams / roster
 
     private Node buildLeft() {
         ToggleGroup g = new ToggleGroup();
@@ -133,8 +133,8 @@ public final class GenshinView extends VBox {
     }
 
     private void refreshTeams() {
-        teamsTab.setText("Équipes enregistrées (" + store.teams.size() + ")");
-        charsTab.setText("Personnages disponibles (" + store.characters.size() + ")");
+        teamsTab.setText("Équipes (" + store.teams.size() + ")");
+        charsTab.setText("Personnages dispos (" + store.characters.size() + ")");
         String q = search.getText() == null ? "" : search.getText().trim().toLowerCase();
         teamsBox.getChildren().clear();
         int shown = 0;
@@ -233,12 +233,12 @@ public final class GenshinView extends VBox {
         return c;
     }
 
-    // ------------------------------------------------------------------ right: endgames
+    //   right: endgames
 
     private Node buildRight() {
-        Label abyssBig = Ui.label("", "big-number", "gold");
+        Label abyssBig = Ui.label("", "big-number", "neon-green");
         Label abyssSub = Ui.label("", "muted", "small");
-        Label theatreBig = Ui.label("", "big-number", "violet");
+        Label theatreBig = Ui.label("", "big-number", "neon-magenta");
         Label theatreSub = Ui.label("", "muted", "small");
         Label carnageBig = Ui.label("", "big-number");
         Label carnageSub = Ui.label("", "muted", "small");
@@ -275,7 +275,7 @@ public final class GenshinView extends VBox {
         refresh.run();
 
         VBox cards = new VBox(20,
-                endgameCard("Abysses spiralées", store.abyss, "clears enregistrés", abyssBig, abyssSub, openAbyss, "glass-gold"),
+                endgameCard("Abysses spiralées", store.abyss, "clears enregistrés", abyssBig, abyssSub, openAbyss, "glass-accent"),
                 endgameCard("Théâtre de l'imaginarium", store.theatre, "clears enregistrés", theatreBig, theatreSub, openTheatre, "glass"),
                 endgameCard("Carnage chtonien", store.carnage, "clears enregistrés", carnageBig, carnageSub, openCarnage, "glass"));
         HBox.setHgrow(cards, Priority.ALWAYS);
@@ -295,7 +295,7 @@ public final class GenshinView extends VBox {
         VBox left = new VBox(8, Ui.label(title, "h2"), count, spacer(6), btn);
         VBox right = new VBox(2, big, sub);
         right.setAlignment(Pos.CENTER);
-        right.setStyle("-fx-background-color:rgba(255,255,255,0.06);-fx-background-radius:16;-fx-padding:14 24 14 24;");
+        right.getStyleClass().add("stat-box");
         HBox row = new HBox(16, left, Ui.grow(), right);
         row.setAlignment(Pos.CENTER_LEFT);
         row.getStyleClass().add(styleClass);
@@ -309,7 +309,7 @@ public final class GenshinView extends VBox {
         return s;
     }
 
-    // ------------------------------------------------------------------ Excel
+    //   Excel
 
     private void exportExcel() {
         FileChooser fc = new FileChooser();

@@ -34,6 +34,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+        loadFonts();
         DataStore store = DataStore.get();
         store.setErrorHandler(msg -> Platform.runLater(() -> Ui.error(msg)));
         store.load();
@@ -45,7 +46,7 @@ public class App extends Application {
         logo.setFitWidth(36);
         logo.setFitHeight(36);
         logo.setPreserveRatio(true);
-        Label name = Ui.label("EndTracker", "h2");
+        Label name = Ui.label("Hoyo Endgame Tracker", "h2", "neon-cyan");
         HBox brand = new HBox(12, logo, name);
         brand.setAlignment(Pos.CENTER_LEFT);
 
@@ -72,6 +73,19 @@ public class App extends Application {
         stage.setMinWidth(1100);
         stage.setMinHeight(700);
         stage.show();
+    }
+
+    /** Bundled fonts (SIL OFL): Orbitron for headings, Space Grotesk for text. Falls back to system fonts. */
+    private static void loadFonts() {
+        for (String f : new String[]{"Orbitron-Regular", "Orbitron-Bold", "SpaceGrotesk-Regular", "SpaceGrotesk-Bold"}) {
+            try (java.io.InputStream in = App.class.getResourceAsStream("/fonts/" + f + ".ttf")) {
+                if (in == null || javafx.scene.text.Font.loadFont(in, 12) == null) {
+                    System.err.println("[fonts] police non chargée : " + f);
+                }
+            } catch (java.io.IOException e) {
+                System.err.println("[fonts] " + f + " : " + e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -119,7 +133,7 @@ public class App extends Application {
     }
 
     private static Button navButton(String text) {
-        Button b = new Button(text);
+        Button b = new Button(Ui.upper(text));
         b.getStyleClass().add("nav-btn");
         return b;
     }

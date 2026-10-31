@@ -63,7 +63,7 @@ public final class CarnageView extends VBox {
         }));
 
         HBox header = new HBox(16,
-                new VBox(8, Ui.label("Genshin Impact", "chip", "chip-gold"), Ui.label("Carnage chtonien", "h1")),
+                new VBox(8, Ui.label("Genshin Impact", "chip", "chip-accent"), Ui.label("Carnage chtonien", "h1")),
                 Ui.grow(), add, back);
         header.setAlignment(Pos.BOTTOM_LEFT);
 
@@ -117,7 +117,7 @@ public final class CarnageView extends VBox {
         });
 
         VBox best = new VBox(0, Ui.label("Meilleur score", "muted", "small"), Ui.label(c.totalSeconds() + " s", "h1"));
-        best.setStyle("-fx-background-color:rgba(255,255,255,0.07);-fx-background-radius:14;-fx-padding:8 20 8 20;");
+        best.getStyleClass().add("stat-box-dark");
         Label diffTitle = Ui.label("Difficulté", "muted", "small");
         VBox diff = new VBox(2, Ui.diffBadge(c.difficulty, 72), diffTitle);
         diff.setAlignment(Pos.CENTER);
@@ -137,7 +137,7 @@ public final class CarnageView extends VBox {
         portrait.setMinSize(92, 92);
         portrait.setPrefSize(92, 92);
         portrait.setMaxSize(92, 92);
-        portrait.setStyle("-fx-background-radius:16;-fx-background-color:linear-gradient(to bottom right,rgba(255,255,255,0.12),rgba(255,255,255,0.04));");
+        portrait.getStyleClass().add("boss-portrait");
 
         FlowPane team = new FlowPane(8, 8);
         for (TeamMember m : b.team) team.getChildren().add(Ui.avatar(m.name, m.element, "Niv." + m.level, null, 56, 64));
@@ -148,7 +148,7 @@ public final class CarnageView extends VBox {
 
         VBox dur = new VBox(0, Ui.label("Durée du combat", "muted", "small"), Ui.label(b.seconds + " s", "h2"));
         dur.setAlignment(Pos.CENTER);
-        dur.setStyle("-fx-background-color:rgba(0,0,0,0.28);-fx-background-radius:14;-fx-padding:10 18 10 18;");
+        dur.getStyleClass().add("stat-box-dark");
 
         HBox card = new HBox(16, portrait, mid, dur);
         card.setAlignment(Pos.CENTER_LEFT);

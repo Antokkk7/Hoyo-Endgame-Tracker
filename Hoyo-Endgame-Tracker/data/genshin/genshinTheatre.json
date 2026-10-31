@@ -21,5 +21,26 @@
       "refinement" : 1
     },
     "mvpTrial" : false
+  }, {
+    "id" : "9bfe8c4d-09e0-477a-9a5e-c6b97e8263b6",
+    "year" : 2026,
+    "month" : 9,
+    "patch" : "7.0",
+    "mode" : "LUNAR",
+    "elements" : [ "PYRO", "HYDRO", "ANEMO" ],
+    "stars" : 12,
+    "starFlags" : [ true, true, true, true, true, true, true, true, true, true, true, true ],
+    "arcanum" : 2,
+    "bestAct" : 10,
+    "mvp" : {
+      "characterId" : "c-mavuika",
+      "name" : "Mavuika",
+      "element" : "PYRO",
+      "level" : 90,
+      "constellation" : 0,
+      "weapon" : "",
+      "refinement" : 1
+    },
+    "mvpTrial" : false
   } ]
 }

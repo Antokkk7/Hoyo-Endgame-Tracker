@@ -22,11 +22,11 @@ public final class HomeView extends VBox {
         setSpacing(18);
         setPadding(new Insets(24, 48, 40, 48));
 
-        Label heading = Ui.label("Tous vos clears, au même endroit.", "h1");
-        heading.setStyle("-fx-font-size:44px;");
+        Label heading = Ui.label("Tous vos clears,", "hero");
+        Label heading2 = Ui.label("au même endroit.", "hero", "neon-cyan");
         Label sub = Ui.label("Enregistrez vos équipes, suivez vos étoiles et comparez vos résultats patch après patch, jeu par jeu.", "muted");
-        sub.setStyle("-fx-font-size:17px;");
-        VBox intro = new VBox(10, Ui.label("Suivi des endgames", "chip"), heading, sub);
+        sub.setWrapText(true);
+        VBox intro = new VBox(6, Ui.label("Suivi des endgames", "chip", "chip-accent"), heading, heading2, sub);
         intro.setPadding(new Insets(0, 0, 18, 0));
 
         HBox cards = new HBox(24, genshinCard(openGenshin), hsrCard());
@@ -37,9 +37,9 @@ public final class HomeView extends VBox {
     }
 
     private Node genshinCard(Runnable open) {
-        Label abyss = Ui.label("", "gold");
-        Label theatre = Ui.label("", "gold");
-        Label carnage = Ui.label("", "gold");
+        Label abyss = Ui.label("", "neon-green");
+        Label theatre = Ui.label("", "neon-green");
+        Label carnage = Ui.label("", "neon-green");
         Label counts = Ui.label("", "muted");
 
         Runnable refresh = () -> {
@@ -59,9 +59,9 @@ public final class HomeView extends VBox {
         Button openBtn = Ui.button("Ouvrir Genshin Impact", "btn-primary");
         openBtn.setOnAction(e -> open.run());
 
-        HBox title = new HBox(12, Ui.label("Genshin Impact", "h1"), Ui.grow(), Ui.label("Actif", "chip", "chip-gold"));
+        HBox title = new HBox(12, Ui.label("Genshin Impact", "h1"), Ui.grow(), Ui.label("Actif", "chip", "chip-accent"));
         title.setAlignment(Pos.CENTER_LEFT);
-        ((Label) title.getChildren().get(0)).setStyle("-fx-font-size:28px;");
+        title.getChildren().get(0).getStyleClass().add("h2");
 
         HBox foot = new HBox(12, counts, Ui.grow(), openBtn);
         foot.setAlignment(Pos.CENTER_LEFT);
@@ -75,7 +75,7 @@ public final class HomeView extends VBox {
                 statLine("Théâtre de l'imaginarium", theatre),
                 statLine("Carnage chtonien", carnage),
                 spacer(8), foot);
-        box.getStyleClass().add("glass-gold");
+        box.getStyleClass().add("glass-accent");
         box.setPadding(new Insets(30));
         HBox.setHgrow(box, Priority.ALWAYS);
         box.setMaxWidth(Double.MAX_VALUE);
@@ -87,7 +87,8 @@ public final class HomeView extends VBox {
         Button soon = Ui.button("Page à venir");
         soon.setDisable(true);
         Label t = Ui.label("Honkai: Star Rail", "h1");
-        t.setStyle("-fx-font-size:28px;-fx-opacity:0.7;");
+        t.getStyleClass().add("h2");
+        t.setOpacity(0.7);
         HBox title = new HBox(12, t, Ui.grow(), Ui.label("Bientôt", "chip"));
         title.setAlignment(Pos.CENTER_LEFT);
         Label text = Ui.label("La page Honkai: Star Rail sera ajoutée dans une prochaine étape.", "muted");

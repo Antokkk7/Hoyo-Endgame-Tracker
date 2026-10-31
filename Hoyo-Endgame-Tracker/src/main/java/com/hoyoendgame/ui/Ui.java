@@ -2,6 +2,7 @@ package com.hoyoendgame.ui;
 
 import com.hoyoendgame.model.Element;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -12,6 +13,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -19,6 +22,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -32,6 +36,11 @@ public final class Ui {
 
     /** Difficulty colours for Stygian Onslaught, index 0 = difficulty 1. */
     public static final String[] DIFF_COLORS = {"#7BD88F", "#B6DC6B", "#E6D45F", "#F2AE55", "#EE7F5E", "#E4577A"};
+
+    /** Colour of an empty (grey) star. */
+    public static final String STAR_OFF = "#2A2D3A";
+    /** Default colour of a filled star (neon cyan). */
+    public static final String STAR_ON = "#00F0FF";
 
     private Ui() {
     }
@@ -94,10 +103,15 @@ public final class Ui {
     }
 
     public static Button button(String text, String... styleClasses) {
-        Button b = new Button(text);
+        Button b = new Button(upper(text));
         b.getStyleClass().add("btn");
         b.getStyleClass().addAll(styleClasses);
         return b;
+    }
+
+    /** JavaFX CSS has no text-transform, so buttons / chips are upper-cased here. */
+    public static String upper(String text) {
+        return text == null ? "" : text.toUpperCase(java.util.Locale.FRENCH);
     }
 
     public static Region grow() {
@@ -164,7 +178,7 @@ public final class Ui {
     }
 
     public static String elementColor(Element e) {
-        return e == null ? "#8A88A6" : e.color();
+        return e == null ? "#5F656E" : e.color();
     }
 
     /** Four-pointed star used for Abyss stars, Theater "astres"... */
@@ -172,14 +186,15 @@ public final class Ui {
         Polygon p = new Polygon();
         double k = size / 100.0;
         for (double v : STAR) p.getPoints().add(v * k);
-        p.setFill(Color.web(on ? (onColor == null ? "#F6D77B" : onColor) : "#3C3B5A"));
+        p.setFill(Color.web(on ? (onColor == null ? STAR_ON : onColor) : STAR_OFF));
         return p;
     }
 
     public static void tileStyle(Region tile, Element e) {
         Color base = Color.web(elementColor(e));
         String light = hex(base.interpolate(Color.WHITE, 0.35));
-        tile.setStyle("-fx-background-radius:12;-fx-background-color:linear-gradient(to bottom," + light + "," + hex(base) + ");");
+        tile.setStyle("-fx-background-radius:4;-fx-background-color:linear-gradient(to bottom," + light + "," + hex(base)
+                + ");-fx-border-color:" + rgba(elementColor(e), 0.9) + ";-fx-border-width:1;-fx-border-radius:4;");
     }
 
     public static String initials(String name) {
@@ -189,18 +204,44 @@ public final class Ui {
     }
 
     /**
-     * Placeholder portrait: element-coloured tile with initials (the real game art is not bundled).
-     *
-     * @param sub  optional beige badge under the tile (e.g. "Niv.90")
-     * @param meta optional muted line under it (e.g. "C2 · R1")
+     * Character portrait: the image found in data/genshin/personnagesIMG (cover-cropped, rounded) or,
+     * when there is none, an element-coloured tile with the initials.
      */
-    public static VBox avatar(String name, Element element, String sub, String meta, double w, double h) {
-        StackPane tile = new StackPane(label(initials(name), "tile-text"));
+    public static StackPane portrait(String name, Element element, double w, double h) {
+        StackPane tile = new StackPane();
         tile.setPrefSize(w, h);
         tile.setMinSize(w, h);
         tile.setMaxSize(w, h);
         tileStyle(tile, element);
-        VBox box = new VBox(4, tile);
+        Image img = CharacterImages.get(name);
+        if (img != null && img.getWidth() > 0 && img.getHeight() > 0) {
+            double iw = img.getWidth(), ih = img.getHeight();
+            double scale = Math.max(w / iw, h / ih);
+            double vw = w / scale, vh = h / scale;
+            ImageView iv = new ImageView(img);
+            iv.setViewport(new Rectangle2D((iw - vw) / 2, (ih - vh) / 2, vw, vh));
+            iv.setFitWidth(w);
+            iv.setFitHeight(h);
+            iv.setSmooth(true);
+            Rectangle clip = new Rectangle(w, h);
+            clip.setArcWidth(8);
+            clip.setArcHeight(8);
+            iv.setClip(clip);
+            tile.getChildren().add(iv);
+        } else {
+            tile.getChildren().add(label(initials(name), "tile-text"));
+        }
+        return tile;
+    }
+
+    /**
+     * Portrait with optional badge and meta line under it.
+     *
+     * @param sub  optional badge under the tile (e.g. "Niv.90")
+     * @param meta optional muted line under it (e.g. "C2 · R1")
+     */
+    public static VBox avatar(String name, Element element, String sub, String meta, double w, double h) {
+        VBox box = new VBox(4, portrait(name, element, w, h));
         box.setAlignment(Pos.TOP_CENTER);
         box.setMinWidth(w + 8);
         if (sub != null) box.getChildren().add(label(sub, "lv"));
@@ -209,7 +250,7 @@ public final class Ui {
     }
 
     public static Label chip(String text, String hexColor) {
-        Label l = label(text, "chip");
+        Label l = label(upper(text), "chip");
         if (hexColor != null) {
             l.setStyle("-fx-background-color:" + rgba(hexColor, 0.25) + ";-fx-text-fill:"
                     + hex(Color.web(hexColor).interpolate(Color.WHITE, 0.45)) + ";");

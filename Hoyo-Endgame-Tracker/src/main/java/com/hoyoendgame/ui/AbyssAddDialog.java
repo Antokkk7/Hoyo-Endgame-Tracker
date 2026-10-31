@@ -50,7 +50,7 @@ public final class AbyssAddDialog {
         Spinner<Integer> r1 = Ui.spinner(0, 3, existing == null ? 3 : existing.room1);
         Spinner<Integer> r2 = Ui.spinner(0, 3, existing == null ? 3 : existing.room2);
         Spinner<Integer> r3 = Ui.spinner(0, 3, existing == null ? 3 : existing.room3);
-        Label total = Ui.label("", "big-number", "gold");
+        Label total = Ui.label("", "big-number", "neon-green");
         Label baseMax = Ui.label("/" + 9 * (floor - 9), "muted");
 
         Runnable upd = () -> {
