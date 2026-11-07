@@ -3,6 +3,7 @@ package com.hoyoendgame.ui;
 import com.hoyoendgame.model.Element;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -41,6 +42,11 @@ public final class Ui {
     public static final String STAR_OFF = "#2A2D3A";
     /** Default colour of a filled star (neon cyan). */
     public static final String STAR_ON = "#00F0FF";
+
+    private static final java.util.Map<String, String> SHORT_NAMES = java.util.Map.of(
+            "yumeglorpglorp", "Mizuki",
+            "kukishinobu", "Kuki",
+            "wriothesley", "Wrio");
 
     private Ui() {
     }
@@ -215,23 +221,57 @@ public final class Ui {
         tileStyle(tile, element);
         Image img = CharacterImages.get(name);
         if (img != null && img.getWidth() > 0 && img.getHeight() > 0) {
-            double iw = img.getWidth(), ih = img.getHeight();
-            double scale = Math.max(w / iw, h / ih);
-            double vw = w / scale, vh = h / scale;
-            ImageView iv = new ImageView(img);
-            iv.setViewport(new Rectangle2D((iw - vw) / 2, (ih - vh) / 2, vw, vh));
-            iv.setFitWidth(w);
-            iv.setFitHeight(h);
-            iv.setSmooth(true);
-            Rectangle clip = new Rectangle(w, h);
-            clip.setArcWidth(8);
-            clip.setArcHeight(8);
-            iv.setClip(clip);
-            tile.getChildren().add(iv);
+            tile.getChildren().add(cover(img, w, h, 8));
         } else {
             tile.getChildren().add(label(initials(name), "tile-text"));
         }
         return tile;
+    }
+
+    /** Image scaled to fill w x h (centre-cropped) with rounded corners. */
+    public static ImageView cover(Image img, double w, double h, double arc) {
+        double iw = img.getWidth(), ih = img.getHeight();
+        double scale = Math.max(w / iw, h / ih);
+        double vw = w / scale, vh = h / scale;
+        ImageView iv = new ImageView(img);
+        iv.setViewport(new Rectangle2D((iw - vw) / 2, (ih - vh) / 2, vw, vh));
+        iv.setFitWidth(w);
+        iv.setFitHeight(h);
+        iv.setSmooth(true);
+        Rectangle clip = new Rectangle(w, h);
+        clip.setArcWidth(arc);
+        clip.setArcHeight(arc);
+        iv.setClip(clip);
+        return iv;
+    }
+
+    /** Boss picture of a patch (bossIMG/&lt;patch&gt;/&lt;boss&gt;.png), or a "?" frame when there is none. */
+    public static StackPane bossPortrait(String patch, String boss, double w, double h) {
+        StackPane box = new StackPane();
+        box.getStyleClass().add("boss-portrait");
+        box.setPrefSize(w, h);
+        box.setMinSize(w, h);
+        box.setMaxSize(w, h);
+        Image img = BossImages.get(boss);
+        if (img != null && img.getWidth() > 0 && img.getHeight() > 0) {
+            box.getChildren().add(cover(img, w, h, 8));
+        } else {
+            box.getChildren().add(label("?", "muted", "h3"));
+        }
+        return box;
+    }
+
+    /**
+     * Name shown on screen: "Traveler (Anemo)" becomes "Traveler" (the picture tells them apart) and a few
+     * long names are shortened. The stored name is never changed.
+     */
+    public static String shortName(String name) {
+        if (name == null) return "";
+        String n = name.trim();
+        String alias = SHORT_NAMES.get(CharacterImages.key(n));
+        if (alias != null) return alias;
+        if (n.toLowerCase(java.util.Locale.ROOT).startsWith("traveler") && n.contains("(")) return "Traveler";
+        return n;
     }
 
     /**
@@ -258,8 +298,38 @@ public final class Ui {
         return l;
     }
 
-    public static Label diffBadge(int difficulty, double size) {
+    private static ImageFolder assets;
+
+    /** Picture of a difficulty (assetsOthers/diff1.png ... diff6.png), or null when it is missing. */
+    public static synchronized Image diffImage(int difficulty) {
+        if (assets == null) assets = new ImageFolder(com.hoyoendgame.data.DataStore.get().assetsDir());
+        Image img = assets.get("diff" + Math.max(1, Math.min(6, difficulty)));
+        return img != null && img.getWidth() > 0 && img.getHeight() > 0 ? img : null;
+    }
+
+    /**
+     * Shows the difficulty picture (size x size) before the text in a label; without the picture the label
+     * reads "Diff N" instead.
+     */
+    public static void setDifficulty(Label l, int difficulty, String suffix, double size) {
         int d = Math.max(1, Math.min(6, difficulty));
+        Image img = diffImage(d);
+        String tail = suffix == null || suffix.isEmpty() ? "" : suffix;
+        if (img != null) {
+            l.setGraphic(cover(img, size, size, size * 0.12));
+            l.setGraphicTextGap(8);
+            l.setText(tail);
+        } else {
+            l.setGraphic(null);
+            l.setText("Diff " + d + (tail.isEmpty() ? "" : " · " + tail));
+        }
+    }
+
+    /** Difficulty badge: the diffN.png picture, or the coloured square with the number if it is missing. */
+    public static Node diffBadge(int difficulty, double size) {
+        int d = Math.max(1, Math.min(6, difficulty));
+        Image img = diffImage(d);
+        if (img != null) return cover(img, size, size, size * 0.12);
         Label l = new Label(String.valueOf(d));
         l.getStyleClass().add("diff-badge");
         l.setMinSize(size, size);

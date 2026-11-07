@@ -26,7 +26,7 @@ import java.util.List;
  */
 public final class TheatreView extends VBox {
     private static final String ASTRE_COLOR = "#FF1FE0";
-    private static final String ARCANUM_COLOR = "#00F0FF";
+    private static final String ARCANUM_COLOR = "#FFC83D";
 
     private final DataStore store = DataStore.get();
     private final ListView<TheatreClear> list = new ListView<>(store.theatre);
@@ -146,8 +146,6 @@ public final class TheatreView extends VBox {
                 Ui.grow(), edit, del);
         head.setAlignment(Pos.TOP_LEFT);
 
-        String best = "Acte " + c.bestAct + (c.mode.hasArcanum() ? " · Arcanum " + c.arcanum : "");
-        Label bestLabel = Ui.label(best, "h3");
 
         // Stars strip ("astres"), one grey or violet star per star actually earned or missed.
         // In Défi Lunaire the last 2 stars (11 and 12) are the Arcanum ones: gold + separator.
@@ -172,7 +170,6 @@ public final class TheatreView extends VBox {
 
         detail.getChildren().addAll(head,
                 spacer(8),
-                line("Meilleur score", bestLabel),
                 line("Astres", starsValue),
                 line("Personnage MVP", mvp(c)));
     }
@@ -180,7 +177,7 @@ public final class TheatreView extends VBox {
     private Node mvp(TheatreClear c) {
         TeamMember m = c.mvp;
         if (m == null) return Ui.label("Non défini", "muted");
-        Label name = Ui.label(m.name, "h3");
+        Label name = Ui.label(Ui.shortName(m.name), "h3");
         VBox text;
         if (c.mvpTrial) {
             FlowPane badges = new FlowPane(6, 6,

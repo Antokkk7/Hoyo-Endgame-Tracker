@@ -186,41 +186,11 @@ public final class GenshinView extends VBox {
     private Node buildCharactersPane() {
         TableView<GenshinCharacter> table = new TableView<>(filteredChars);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        table.getColumns().add(col("Nom", c -> c.name, 220));
+        table.getColumns().add(col("Nom", c -> Ui.shortName(c.name), 220));
         table.getColumns().add(col("Élément", c -> c.element == null ? "" : c.element.label(), 120));
-        table.setPlaceholder(Ui.label("Aucun personnage. Ajoutez-en ou importez un fichier Excel.", "muted"));
+        table.setPlaceholder(Ui.label("Aucun personnage. Importez un fichier Excel ou éditez genshinCharacters.json.", "muted"));
 
-        Button add = Ui.button("Ajouter", "btn-small", "btn-primary");
-        Button edit = Ui.button("Modifier", "btn-small");
-        Button del = Ui.button("Supprimer", "btn-small", "btn-danger");
-        edit.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
-        del.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
-        add.setOnAction(e -> CharacterDialog.show(getScene().getWindow(), null).ifPresent(c -> {
-            store.characters.add(c);
-            store.saveCharacters();
-        }));
-        Runnable editSelected = () -> {
-            GenshinCharacter sel = table.getSelectionModel().getSelectedItem();
-            if (sel == null) return;
-            CharacterDialog.show(getScene().getWindow(), sel).ifPresent(c -> {
-                int i = store.characters.indexOf(sel);
-                if (i >= 0) store.characters.set(i, c);
-                store.saveCharacters();
-            });
-        };
-        edit.setOnAction(e -> editSelected.run());
-        table.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2) editSelected.run();
-        });
-        del.setOnAction(e -> {
-            GenshinCharacter sel = table.getSelectionModel().getSelectedItem();
-            if (sel != null && Ui.confirm("Supprimer « " + sel.name + " » du roster ? (les équipes déjà enregistrées gardent ses infos)")) {
-                store.characters.remove(sel);
-                store.saveCharacters();
-            }
-        });
-        HBox actions = new HBox(8, add, edit, del);
-        VBox box = new VBox(10, table, actions);
+        VBox box = new VBox(10, table);
         VBox.setVgrow(table, Priority.ALWAYS);
         return box;
     }
@@ -260,11 +230,12 @@ public final class GenshinView extends VBox {
                 theatreSub.setText("astres" + (t.mode.hasArcanum() ? " · Arcanum " + t.arcanum + "/" + t.mode.arcanum : ""));
             }
             if (store.carnage.isEmpty()) {
+                carnageBig.setGraphic(null);
                 carnageBig.setText("—");
                 carnageSub.setText("aucun clear");
             } else {
                 var c = store.carnage.get(0);
-                carnageBig.setText("Diff " + c.difficulty);
+                Ui.setDifficulty(carnageBig, c.difficulty, "", 44);
                 carnageSub.setText(c.totalSeconds() + " s");
             }
         };

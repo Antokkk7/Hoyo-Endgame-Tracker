@@ -29,13 +29,20 @@ public final class Picker {
      * @return the chosen item, or empty if the dialog was cancelled
      */
     public static <T> Optional<T> pick(Window owner, String title, List<T> items, Function<T, String> label) {
+        return pick(owner, title, items, label, label);
+    }
+
+    /** @param searchText what the search box filters on (e.g. the full name while the label shows a short one) */
+    public static <T> Optional<T> pick(Window owner, String title, List<T> items, Function<T, String> label,
+                                       Function<T, String> searchText) {
         TextField search = new TextField();
         search.setPromptText("Rechercher…");
 
         FilteredList<T> filtered = new FilteredList<>(FXCollections.observableArrayList(items), t -> true);
         search.textProperty().addListener((o, oldText, q) -> {
             String s = q == null ? "" : q.trim().toLowerCase();
-            filtered.setPredicate(t -> s.isEmpty() || label.apply(t).toLowerCase().contains(s));
+            filtered.setPredicate(t -> s.isEmpty() || searchText.apply(t).toLowerCase().contains(s)
+                    || label.apply(t).toLowerCase().contains(s));
         });
 
         ListView<T> list = new ListView<>(filtered);

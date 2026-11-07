@@ -42,7 +42,7 @@ import java.util.Optional;
  */
 public final class TheatreAddDialog {
     private static final String ASTRE_COLOR = "#FF1FE0";
-    private static final String ARCANUM_COLOR = "#00F0FF";
+    private static final String ARCANUM_COLOR = "#FFC83D";
     private static final int VISIBLE_MODES = 3;
 
     private TheatreAddDialog() {
@@ -188,17 +188,9 @@ public final class TheatreAddDialog {
         modeGroup.selectedToggleProperty().addListener((o, a, b) -> rebuildStars[0].run());
         rebuildStars[0].run();
 
-        Spinner<Integer> best = Ui.spinner(0, current.acts, existing == null ? current.acts : existing.bestAct);
-        modeGroup.selectedToggleProperty().addListener((o, a, b) -> {
-            if (b == null) return;
-            TheatreMode m = (TheatreMode) b.getUserData();
-            setMax(best, m.acts);
-        });
-
         HBox starsRow = new HBox(24,
                 new VBox(4, Ui.label("Astres (cliquez sur les étoiles)", "muted", "small"),
-                        new HBox(12, starsBox, starsLabel)),
-                new VBox(4, Ui.label("Meilleur acte atteint", "muted", "small"), best));
+                        new HBox(12, starsBox, starsLabel)));
         starsRow.setAlignment(Pos.BOTTOM_LEFT);
 
         // ---- 5. MVP
@@ -206,7 +198,7 @@ public final class TheatreAddDialog {
         FlowPane candidates = new FlowPane(8, 8);
         for (GenshinCharacter c : store.characters) {
             ToggleButton tb = new ToggleButton();
-            tb.setGraphic(Ui.avatar(c.name, c.element, null, c.name, 56, 64));
+            tb.setGraphic(Ui.avatar(c.name, c.element, null, Ui.shortName(c.name), 56, 64));
             tb.getStyleClass().add("candidate");
             tb.setToggleGroup(mvpGroup);
             tb.setUserData(c);
@@ -262,7 +254,7 @@ public final class TheatreAddDialog {
             c.mode = (TheatreMode) modeGroup.getSelectedToggle().getUserData();
             c.starFlags = new ArrayList<>(starFlags);
             c.stars = countTrue(starFlags);
-            c.bestAct = best.getValue();
+            c.bestAct = c.stars;
             c.arcanum = countArcanum(starFlags, c.mode);
             c.mvpTrial = trial.isSelected();
             if (mvpGroup.getSelectedToggle() == null) {
@@ -310,13 +302,6 @@ public final class TheatreAddDialog {
         int n = 0;
         for (int i = arcStart; i < m.acts; i++) if (flag(flags, i)) n++;
         return n;
-    }
-
-    private static void setMax(Spinner<Integer> s, int max) {
-        javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory f =
-                (javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory) s.getValueFactory();
-        f.setMax(max);
-        if (f.getValue() != null && f.getValue() > max) f.setValue(max);
     }
 
     private static VBox field(String label, Node control) {

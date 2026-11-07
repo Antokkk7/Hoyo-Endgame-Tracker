@@ -1,6 +1,7 @@
 package com.hoyoendgame.ui;
 
 import com.hoyoendgame.data.DataStore;
+import com.hoyoendgame.model.Element;
 import com.hoyoendgame.model.GenshinCharacter;
 import com.hoyoendgame.model.TeamMember;
 import com.hoyoendgame.model.Weapon;
@@ -14,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,7 @@ public final class TeamPane extends GridPane {
     }
 
     static String characterLabel(GenshinCharacter c) {
-        return c.element == null ? c.name : c.name + " · " + c.element.label();
+        return c.element == null ? c.name : Ui.shortName(c.name) + " · " + c.element.label();
     }
 
     static String weaponLabel(Weapon w) {
@@ -103,6 +105,7 @@ public final class TeamPane extends GridPane {
                 return l;
             });
             charBtn.setValue(NONE);
+            charBtn.setSearchText(c -> c.name + " " + (c.element == null ? "" : c.element.label()));
             charBtn.setOnPick(this::updateTile);
 
             weaponBtn = new PickerButton<>("Choisir une arme", "Choisir une arme…", TeamPane::weaponLabel, () -> {
@@ -143,6 +146,22 @@ public final class TeamPane extends GridPane {
         void updateTile(GenshinCharacter c) {
             boolean none = c == null || c == NONE;
             tile.getChildren().setAll(Ui.portrait(none ? "?" : c.name, none ? null : c.element, 44, 52));
+            applyElementStyle(none ? null : c.element);
+        }
+
+        /** Frame, glow and character button take the colour of the character's element. */
+        void applyElementStyle(Element e) {
+            if (e == null) {
+                node.setStyle("");
+                charBtn.setStyle("");
+                return;
+            }
+            String col = Ui.elementColor(e);
+            String light = Ui.hex(Color.web(col).interpolate(Color.WHITE, 0.30));
+            node.setStyle("-fx-background-color:" + Ui.rgba(col, 0.09) + ";-fx-border-color:" + Ui.rgba(col, 0.85)
+                    + ";-fx-effect:dropshadow(gaussian," + Ui.rgba(col, 0.30) + ",14,0,0,0);");
+            charBtn.setStyle("-fx-border-color:" + col + ";-fx-text-fill:" + light + ";-fx-background-color:"
+                    + Ui.rgba(col, 0.10) + ";");
         }
 
         TeamMember toMember() {

@@ -7,8 +7,8 @@
     "floor" : 12,
     "baseStars" : 27,
     "room1" : 3,
-    "room2" : 2,
-    "room3" : 2,
+    "room2" : 3,
+    "room3" : 3,
     "team" : [ {
       "characterId" : "c-yumemizuki-mizuki",
       "name" : "Yumeglorp Glorp",

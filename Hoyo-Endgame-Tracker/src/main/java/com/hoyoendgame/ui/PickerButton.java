@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 public final class PickerButton<T> extends Button {
     private final String placeholder;
     private final Function<T, String> label;
+    private Function<T, String> searchText;
     private T value;
     private Consumer<T> onPick = v -> {
     };
@@ -28,11 +29,16 @@ public final class PickerButton<T> extends Button {
         refreshText();
         setOnAction(e -> {
             if (getScene() == null) return;
-            Picker.pick(getScene().getWindow(), dialogTitle, items.get(), label).ifPresent(v -> {
+            Picker.pick(getScene().getWindow(), dialogTitle, items.get(), label, searchText == null ? label : searchText).ifPresent(v -> {
                 setValue(v);
                 onPick.accept(v);
             });
         });
+    }
+
+    /** Text the picker's search box matches (defaults to the label). */
+    public void setSearchText(Function<T, String> searchText) {
+        this.searchText = searchText;
     }
 
     public T getValue() {
