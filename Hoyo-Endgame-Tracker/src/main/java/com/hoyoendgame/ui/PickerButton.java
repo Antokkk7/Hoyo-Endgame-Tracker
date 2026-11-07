@@ -1,6 +1,7 @@
 package com.hoyoendgame.ui;
 
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public final class PickerButton<T> extends Button {
     private final String placeholder;
     private final Function<T, String> label;
     private Function<T, String> searchText;
+    private Function<T, Node> graphicFactory;
     private T value;
     private Consumer<T> onPick = v -> {
     };
@@ -41,6 +43,12 @@ public final class PickerButton<T> extends Button {
         this.searchText = searchText;
     }
 
+    /** Picture shown to the left of the text for the current value (return null for none). */
+    public void setGraphicFactory(Function<T, Node> factory) {
+        this.graphicFactory = factory;
+        refreshText();
+    }
+
     public T getValue() {
         return value;
     }
@@ -58,5 +66,7 @@ public final class PickerButton<T> extends Button {
 
     private void refreshText() {
         setText(value == null ? placeholder : label.apply(value));
+        setGraphic(value == null || graphicFactory == null ? null : graphicFactory.apply(value));
+        setGraphicTextGap(10);
     }
 }

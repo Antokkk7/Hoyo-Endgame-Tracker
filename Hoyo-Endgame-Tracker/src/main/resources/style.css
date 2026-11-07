@@ -114,25 +114,18 @@
     -fx-border-width: 1;
     -fx-border-radius: 3;
 }
-.stat-box {
-    -fx-background-color: rgba(0,0,0,0.50);
-    -fx-background-radius: 3;
-    -fx-border-color: -line;
-    -fx-border-width: 1;
-    -fx-border-radius: 3;
-    -fx-padding: 14 24 14 24;
-}
-.stat-box-dark {
-    -fx-background-color: rgba(0,0,0,0.55);
-    -fx-background-radius: 3;
-    -fx-border-color: -line-soft;
-    -fx-border-width: 1;
-    -fx-border-radius: 3;
-    -fx-padding: 10 18 10 18;
-}
+.stat-box { -fx-padding: 14 24 14 24; }
+.stat-box-dark { -fx-padding: 10 18 10 18; }
 .stat-line {
     -fx-border-color: -line-soft transparent transparent transparent;
     -fx-border-width: 1 0 0 0;
+}
+.weapon-tile {
+    -fx-background-color: rgba(0,240,255,0.06);
+    -fx-background-radius: 6;
+    -fx-border-color: -line;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
 }
 .window-bar {
     -fx-background-color: rgba(13,13,21,0.8);

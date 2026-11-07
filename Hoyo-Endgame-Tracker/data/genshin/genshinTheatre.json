@@ -1,6 +1,27 @@
 {
   "version" : 1,
   "clears" : [ {
+    "id" : "f4bfc605-0b93-4ba0-95d9-3574966d9d61",
+    "year" : 2026,
+    "month" : 11,
+    "patch" : "7.1",
+    "mode" : "LUNAR",
+    "elements" : [ "HYDRO", "ELECTRO", "GEO" ],
+    "stars" : 12,
+    "starFlags" : [ true, true, true, true, true, true, true, true, true, true, true, true ],
+    "arcanum" : 2,
+    "bestAct" : 12,
+    "mvp" : {
+      "characterId" : "c-odette",
+      "name" : "Odette",
+      "element" : "CRYO",
+      "level" : 90,
+      "constellation" : 0,
+      "weapon" : "",
+      "refinement" : 1
+    },
+    "mvpTrial" : false
+  }, {
     "id" : "ca05d1a4-0a30-4c83-a49b-701e403dc747",
     "year" : 2026,
     "month" : 10,

@@ -114,6 +114,7 @@ public final class TeamPane extends GridPane {
                 l.addAll(DataStore.get().weapons);
                 return l;
             });
+            weaponBtn.setGraphicFactory(w -> w == null || w.name().isEmpty() ? null : Ui.weaponTile(w.name(), 30));
 
             updateTile(NONE);
 

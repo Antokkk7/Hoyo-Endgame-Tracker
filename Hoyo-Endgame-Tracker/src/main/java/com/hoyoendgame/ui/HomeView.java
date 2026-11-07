@@ -47,10 +47,14 @@ public final class HomeView extends VBox {
             theatre.setText(store.theatre.isEmpty() ? "—" : lastTheatre(store.theatre.get(0)));
             if (store.carnage.isEmpty()) {
                 carnage.setGraphic(null);
+                carnage.setStyle("");
                 carnage.setText("—");
             } else {
                 CarnageClear c = store.carnage.get(0);
                 Ui.setDifficulty(carnage, c.difficulty, c.totalSeconds() + " s", 30);
+                // Glow in the colour of the difficulty picture; the text stays green.
+                javafx.scene.paint.Color gc = Ui.diffColor(c.difficulty);
+                carnage.setStyle(gc == null ? "" : "-fx-effect:dropshadow(gaussian," + Ui.rgba(Ui.hex(gc), 0.75) + ",12,0.25,0,0);");
             }
             counts.setText(store.teams.size() + " équipes · " + store.characters.size() + " personnages");
         };

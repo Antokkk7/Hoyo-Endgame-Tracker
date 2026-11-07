@@ -245,6 +245,56 @@ public final class Ui {
         return iv;
     }
 
+    private static ImageFolder weaponFolder;
+
+    /** Square with the weapon picture (armesIMG/&lt;weapon name&gt;.png), or an empty frame when there is none. */
+    public static StackPane weaponTile(String weapon, double size) {
+        StackPane box = new StackPane();
+        box.getStyleClass().add("weapon-tile");
+        box.setPrefSize(size, size);
+        box.setMinSize(size, size);
+        box.setMaxSize(size, size);
+        Image img;
+        synchronized (Ui.class) {
+            if (weaponFolder == null) weaponFolder = new ImageFolder(com.hoyoendgame.data.DataStore.get().weaponImagesDir());
+            img = weaponFolder.get(weapon);
+        }
+        if (img != null && img.getWidth() > 0 && img.getHeight() > 0) {
+            box.getChildren().add(cover(img, size, size, 6));
+        } else {
+            box.getChildren().add(label("?", "muted", "small"));
+        }
+        return box;
+    }
+
+    private static final java.util.Map<Integer, Color> DIFF_COLOR_CACHE = new java.util.HashMap<>();
+
+    /** Main colour of the difficulty picture (average of its saturated pixels), or null without picture. */
+    public static synchronized Color diffColor(int difficulty) {
+        int d = Math.max(1, Math.min(6, difficulty));
+        if (DIFF_COLOR_CACHE.containsKey(d)) return DIFF_COLOR_CACHE.get(d);
+        Color result = null;
+        Image img = diffImage(d);
+        if (img != null && img.getPixelReader() != null) {
+            javafx.scene.image.PixelReader pr = img.getPixelReader();
+            double r = 0, g = 0, b = 0, n = 0;
+            for (int y = 0; y < (int) img.getHeight(); y++) {
+                for (int x = 0; x < (int) img.getWidth(); x++) {
+                    Color c = pr.getColor(x, y);
+                    if (c.getOpacity() > 0.6 && c.getSaturation() > 0.35 && c.getBrightness() > 0.45) {
+                        r += c.getRed();
+                        g += c.getGreen();
+                        b += c.getBlue();
+                        n++;
+                    }
+                }
+            }
+            if (n > 0) result = new Color(r / n, g / n, b / n, 1.0);
+        }
+        DIFF_COLOR_CACHE.put(d, result);
+        return result;
+    }
+
     /** Boss picture of a patch (bossIMG/&lt;patch&gt;/&lt;boss&gt;.png), or a "?" frame when there is none. */
     public static StackPane bossPortrait(String patch, String boss, double w, double h) {
         StackPane box = new StackPane();

@@ -154,6 +154,11 @@ public final class DataStore {
         }
     }
 
+    /** Folder with the weapon pictures (armesIMG/Skyward Blade.png...). */
+    public Path weaponImagesDir() {
+        return dir.resolve("armesIMG");
+    }
+
     /** Folder with the small pictures of the app (difficulty badges diff1.png ... diff6.png). */
     public Path assetsDir() {
         return dir.resolve("assetsOthers");
