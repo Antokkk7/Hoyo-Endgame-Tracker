@@ -246,6 +246,7 @@ public final class Ui {
     }
 
     private static ImageFolder weaponFolder;
+    private static final java.util.Set<String> MISSING_WEAPONS = new java.util.HashSet<>();
 
     /** Square with the weapon picture (armesIMG/&lt;weapon name&gt;.png), or an empty frame when there is none. */
     public static StackPane weaponTile(String weapon, double size) {
@@ -262,6 +263,9 @@ public final class Ui {
         if (img != null && img.getWidth() > 0 && img.getHeight() > 0) {
             box.getChildren().add(cover(img, size, size, 6));
         } else {
+            if (weapon != null && !weapon.isBlank() && MISSING_WEAPONS.add(weapon)) {
+                System.err.println("[images] pas d'image d'arme pour : " + weapon);
+            }
             box.getChildren().add(label("?", "muted", "small"));
         }
         return box;

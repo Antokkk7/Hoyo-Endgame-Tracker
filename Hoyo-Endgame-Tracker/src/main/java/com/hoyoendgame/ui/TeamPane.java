@@ -89,6 +89,7 @@ public final class TeamPane extends GridPane {
         final VBox node = new VBox(10);
         final PickerButton<GenshinCharacter> charBtn;
         final PickerButton<Weapon> weaponBtn;
+        final StackPane weaponTile = new StackPane();
         final StackPane tile = new StackPane();
         final Spinner<Integer> level = Ui.spinner(1, 90, 90);
         final ToggleGroup cons = new ToggleGroup();
@@ -114,7 +115,8 @@ public final class TeamPane extends GridPane {
                 l.addAll(DataStore.get().weapons);
                 return l;
             });
-            weaponBtn.setGraphicFactory(w -> w == null || w.name().isEmpty() ? null : Ui.weaponTile(w.name(), 30));
+            weaponBtn.setOnPick(this::updateWeaponTile);
+            updateWeaponTile(null);
 
             updateTile(NONE);
 
@@ -123,7 +125,7 @@ public final class TeamPane extends GridPane {
             Ui.keepOneSelected(cons);
             Ui.select(cons, 0);
 
-            FlowPane refRow = new FlowPane(4, 4);
+            HBox refRow = new HBox(4); // no wrapping: a FlowPane would claim ~400px and squeeze the weapon name
             for (int k = 1; k <= 5; k++) refRow.getChildren().add(Ui.pill("R" + k, refine, k));
             Ui.keepOneSelected(refine);
             Ui.select(refine, 1);
@@ -135,9 +137,14 @@ public final class TeamPane extends GridPane {
             top.setAlignment(Pos.BOTTOM_LEFT);
 
             VBox consBox = new VBox(4, Ui.label("Doublons du personnage", "muted", "small"), consRow);
-            VBox weaponBox = new VBox(4, Ui.label("Arme", "muted", "small"), weaponBtn);
+            weaponBtn.setMinWidth(150);
+            HBox weaponLine = new HBox(8, weaponTile, weaponBtn);
+            weaponLine.setAlignment(Pos.CENTER_LEFT);
+            HBox.setHgrow(weaponBtn, Priority.ALWAYS);
+            VBox weaponBox = new VBox(4, Ui.label("Arme", "muted", "small"), weaponLine);
             HBox.setHgrow(weaponBox, Priority.ALWAYS);
             VBox refBox = new VBox(4, Ui.label("Raffinement", "muted", "small"), refRow);
+            refBox.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
             HBox weaponRow = new HBox(10, weaponBox, refBox);
             weaponRow.setAlignment(Pos.BOTTOM_LEFT);
 
@@ -148,6 +155,11 @@ public final class TeamPane extends GridPane {
             boolean none = c == null || c == NONE;
             tile.getChildren().setAll(Ui.portrait(none ? "?" : c.name, none ? null : c.element, 44, 52));
             applyElementStyle(none ? null : c.element);
+        }
+
+        /** Picture of the chosen weapon, in a square to the left of the weapon button. */
+        void updateWeaponTile(Weapon w) {
+            weaponTile.getChildren().setAll(Ui.weaponTile(w == null ? "" : w.name(), 40));
         }
 
         /** Frame, glow and character button take the colour of the character's element. */
@@ -188,6 +200,7 @@ public final class TeamPane extends GridPane {
                 Ui.select(cons, 0);
                 Ui.select(refine, 1);
                 weaponBtn.setValue(null);
+                updateWeaponTile(null);
                 return;
             }
             GenshinCharacter found = null;
@@ -208,7 +221,9 @@ public final class TeamPane extends GridPane {
             updateTile(found);
             level.getValueFactory().setValue(Math.max(1, Math.min(90, m.level)));
             Ui.select(cons, m.constellation);
-            weaponBtn.setValue(m.weapon == null || m.weapon.isBlank() ? null : weaponByName(m.weapon));
+            Weapon wp = m.weapon == null || m.weapon.isBlank() ? null : weaponByName(m.weapon);
+            weaponBtn.setValue(wp);
+            updateWeaponTile(wp);
             Ui.select(refine, m.refinement);
         }
     }

@@ -64,6 +64,10 @@ final class ImageFolder {
         Path p = index().get(k);
         if (p == null) return null; // not cached, so a file added later is found
         Image img = new Image(p.toUri().toString(), false);
+        if (img.isError()) {
+            System.err.println("[images] image illisible par JavaFX (un WebP renommé en .png ?) : " + p
+                    + "\n         convertissez-la : python tools/convert_to_png.py <dossier>");
+        }
         Optional<Image> res = img.isError() ? Optional.empty() : Optional.of(img);
         cache.put(k, res);
         return res.orElse(null);
