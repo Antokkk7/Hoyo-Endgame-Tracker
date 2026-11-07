@@ -17,6 +17,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -42,15 +43,24 @@ public final class CarnageAddDialog {
         patch.setPromptText("ex. 6.1");
         patch.setPrefWidth(120);
         TextField period = new TextField(existing == null ? "" : existing.period);
-        period.setPromptText("ex. 2026.09.30 – 2026.11.03");
+        period.setPromptText("automatique d'après le patch");
         period.setPrefWidth(280);
+        period.setEditable(false);
+        period.setFocusTraversable(false);
 
         ToggleGroup diff = new ToggleGroup();
         HBox diffRow = new HBox(10);
         for (int d = 1; d <= 6; d++) {
             ToggleButton tb = new ToggleButton(String.valueOf(d));
             tb.getStyleClass().add("diff-toggle");
-            tb.setStyle("-fx-background-color:" + Ui.DIFF_COLORS[d - 1] + ";");
+            javafx.scene.image.Image pic = Ui.diffImage(d);
+            if (pic != null) {
+                tb.setText("");
+                tb.setGraphic(Ui.cover(pic, 54, 54, 6));
+                tb.setStyle("-fx-background-color:transparent;-fx-padding:0;-fx-min-width:54;-fx-min-height:54;");
+            } else {
+                tb.setStyle("-fx-background-color:" + Ui.DIFF_COLORS[d - 1] + ";");
+            }
             tb.setToggleGroup(diff);
             tb.setUserData(d);
             diffRow.getChildren().add(tb);
@@ -59,6 +69,8 @@ public final class CarnageAddDialog {
         Ui.select(diff, existing == null ? 6 : existing.difficulty);
 
         List<BossForm> bosses = new ArrayList<>();
+        List<Runnable> previewUpdaters = new ArrayList<>();
+        String[] autoNames = new String[BOSSES];
         Label total = Ui.label("", "h2");
         Runnable upd = () -> total.setText(bosses.stream().mapToInt(b -> b.seconds().getValue() == null ? 0 : b.seconds().getValue()).sum() + " s");
 
@@ -66,7 +78,13 @@ public final class CarnageAddDialog {
         for (int i = 0; i < BOSSES; i++) {
             BossRun prior = existing != null && i < existing.bosses.size() ? existing.bosses.get(i) : null;
             TextField name = new TextField(prior == null ? "" : prior.name);
-            name.setPromptText("Nom du boss " + (i + 1));
+            name.setPromptText("Nom du boss " + (i + 1) + " (voir genshinBoss.json)");
+            StackPane preview = new StackPane();
+            Runnable updPreview = () -> preview.getChildren().setAll(
+                    Ui.bossPortrait(patch.getText(), name.getText(), 130, 84));
+            previewUpdaters.add(updPreview);
+            name.textProperty().addListener((o, a, b) -> updPreview.run());
+            updPreview.run();
             Spinner<Integer> secs = Ui.spinner(0, 999, prior == null ? 0 : prior.seconds);
             secs.valueProperty().addListener((o, a, b) -> upd.run());
             TeamPane pane = new TeamPane(2);
@@ -81,8 +99,8 @@ public final class CarnageAddDialog {
             });
 
             HBox.setHgrow(name, Priority.ALWAYS);
-            HBox top = new HBox(14, field("Boss " + (i + 1), name), field("Durée (s)", secs), field("Équipe pré-enregistrée", preset));
-            HBox.setHgrow(top.getChildren().get(0), Priority.ALWAYS);
+            HBox top = new HBox(14, preview, field("Boss " + (i + 1), name), field("Durée (s)", secs), field("Équipe pré-enregistrée", preset));
+            HBox.setHgrow(top.getChildren().get(1), Priority.ALWAYS);
             top.setAlignment(Pos.BOTTOM_LEFT);
             VBox node = new VBox(14, top, pane);
             node.getStyleClass().add("inner-box");
@@ -91,6 +109,25 @@ public final class CarnageAddDialog {
             bosses.add(new BossForm(name, secs, pane, node));
         }
         upd.run();
+
+        // The 3 bosses of the patch come from genshinBoss.json; a name typed by hand is never overwritten.
+        Runnable fillBosses = () -> {
+            List<String> names = store.bossCatalog.bosses(patch.getText());
+            for (int i = 0; i < BOSSES; i++) {
+                TextField n = bosses.get(i).name();
+                String cur = n.getText() == null ? "" : n.getText().trim();
+                String wanted = i < names.size() ? names.get(i) : null;
+                if (cur.isEmpty() || cur.equals(autoNames[i])) n.setText(wanted == null ? "" : wanted);
+                autoNames[i] = wanted;
+            }
+            previewUpdaters.forEach(Runnable::run);
+            // The period comes from genshinBoss.json and cannot be typed.
+            String p = store.bossCatalog.period(patch.getText());
+            if (p.isEmpty() && existing != null && existing.patch.equals(patch.getText().trim())) p = existing.period;
+            period.setText(p);
+        };
+        patch.textProperty().addListener((o, a, b) -> fillBosses.run());
+        fillBosses.run();
 
         VBox s1 = section("1. Patch, période et difficulté",
                 new HBox(18, field("Patch", patch), field("Période", period)),

@@ -37,6 +37,9 @@ public final class DataStore {
     /** Weapon catalog, maintained by hand: the app only reads it. */
     public static final String WEAPONS_FILE = "genshinWeapons.json";
 
+    /** Boss list per patch, maintained by hand: the app only reads it. */
+    public static final String BOSS_FILE = "genshinBoss.json";
+
     private final Path dir = Paths.get(System.getProperty("hoyo.data.dir", "data/genshin")).toAbsolutePath();
 
     public final ObservableList<GenshinCharacter> characters = FXCollections.observableArrayList();
@@ -46,6 +49,8 @@ public final class DataStore {
     public final ObservableList<CarnageClear> carnage = FXCollections.observableArrayList();
     /** Read-only weapon catalog (rarity 5 first, as in the file). */
     public final ObservableList<Weapon> weapons = FXCollections.observableArrayList();
+    /** Stygian Onslaught bosses per patch (read-only). */
+    public BossCatalog bossCatalog = new BossCatalog();
 
     /** Called when a file cannot be written (the UI shows an alert). */
     private Consumer<String> errorHandler = msg -> System.err.println(msg);
@@ -60,6 +65,11 @@ public final class DataStore {
     /** Folder with the character pictures (personnagesIMG, next to the JSON files). */
     public Path imagesDir() {
         return dir.resolve("personnagesIMG");
+    }
+
+    /** Folder with the boss pictures (bossIMG/Tulpa.png...), all patches together. */
+    public Path bossImagesDir() {
+        return dir.resolve("bossIMG");
     }
 
     public Path dataDir() {
@@ -77,6 +87,7 @@ public final class DataStore {
         if (weapons.isEmpty()) {
             System.err.println("Aucune arme chargée : placez genshinWeapons.json dans " + dir);
         }
+        bossCatalog = BossCatalog.read(file(BOSS_FILE));
         characters.setAll(JsonStore.readList(file(CHARACTERS_FILE), "characters", GenshinCharacter.class));
         characters.forEach(GenshinCharacter::normalize);
         teams.setAll(JsonStore.readList(file(TEAMS_FILE), "teams", Team.class));
@@ -88,6 +99,7 @@ public final class DataStore {
         sortTheatre();
         carnage.setAll(JsonStore.readList(file(CARNAGE_FILE), "clears", CarnageClear.class));
         carnage.forEach(CarnageClear::normalize);
+        sortCarnage();
 
         for (String f : List.of(CHARACTERS_FILE, TEAMS_FILE, ABYSS_FILE, THEATRE_FILE, CARNAGE_FILE)) {
             if (!Files.exists(file(f))) saveFile(f);
@@ -120,6 +132,31 @@ public final class DataStore {
 
     public void saveCarnage() {
         saveFile(CARNAGE_FILE);
+    }
+
+    /** Most recent patch first (not by date added). */
+    public void sortCarnage() {
+        carnage.sort(Comparator.comparingLong((CarnageClear c) -> versionKey(c.patch))
+                .thenComparing((CarnageClear c) -> c.period == null ? "" : c.period)
+                .reversed());
+    }
+
+    /** "6.10" gives 6*1000+10; unreadable patches sort last. */
+    private static long versionKey(String patch) {
+        if (patch == null) return -1;
+        String[] p = patch.trim().split("\\.");
+        try {
+            long major = Long.parseLong(p[0].trim());
+            long minor = p.length > 1 ? Long.parseLong(p[1].trim()) : 0;
+            return major * 1000 + minor;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /** Folder with the small pictures of the app (difficulty badges diff1.png ... diff6.png). */
+    public Path assetsDir() {
+        return dir.resolve("assetsOthers");
     }
 
     /** Most recent month first. */

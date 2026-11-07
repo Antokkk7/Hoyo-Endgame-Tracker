@@ -45,7 +45,13 @@ public final class HomeView extends VBox {
         Runnable refresh = () -> {
             abyss.setText(store.abyss.isEmpty() ? "—" : lastAbyss(store.abyss.get(0)));
             theatre.setText(store.theatre.isEmpty() ? "—" : lastTheatre(store.theatre.get(0)));
-            carnage.setText(store.carnage.isEmpty() ? "—" : lastCarnage(store.carnage.get(0)));
+            if (store.carnage.isEmpty()) {
+                carnage.setGraphic(null);
+                carnage.setText("—");
+            } else {
+                CarnageClear c = store.carnage.get(0);
+                Ui.setDifficulty(carnage, c.difficulty, c.totalSeconds() + " s", 30);
+            }
             counts.setText(store.teams.size() + " équipes · " + store.characters.size() + " personnages");
         };
         InvalidationListener l = o -> refresh.run();
@@ -122,7 +128,7 @@ public final class HomeView extends VBox {
     }
 
     static String lastTheatre(TheatreClear c) {
-        return "Acte " + c.bestAct + (c.mode.hasArcanum() ? " · Arcanum " + c.arcanum : "") + " · " + c.mode.label;
+        return c.stars + "/" + c.mode.acts + " astres" + (c.mode.hasArcanum() ? " · Arcanum " + c.arcanum : "") + " · " + c.mode.label;
     }
 
     static String lastCarnage(CarnageClear c) {

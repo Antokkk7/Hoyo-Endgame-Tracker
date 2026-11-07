@@ -1,5 +1,6 @@
 package com.hoyoendgame.ui;
 
+import com.hoyoendgame.data.BossCatalog;
 import com.hoyoendgame.data.DataStore;
 import com.hoyoendgame.model.BossRun;
 import com.hoyoendgame.model.CarnageClear;
@@ -57,9 +58,10 @@ public final class CarnageView extends VBox {
         back.setOnAction(e -> onBack.run());
         Button add = Ui.button("+ Ajouter un clear", "btn-primary");
         add.setOnAction(e -> CarnageAddDialog.show(add.getScene().getWindow(), null).ifPresent(c -> {
-            store.carnage.add(0, c);
+            store.carnage.add(c);
+            store.sortCarnage();
             store.saveCarnage();
-            list.getSelectionModel().select(0);
+            list.getSelectionModel().select(c);
         }));
 
         HBox header = new HBox(16,
@@ -106,8 +108,9 @@ public final class CarnageView extends VBox {
         edit.setOnAction(e -> CarnageAddDialog.show(edit.getScene().getWindow(), c).ifPresent(nc -> {
             int i = store.carnage.indexOf(c);
             if (i >= 0) store.carnage.set(i, nc);
+            store.sortCarnage();
             store.saveCarnage();
-            list.getSelectionModel().select(i);
+            list.getSelectionModel().select(nc);
         }));
         del.setOnAction(e -> {
             if (Ui.confirm("Supprimer ce clear (patch " + c.patch + ") ?")) {
@@ -128,20 +131,16 @@ public final class CarnageView extends VBox {
         head.setAlignment(Pos.CENTER_LEFT);
         detail.getChildren().add(head);
 
-        for (BossRun b : c.bosses) detail.getChildren().add(bossCard(b));
+        for (BossRun b : c.bosses) detail.getChildren().add(bossCard(c.patch, b));
         if (c.bosses.isEmpty()) detail.getChildren().add(Ui.label("Aucun combat renseigné.", "muted"));
     }
 
-    private Node bossCard(BossRun b) {
-        StackPane portrait = new StackPane(Ui.label("Portrait\ndu boss", "muted", "small"));
-        portrait.setMinSize(92, 92);
-        portrait.setPrefSize(92, 92);
-        portrait.setMaxSize(92, 92);
-        portrait.getStyleClass().add("boss-portrait");
+    private Node bossCard(String patch, BossRun b) {
+        StackPane portrait = Ui.bossPortrait(patch, b.name, 150, 96);
 
         FlowPane team = new FlowPane(8, 8);
         for (TeamMember m : b.team) team.getChildren().add(Ui.avatar(m.name, m.element, "Niv." + m.level, null, 56, 64));
-        Label name = Ui.label(b.name.isBlank() ? "Boss" : b.name, "strong");
+        Label name = Ui.label(b.name.isBlank() ? "Boss" : BossCatalog.pretty(b.name), "h3");
         name.setWrapText(true);
         VBox mid = new VBox(10, name, team);
         HBox.setHgrow(mid, Priority.ALWAYS);
