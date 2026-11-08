@@ -9,7 +9,7 @@
     "auto9" : true,
     "auto10" : true,
     "teams" : [ [ {
-      "characterId" : "1ea76c4f-38be-4aed-9d4c-bafe628838da",
+      "characterId" : "87897658-281c-4cba-83f8-0ed22988906f",
       "name" : "Himeko • Nova",
       "element" : "FIRE",
       "level" : 80,
@@ -17,7 +17,7 @@
       "weapon" : "A Star That Lights the Night",
       "refinement" : 1
     }, {
-      "characterId" : "7793f8df-ce65-410d-a84f-b4622d122120",
+      "characterId" : "2bfc2f1a-4ace-42f6-8797-d04e005dbeb1",
       "name" : "Sunday",
       "element" : "IMAGINARY",
       "level" : 80,
@@ -25,7 +25,7 @@
       "weapon" : "But the Battle Isn't Over",
       "refinement" : 1
     }, {
-      "characterId" : "d4d8ab22-1412-441c-9461-e311a502673f",
+      "characterId" : "78b53c47-3349-466e-a7d9-3c46e0c9a8cf",
       "name" : "Robin",
       "element" : "PHYSICAL",
       "level" : 80,
@@ -33,7 +33,7 @@
       "weapon" : "Flowing Nightglow",
       "refinement" : 1
     }, {
-      "characterId" : "0418937f-b7bb-42c6-8571-54c4718cbc9f",
+      "characterId" : "5af3aaf9-c2bc-4ad6-aebd-e18b3bf0987c",
       "name" : "Huohuo",
       "element" : "WIND",
       "level" : 80,
@@ -41,7 +41,7 @@
       "weapon" : "Quid Pro Quo",
       "refinement" : 5
     } ], [ {
-      "characterId" : "4f79589d-99f8-4d1a-b3b7-41fe73d4b9e9",
+      "characterId" : "480b69b9-52b6-40f5-9520-3ed7142e75c7",
       "name" : "Phainon",
       "element" : "PHYSICAL",
       "level" : 80,
@@ -49,7 +49,7 @@
       "weapon" : "Thus Burns the Dawn",
       "refinement" : 1
     }, {
-      "characterId" : "def074ae-08ca-4ec2-b0cf-5a870a58ae4b",
+      "characterId" : "49af0279-549c-40f3-9642-53fe1630570b",
       "name" : "Cyrene",
       "element" : "ICE",
       "level" : 80,
@@ -57,7 +57,7 @@
       "weapon" : "This Love, Forever",
       "refinement" : 1
     }, {
-      "characterId" : "4e1f292b-2a15-4d5f-9306-9b591bfa06d3",
+      "characterId" : "b86cab3b-8a0b-4fa3-a61b-bab4d165f11f",
       "name" : "Cerydra",
       "element" : "WIND",
       "level" : 80,
@@ -65,7 +65,7 @@
       "weapon" : "Epoch Etched in Golden Blood",
       "refinement" : 1
     }, {
-      "characterId" : "930cef55-01f3-493c-a3e5-3e47b60ac49b",
+      "characterId" : "6876ae00-46e5-4731-9d82-084db1380705",
       "name" : "Robin • Summeretto",
       "element" : "WIND",
       "level" : 80,
@@ -73,7 +73,7 @@
       "weapon" : "Memory's Curtain Never Falls",
       "refinement" : 5
     } ], [ {
-      "characterId" : "46fd0d9c-c002-4719-968e-a11a329fef74",
+      "characterId" : "43521b67-606c-4515-b4f1-4bfcac43c916",
       "name" : "Acheron",
       "element" : "LIGHTNING",
       "level" : 80,
@@ -81,7 +81,7 @@
       "weapon" : "Along the Passing Shore",
       "refinement" : 1
     }, {
-      "characterId" : "7a3e1791-7ac9-4277-87d1-a024fee55e88",
+      "characterId" : "181ea1ca-472f-43da-83c2-272408075183",
       "name" : "Trailblazer (Remembrance)",
       "element" : "ICE",
       "level" : 80,
@@ -89,7 +89,7 @@
       "weapon" : "Fly Into a Pink Tomorrow",
       "refinement" : 5
     }, {
-      "characterId" : "b1d443c1-1d0a-494c-ba46-32566dea5afa",
+      "characterId" : "e9960df7-ef56-489c-ade1-67ee414c8672",
       "name" : "Mortenax Blade",
       "element" : "FIRE",
       "level" : 80,
@@ -97,7 +97,7 @@
       "weapon" : "Resolution Shines As Pearls of Sweat",
       "refinement" : 5
     }, {
-      "characterId" : "8dfe6128-6b3b-4d91-82fd-7fb86fbdf379",
+      "characterId" : "998f1ef5-413d-4800-89a6-79ad1cbd4a4f",
       "name" : "Dan Heng • Permansor Terrae",
       "element" : "PHYSICAL",
       "level" : 80,
@@ -215,15 +215,6 @@
     "patch" : "4.4",
     "stars" : [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ],
     "cycles" : [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5 ],
-    "stellar" : true,
-    "auto9" : true,
-    "auto10" : true,
-    "teams" : [ ]
-  }, {
-    "id" : "f027c21e-6b81-4276-b8e7-b12b86d6f6d1",
-    "patch" : "4.3",
-    "stars" : [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ],
-    "cycles" : [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5 ],
     "stellar" : true,
     "auto9" : true,
     "auto10" : true,

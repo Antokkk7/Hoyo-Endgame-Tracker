@@ -22,6 +22,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -217,8 +218,6 @@ public final class StarRailView extends VBox {
         Label pfSub = Ui.label("", "muted", "small");
         Label apocBig = Ui.label("", "big-number", "neon-green");
         Label apocSub = Ui.label("", "muted", "small");
-        Label arbBig = Ui.label("", "big-number", "neon-magenta");
-        Label arbSub = Ui.label("", "muted", "small");
 
         Runnable refresh = () -> {
             if (store.moc.isEmpty()) {
@@ -242,33 +241,90 @@ public final class StarRailView extends VBox {
                 apocSub.setText("aucun clear");
             } else {
                 var c = store.apoc.get(0);
-                apocBig.setText(HsrUi.num(c.totalScore()) + "/" + HsrUi.num(c.maxTotal()));
-                apocSub.setText("patch " + c.patch + " · " + c.mode.label);
-            }
-            if (store.arbitration.isEmpty()) {
-                arbBig.setText("—");
-                arbSub.setText("aucun clear");
-            } else {
-                var c = store.arbitration.get(0);
-                arbBig.setText(c.totalStars() + "/12");
-                arbSub.setText("étoiles · patch " + c.patch + ArbitrationPage.frameSuffix(c));
+                apocBig.setText(HsrUi.num(c.totalScore()));
+                apocSub.setText("patch " + c.patch + (c.stellar() ? " · ★ stellaire" : ""));
             }
         };
         javafx.beans.InvalidationListener l = o -> refresh.run();
         store.moc.addListener(l);
         store.pf.addListener(l);
         store.apoc.addListener(l);
-        store.arbitration.addListener(l);
         refresh.run();
 
         VBox cards = new VBox(20,
                 endgameCard("Salle oubliée", store.moc, mocBig, mocSub, openMoc, "glass", false),
                 endgameCard("Pure fiction", store.pf, pfBig, pfSub, openPf, "glass", false),
                 endgameCard("Fantômes de l'apocalypse", store.apoc, apocBig, apocSub, openApoc, "glass", false),
-                endgameCard("Arbitre de l'instable", store.arbitration, arbBig, arbSub, openArbitration, "hsr-featured", true));
+                arbitrationCard());
         HBox.setHgrow(cards, Priority.ALWAYS);
         cards.setMinWidth(420);
         return cards;
+    }
+
+    /** Arbitration card: border colour = frame obtained; frame picture, King stars, then the Horsemen stars as a pyramid. */
+    private Node arbitrationCard() {
+        Label count = Ui.label("", "muted", "small");
+        VBox right = new VBox(8);
+        right.setAlignment(Pos.CENTER);
+        HBox row = new HBox(16);
+        row.setAlignment(Pos.CENTER_LEFT);
+        row.setPadding(new Insets(32, 28, 32, 28));
+
+        Button btn = Ui.button("Ouvrir", "btn-primary");
+        btn.setOnAction(e -> openArbitration.run());
+        Label titleLabel = Ui.label("Arbitre de l'instable", "h2");
+        titleLabel.setMinWidth(Region.USE_PREF_SIZE);
+        VBox left = new VBox(8, titleLabel, count, spacer(14), btn);
+        left.setMinWidth(Region.USE_PREF_SIZE);
+        row.getChildren().addAll(left, Ui.grow(), right);
+
+        Runnable refresh = () -> {
+            count.setText(store.arbitration.size() + " clears enregistrés");
+            right.getChildren().clear();
+            row.getStyleClass().removeAll("glass", "hsr-featured");
+            if (store.arbitration.isEmpty()) {
+                row.getStyleClass().add("glass");
+                row.setStyle("");
+                right.getChildren().addAll(Ui.label("—", "big-number", "neon-magenta"), Ui.label("aucun clear", "muted", "small"));
+                return;
+            }
+            var c = store.arbitration.get(0);
+            String frame = c.frame();
+            if (frame.isEmpty()) {
+                // no frame: same look as the other endgames, only the Horsemen stars on one line
+                row.getStyleClass().add("glass");
+                row.setStyle("");
+                right.getChildren().add(horsemenStars(c, 18));
+            } else {
+                String color = ArbitrationPage.frameColor(frame);
+                row.getStyleClass().add("hsr-featured");
+                row.setStyle("-fx-border-color:" + color + ";-fx-effect:dropshadow(gaussian," + Ui.rgba(color, 0.45)
+                        + ",28,0.1,0,0);");
+                javafx.scene.image.ImageView img = FrameImages.view(frame, 120);
+                Node top = img != null ? img : ArbitrationPage.frameText(frame);
+                HBox king = HsrUi.stars(c.kingStars(), 3, 20);
+                king.setAlignment(Pos.CENTER);
+                right.getChildren().addAll(top, king, horsemenStars(c, 14));
+            }
+            right.getChildren().add(Ui.label("patch " + c.patch + (frame.isEmpty() ? "" : " · " + frame), "muted", "small"));
+        };
+        javafx.beans.InvalidationListener l = o -> refresh.run();
+        store.arbitration.addListener(l);
+        refresh.run();
+        return row;
+    }
+
+    /** The three Horsemen side by side, 3 stars each. */
+    private static HBox horsemenStars(com.hoyoendgame.model.ArbitrationClear c, double size) {
+        HBox line = new HBox(size);
+        line.setAlignment(Pos.CENTER);
+        for (int i = 0; i < com.hoyoendgame.model.ArbitrationClear.HORSEMEN; i++) {
+            HBox g = HsrUi.stars(c.starsOf(i), 3, size);
+            g.setSpacing(2);
+            g.setAlignment(Pos.CENTER);
+            line.getChildren().add(g);
+        }
+        return line;
     }
 
     private Node endgameCard(String title, javafx.collections.ObservableList<?> list, Label big, Label sub,
@@ -280,7 +336,10 @@ public final class StarRailView extends VBox {
 
         Button btn = Ui.button("Ouvrir", "btn-primary");
         btn.setOnAction(e -> open.run());
-        VBox left = new VBox(8, Ui.label(title, "h2"), count, spacer(featured ? 14 : 6), btn);
+        Label titleLabel = Ui.label(title, "h2");
+        titleLabel.setMinWidth(Region.USE_PREF_SIZE); // never cut with "..."
+        VBox left = new VBox(8, titleLabel, count, spacer(featured ? 14 : 6), btn);
+        left.setMinWidth(Region.USE_PREF_SIZE);
         VBox right = new VBox(2, big, sub);
         right.setAlignment(Pos.CENTER);
         right.getStyleClass().add("stat-box");

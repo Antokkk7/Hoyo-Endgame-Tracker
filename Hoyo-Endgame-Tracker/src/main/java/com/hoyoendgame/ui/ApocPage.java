@@ -32,7 +32,7 @@ public final class ApocPage {
     }
 
     static String summary(ApocClear c) {
-        return HsrUi.num(c.totalScore()) + "/" + HsrUi.num(c.maxTotal());
+        return HsrUi.num(c.totalScore());
     }
 
     private static Node row(ApocClear c) {

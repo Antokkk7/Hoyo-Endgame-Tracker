@@ -48,6 +48,10 @@ public final class ArbitrationPage {
         };
     }
 
+    static Node frameText(String frame) {
+        return frameLabel(frame);
+    }
+
     private static Node frameLabel(String frame) {
         Label l = Ui.label(frame.isEmpty() ? "Aucun cadre" : frame, "strong");
         l.setStyle("-fx-text-fill:" + frameColor(frame) + ";");

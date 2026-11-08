@@ -70,6 +70,11 @@ public final class StarRailStore {
     }
 
     /** Cone pictures: data/starrail/conesIMG/&lt;name&gt;.png. */
+    /** Pictures of the Arbitration frames (arbitrationCadre/). */
+    public Path frameImagesDir() {
+        return dir.resolve("arbitrationCadre");
+    }
+
     public Path coneImagesDir() {
         return dir.resolve("conesIMG");
     }

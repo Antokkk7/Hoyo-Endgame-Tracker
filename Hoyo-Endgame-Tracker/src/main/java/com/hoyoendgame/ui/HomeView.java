@@ -137,6 +137,21 @@ public final class HomeView extends VBox {
         arbLine.getStyleClass().add("hsr-featured-line");
         arbLine.setPadding(new Insets(20, 16, 20, 16));
         VBox.setMargin(arbLine, new Insets(6, 0, 6, 0));
+        // contour = frame colour (none: like the other lines)
+        Runnable styleArb = () -> {
+            arbLine.getStyleClass().remove("hsr-featured-line");
+            String frame = hsr.arbitration.isEmpty() ? "" : hsr.arbitration.get(0).frame();
+            if (frame.isEmpty()) {
+                arbLine.setStyle("");
+            } else {
+                String color = ArbitrationPage.frameColor(frame);
+                arbLine.getStyleClass().add("hsr-featured-line");
+                arbLine.setStyle("-fx-border-color:" + color + ";-fx-effect:dropshadow(gaussian," + Ui.rgba(color, 0.35)
+                        + ",16,0,0,0);");
+            }
+        };
+        hsr.arbitration.addListener((InvalidationListener) o -> styleArb.run());
+        styleArb.run();
 
         VBox box = new VBox(4, title,
                 Ui.label("Salle oubliée, Pure fiction, Fantômes de l'apocalypse et Arbitre de l'instable.", "muted"),

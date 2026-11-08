@@ -5,43 +5,43 @@
     "patch" : "4.6",
     "cycles" : [ 0, 2, 2 ],
     "down" : [ false, false, false ],
-    "kingCycles" : 0,
+    "kingCycles" : 1,
     "kingDown" : false,
     "team" : [ {
-      "characterId" : "571d22ba-cda2-4fb6-bfff-ca804897bec1",
-      "name" : "Acheron",
-      "element" : "LIGHTNING",
+      "characterId" : "1c2dc11e-98ba-42bc-8046-bfe46306a20f",
+      "name" : "Phainon",
+      "element" : "PHYSICAL",
       "level" : 80,
-      "constellation" : 3,
-      "weapon" : "Along the Passing Shore",
+      "constellation" : 6,
+      "weapon" : "Thus Burns the Dawn",
       "refinement" : 1
     }, {
-      "characterId" : "5370518c-6cf4-48a0-8f1c-b189a69f0470",
-      "name" : "Mortenax Blade",
-      "element" : "FIRE",
+      "characterId" : "b6e816b7-4d8b-4dc4-b71f-c0bc14a2a955",
+      "name" : "Cyrene",
+      "element" : "ICE",
       "level" : 80,
       "constellation" : 2,
-      "weapon" : "Resolution Shines As Pearls of Sweat",
-      "refinement" : 5
+      "weapon" : "This Love, Forever",
+      "refinement" : 1
     }, {
-      "characterId" : "1b88af41-90be-442a-bd21-9ff848386d5b",
+      "characterId" : "ffcbcd96-bba5-41b7-9915-067f082dbb6c",
+      "name" : "Cerydra",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 1,
+      "weapon" : "Epoch Etched in Golden Blood",
+      "refinement" : 1
+    }, {
+      "characterId" : "5b609ae8-d050-4815-b60f-bf0dba73c912",
       "name" : "Robin • Summeretto",
       "element" : "WIND",
       "level" : 80,
       "constellation" : 0,
       "weapon" : "Memory's Curtain Never Falls",
-      "refinement" : 5
-    }, {
-      "characterId" : "28e0446f-4f8b-454b-b3c9-2637effb9149",
-      "name" : "Huohuo",
-      "element" : "WIND",
-      "level" : 80,
-      "constellation" : 0,
-      "weapon" : "Quid Pro Quo",
       "refinement" : 5
     } ],
     "horsemenTeams" : [ [ {
-      "characterId" : "571d22ba-cda2-4fb6-bfff-ca804897bec1",
+      "characterId" : "cb0856c5-a33b-430c-8fe0-b0271ebabec6",
       "name" : "Acheron",
       "element" : "LIGHTNING",
       "level" : 80,
@@ -49,7 +49,7 @@
       "weapon" : "Along the Passing Shore",
       "refinement" : 1
     }, {
-      "characterId" : "5370518c-6cf4-48a0-8f1c-b189a69f0470",
+      "characterId" : "194fb958-d211-4b5a-9471-17cb62e0de6f",
       "name" : "Mortenax Blade",
       "element" : "FIRE",
       "level" : 80,
@@ -57,7 +57,7 @@
       "weapon" : "Resolution Shines As Pearls of Sweat",
       "refinement" : 5
     }, {
-      "characterId" : "1b88af41-90be-442a-bd21-9ff848386d5b",
+      "characterId" : "5b609ae8-d050-4815-b60f-bf0dba73c912",
       "name" : "Robin • Summeretto",
       "element" : "WIND",
       "level" : 80,
@@ -65,7 +65,7 @@
       "weapon" : "Memory's Curtain Never Falls",
       "refinement" : 5
     }, {
-      "characterId" : "28e0446f-4f8b-454b-b3c9-2637effb9149",
+      "characterId" : "3cc0fdf6-acd8-4939-8ea1-15b2abf8962e",
       "name" : "Huohuo",
       "element" : "WIND",
       "level" : 80,
@@ -73,7 +73,7 @@
       "weapon" : "Quid Pro Quo",
       "refinement" : 5
     } ], [ {
-      "characterId" : "571d22ba-cda2-4fb6-bfff-ca804897bec1",
+      "characterId" : "cb0856c5-a33b-430c-8fe0-b0271ebabec6",
       "name" : "Acheron",
       "element" : "LIGHTNING",
       "level" : 80,
@@ -81,7 +81,7 @@
       "weapon" : "Along the Passing Shore",
       "refinement" : 1
     }, {
-      "characterId" : "5370518c-6cf4-48a0-8f1c-b189a69f0470",
+      "characterId" : "194fb958-d211-4b5a-9471-17cb62e0de6f",
       "name" : "Mortenax Blade",
       "element" : "FIRE",
       "level" : 80,
@@ -89,7 +89,7 @@
       "weapon" : "Resolution Shines As Pearls of Sweat",
       "refinement" : 5
     }, {
-      "characterId" : "1b88af41-90be-442a-bd21-9ff848386d5b",
+      "characterId" : "5b609ae8-d050-4815-b60f-bf0dba73c912",
       "name" : "Robin • Summeretto",
       "element" : "WIND",
       "level" : 80,
@@ -97,7 +97,7 @@
       "weapon" : "Memory's Curtain Never Falls",
       "refinement" : 5
     }, {
-      "characterId" : "28e0446f-4f8b-454b-b3c9-2637effb9149",
+      "characterId" : "3cc0fdf6-acd8-4939-8ea1-15b2abf8962e",
       "name" : "Huohuo",
       "element" : "WIND",
       "level" : 80,
@@ -105,7 +105,7 @@
       "weapon" : "Quid Pro Quo",
       "refinement" : 5
     } ], [ {
-      "characterId" : "571d22ba-cda2-4fb6-bfff-ca804897bec1",
+      "characterId" : "cb0856c5-a33b-430c-8fe0-b0271ebabec6",
       "name" : "Acheron",
       "element" : "LIGHTNING",
       "level" : 80,
@@ -113,7 +113,7 @@
       "weapon" : "Along the Passing Shore",
       "refinement" : 1
     }, {
-      "characterId" : "5370518c-6cf4-48a0-8f1c-b189a69f0470",
+      "characterId" : "194fb958-d211-4b5a-9471-17cb62e0de6f",
       "name" : "Mortenax Blade",
       "element" : "FIRE",
       "level" : 80,
@@ -121,7 +121,7 @@
       "weapon" : "Resolution Shines As Pearls of Sweat",
       "refinement" : 5
     }, {
-      "characterId" : "1b88af41-90be-442a-bd21-9ff848386d5b",
+      "characterId" : "5b609ae8-d050-4815-b60f-bf0dba73c912",
       "name" : "Robin • Summeretto",
       "element" : "WIND",
       "level" : 80,
@@ -129,7 +129,7 @@
       "weapon" : "Memory's Curtain Never Falls",
       "refinement" : 5
     }, {
-      "characterId" : "28e0446f-4f8b-454b-b3c9-2637effb9149",
+      "characterId" : "3cc0fdf6-acd8-4939-8ea1-15b2abf8962e",
       "name" : "Huohuo",
       "element" : "WIND",
       "level" : 80,
