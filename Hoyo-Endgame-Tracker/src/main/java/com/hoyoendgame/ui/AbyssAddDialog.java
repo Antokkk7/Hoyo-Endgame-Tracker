@@ -121,6 +121,7 @@ public final class AbyssAddDialog {
         VBox.setVgrow(scroll, Priority.ALWAYS);
         root.setPadding(new Insets(24, 28, 24, 28));
 
+        Ui.useCss(root, "genshin.css");
         stage[0] = Ui.modal(owner, "Abysses spiralées - clear", root, 1180, 860);
         stage[0].showAndWait();
         return Optional.ofNullable(result[0]);

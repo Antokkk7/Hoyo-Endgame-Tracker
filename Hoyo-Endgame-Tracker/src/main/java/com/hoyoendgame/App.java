@@ -1,7 +1,13 @@
 package com.hoyoendgame;
 
 import com.hoyoendgame.data.DataStore;
+import com.hoyoendgame.data.StarRailStore;
 import com.hoyoendgame.ui.AbyssView;
+import com.hoyoendgame.ui.ApocPage;
+import com.hoyoendgame.ui.ArbitrationPage;
+import com.hoyoendgame.ui.MocPage;
+import com.hoyoendgame.ui.PureFictionPage;
+import com.hoyoendgame.ui.StarRailView;
 import com.hoyoendgame.ui.CarnageView;
 import com.hoyoendgame.ui.GenshinView;
 import com.hoyoendgame.ui.HomeView;
@@ -24,13 +30,15 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-/** Entry point: top navigation bar (Accueil / Genshin Impact / Honkai: Star Rail soon) and page switching. */
+/** Entry point: top navigation bar (Accueil / Genshin Impact / Honkai: Star Rail) and page switching. */
 public class App extends Application {
     private final BorderPane root = new BorderPane();
     private Button homeBtn;
     private Button genshinBtn;
+    private Button starRailBtn;
     private HomeView home;
     private GenshinView genshin;
+    private StarRailView starRail;
 
     @Override
     public void start(Stage stage) {
@@ -38,6 +46,9 @@ public class App extends Application {
         DataStore store = DataStore.get();
         store.setErrorHandler(msg -> Platform.runLater(() -> Ui.error(msg)));
         store.load();
+        StarRailStore hsrStore = StarRailStore.get();
+        hsrStore.setErrorHandler(msg -> Platform.runLater(() -> Ui.error(msg)));
+        hsrStore.load();
 
         // Application icon (top-left logo + window/taskbar icon instead of the default Java one).
         Image icon = new Image(Objects.requireNonNull(App.class.getResourceAsStream("/icon.png")));
@@ -52,20 +63,21 @@ public class App extends Application {
 
         homeBtn = navButton("Accueil");
         genshinBtn = navButton("Genshin Impact");
-        Button hsr = navButton("Honkai: Star Rail");
-        hsr.setDisable(true);
+        starRailBtn = navButton("Honkai: Star Rail");
         homeBtn.setOnAction(e -> showHome());
         genshinBtn.setOnAction(e -> showGenshin());
+        starRailBtn.setOnAction(e -> showStarRail());
 
-        HBox nav = new HBox(8, homeBtn, genshinBtn, hsr);
+        HBox nav = new HBox(8, homeBtn, genshinBtn, starRailBtn);
         nav.setAlignment(Pos.CENTER);
         HBox bar = new HBox(16, brand, Ui.grow(), nav, Ui.grow(), spacerLike(brand));
         bar.setAlignment(Pos.CENTER_LEFT);
         bar.setPadding(new Insets(22, 48, 18, 48));
         root.setTop(bar);
 
-        home = new HomeView(this::showGenshin);
+        home = new HomeView(this::showGenshin, this::showStarRail);
         genshin = new GenshinView(this::showAbyss, this::showTheatre, this::showCarnage);
+        starRail = new StarRailView(this::showMoc, this::showPf, this::showApoc, this::showArbitration);
         showHome();
 
         stage.setTitle("Hoyo Endgame Tracker");
@@ -92,6 +104,7 @@ public class App extends Application {
     public void stop() {
         // Everything is already saved after each change; this is a last safety net.
         DataStore.get().saveAll();
+        StarRailStore.get().saveAll();
     }
 
     private void showHome() {
@@ -120,6 +133,31 @@ public class App extends Application {
         setActive(genshinBtn);
     }
 
+    private void showStarRail() {
+        setPage(starRail);
+        setActive(starRailBtn);
+    }
+
+    private void showMoc() {
+        root.setCenter(MocPage.create(this::showStarRail));
+        setActive(starRailBtn);
+    }
+
+    private void showPf() {
+        root.setCenter(PureFictionPage.create(this::showStarRail));
+        setActive(starRailBtn);
+    }
+
+    private void showApoc() {
+        root.setCenter(ApocPage.create(this::showStarRail));
+        setActive(starRailBtn);
+    }
+
+    private void showArbitration() {
+        root.setCenter(ArbitrationPage.create(this::showStarRail));
+        setActive(starRailBtn);
+    }
+
     private void setPage(Node page) {
         ScrollPane sp = new ScrollPane(page);
         sp.setFitToWidth(true);
@@ -128,7 +166,7 @@ public class App extends Application {
     }
 
     private void setActive(Button active) {
-        for (Button b : new Button[]{homeBtn, genshinBtn}) b.getStyleClass().remove("nav-btn-active");
+        for (Button b : new Button[]{homeBtn, genshinBtn, starRailBtn}) b.getStyleClass().remove("nav-btn-active");
         active.getStyleClass().add("nav-btn-active");
     }
 

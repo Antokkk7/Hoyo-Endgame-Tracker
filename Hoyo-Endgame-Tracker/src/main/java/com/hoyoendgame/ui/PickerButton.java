@@ -15,6 +15,7 @@ public final class PickerButton<T> extends Button {
     private final Function<T, String> label;
     private Function<T, String> searchText;
     private Function<T, Node> graphicFactory;
+    private Function<String, T> customFactory;
     private T value;
     private Consumer<T> onPick = v -> {
     };
@@ -31,11 +32,16 @@ public final class PickerButton<T> extends Button {
         refreshText();
         setOnAction(e -> {
             if (getScene() == null) return;
-            Picker.pick(getScene().getWindow(), dialogTitle, items.get(), label, searchText == null ? label : searchText).ifPresent(v -> {
+            Picker.pick(getScene().getWindow(), dialogTitle, items.get(), label, searchText == null ? label : searchText, customFactory).ifPresent(v -> {
                 setValue(v);
                 onPick.accept(v);
             });
         });
+    }
+
+    /** Lets the user type a value that is not in the list (offered when the search finds nothing). */
+    public void setCustomFactory(Function<String, T> factory) {
+        this.customFactory = factory;
     }
 
     /** Text the picker's search box matches (defaults to the label). */

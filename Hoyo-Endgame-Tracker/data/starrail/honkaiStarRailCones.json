@@ -1,0 +1,871 @@
+{
+  "jeu": "Honkai: Star Rail",
+  "version_max": "4.7",
+  "date_verification": "2026-11-07",
+  "sortie_version_4_7": "2026-11-11",
+  "langue_noms": "en",
+  "langue_voies": "fr",
+  "total_cones": 172,
+  "cones_de_lumiere": [
+    {
+      "nom": "A Dream Scented in Wheat",
+      "rarete": 4,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "A Grounded Ascent",
+      "rarete": 5,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "A Little Getaway",
+      "rarete": 4,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "A Secret Vow",
+      "rarete": 4,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "A Star That Lights the Night",
+      "rarete": 5,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "A Thankless Coronation",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "A Trail of Bygone Blood",
+      "rarete": 4,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Adversarial",
+      "rarete": 3,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "After the Charmony Fall",
+      "rarete": 4,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Along the Passing Shore",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Amber",
+      "rarete": 3,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "An Instant Before A Gaze",
+      "rarete": 5,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Arrows",
+      "rarete": 3,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Baptism of Pure Thought",
+      "rarete": 5,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Before Dawn",
+      "rarete": 5,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Before the Tutorial Mission Starts",
+      "rarete": 4,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Boundless Choreo",
+      "rarete": 4,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Brighter Than the Sun",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "But the Battle Isn't Over",
+      "rarete": 5,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Carve the Moon, Weave the Clouds",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Chorus",
+      "rarete": 3,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Collapsing Sky",
+      "rarete": 3,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Colors for Tomorrow",
+      "rarete": 5,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Concert for Two",
+      "rarete": 4,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Cornucopia",
+      "rarete": 3,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Cruising in the Stellar Sea",
+      "rarete": 5,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Dance at Sunset",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Dance! Dance! Dance!",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Darting Arrow",
+      "rarete": 3,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Data Bank",
+      "rarete": 3,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Day One of My New Life",
+      "rarete": 4,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Dazzled by a Flowery World",
+      "rarete": 5,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Defense",
+      "rarete": 3,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Destiny's Threads Forewoven",
+      "rarete": 4,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Dream's Montage",
+      "rarete": 4,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Dreamville Adventure",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Earthly Escapade",
+      "rarete": 5,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Echoes of the Coffin",
+      "rarete": 5,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Elation Brimming With Blessings",
+      "rarete": 5,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Epoch Etched in Golden Blood",
+      "rarete": 5,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Eternal Calculus",
+      "rarete": 5,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Eyes of the Prey",
+      "rarete": 4,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Fermata",
+      "rarete": 4,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Final Victor",
+      "rarete": 4,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Fine Fruit",
+      "rarete": 3,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Flame of Blood, Blaze My Path",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Flames Afar",
+      "rarete": 4,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Flickering Stars",
+      "rarete": 5,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Flowing Nightglow",
+      "rarete": 5,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Fly Into a Pink Tomorrow",
+      "rarete": 4,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "For Tomorrow's Journey",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Geniuses' Greetings",
+      "rarete": 4,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Geniuses' Repose",
+      "rarete": 4,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Good Night and Sleep Well",
+      "rarete": 4,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Hey, Over Here",
+      "rarete": 4,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Hidden Shadow",
+      "rarete": 3,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Holiday Thermae Escapade",
+      "rarete": 4,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "I Am As You Behold",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "I Shall Be My Own Sword",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "I Venture Forth to Hunt",
+      "rarete": 5,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "If Time Were a Flower",
+      "rarete": 5,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "In Pursuit of the Wind",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "In the Name of the World",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "In the Night",
+      "rarete": 5,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Incessant Rain",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Indelible Promise",
+      "rarete": 4,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Inherently Unjust Destiny",
+      "rarete": 5,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Into the Unreachable Veil",
+      "rarete": 5,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "It's Showtime",
+      "rarete": 4,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Journey, Forever Peaceful",
+      "rarete": 4,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Landau's Choice",
+      "rarete": 4,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Lies Dance on the Breeze",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Life Should Be Cast to Flames",
+      "rarete": 5,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Lingering Tear",
+      "rarete": 3,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Long May Rainbows Adorn the Sky",
+      "rarete": 5,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Long Road Leads Home",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Loop",
+      "rarete": 3,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Make Farewells More Beautiful",
+      "rarete": 5,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Make the World Clamor",
+      "rarete": 4,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Mediation",
+      "rarete": 3,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Memories of the Past",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Memory's Curtain Never Falls",
+      "rarete": 5,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Meshing Cogs",
+      "rarete": 3,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Moment of Victory",
+      "rarete": 5,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Multiplication",
+      "rarete": 3,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Mushy Shroomy's Adventures",
+      "rarete": 4,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Mutual Demise",
+      "rarete": 3,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Never Forget Her Flame",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Night of Fright",
+      "rarete": 5,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Night on the Milky Way",
+      "rarete": 5,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Ninja Record: Sound Hunt",
+      "rarete": 4,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Ninjutsu Inscription: Dazzling Evilbreaker",
+      "rarete": 5,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Nowhere to Run",
+      "rarete": 4,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "On the Fall of an Aeon",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Only Silence Remains",
+      "rarete": 4,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Passkey",
+      "rarete": 3,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Past and Future",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Past Self in Mirror",
+      "rarete": 5,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Patience Is All You Need",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Perfect Timing",
+      "rarete": 4,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Pioneering",
+      "rarete": 3,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Planetary Rendezvous",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Poised to Bloom",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Post-Op Conversation",
+      "rarete": 4,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Quid Pro Quo",
+      "rarete": 4,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Race to the Horizon",
+      "rarete": 4,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Reforged in Hellfire",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Reforged Remembrance",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Reminiscence",
+      "rarete": 3,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Resolution Shines As Pearls of Sweat",
+      "rarete": 4,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Return to Darkness",
+      "rarete": 4,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Rise and Sing",
+      "rarete": 5,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "River Flows in Spring",
+      "rarete": 4,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Sagacity",
+      "rarete": 3,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Sailing Towards a Second Life",
+      "rarete": 5,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Scent Alone Stays True",
+      "rarete": 5,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "See You at the End",
+      "rarete": 4,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "See You at the World's End!",
+      "rarete": 4,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Shadowburn",
+      "rarete": 3,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Shadowed by Night",
+      "rarete": 4,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Shared Feeling",
+      "rarete": 4,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Shattered Home",
+      "rarete": 3,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "She Already Shut Her Eyes",
+      "rarete": 5,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Sleep Like the Dead",
+      "rarete": 5,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Sneering",
+      "rarete": 3,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Solitary Healing",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Something Irreplaceable",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Subscribe for More!",
+      "rarete": 4,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Summer Rides the Surf",
+      "rarete": 5,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Sweat Now, Cry Less",
+      "rarete": 4,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Swordplay",
+      "rarete": 4,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Texture of Memories",
+      "rarete": 5,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "The Birth of the Self",
+      "rarete": 4,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "The Day The Cosmos Fell",
+      "rarete": 4,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "The Finale of a Lie",
+      "rarete": 5,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "The Flower Remembers",
+      "rarete": 4,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "The Forever Victual",
+      "rarete": 4,
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "The Great Cosmic Enterprise",
+      "rarete": 4,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "The Hell Where Ideals Burn",
+      "rarete": 5,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "The Moles Welcome You",
+      "rarete": 4,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "The Seriousness of Breakfast",
+      "rarete": 4,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "The Story's Next Page",
+      "rarete": 4,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "The Unreachable Side",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "This Is Me!",
+      "rarete": 4,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "This Love, Forever",
+      "rarete": 5,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Those Many Springs",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Though Worlds Apart",
+      "rarete": 5,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Thus Burns the Dawn",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Time Waits for No One",
+      "rarete": 5,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Time Woven Into Gold",
+      "rarete": 5,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "To Evernight's Stars",
+      "rarete": 5,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Today Is Another Peaceful Day",
+      "rarete": 4,
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Today's Good Luck",
+      "rarete": 4,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Tomorrow, Together",
+      "rarete": 4,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Trend of the Universal Market",
+      "rarete": 4,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Under the Blue Sky",
+      "rarete": 4,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Until the Flowers Bloom Again",
+      "rarete": 5,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Unto Tomorrow's Morrow",
+      "rarete": 4,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Upon the First Echo of \"Aha\"",
+      "rarete": 5,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Victory In a Blink",
+      "rarete": 4,
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Void",
+      "rarete": 3,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Warmth Shortens Cold Nights",
+      "rarete": 4,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "We Are Wildfire",
+      "rarete": 4,
+      "voie": "Préservation"
+    },
+    {
+      "nom": "We Will Meet Again",
+      "rarete": 4,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Welcome to the Cosmic City",
+      "rarete": 5,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "What Is Real?",
+      "rarete": 4,
+      "voie": "Abondance"
+    },
+    {
+      "nom": "When She Decided to See",
+      "rarete": 5,
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Whereabouts Should Dreams Rest",
+      "rarete": 5,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Why Does the Ocean Sing",
+      "rarete": 5,
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Woof! Walk Time!",
+      "rarete": 4,
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Worrisome, Blissful",
+      "rarete": 5,
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Yet Hope Is Priceless",
+      "rarete": 5,
+      "voie": "Érudition"
+    }
+  ]
+}

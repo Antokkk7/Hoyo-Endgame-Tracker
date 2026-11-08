@@ -1,6 +1,7 @@
 package com.hoyoendgame.ui;
 
 import com.hoyoendgame.data.DataStore;
+import com.hoyoendgame.data.StarRailStore;
 import com.hoyoendgame.model.AbyssClear;
 import com.hoyoendgame.model.CarnageClear;
 import com.hoyoendgame.model.TheatreClear;
@@ -14,11 +15,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-/** Home page: one card per game (Genshin active, Honkai: Star Rail coming later). */
+/** Home page: one card per game (Genshin Impact, Honkai: Star Rail). */
 public final class HomeView extends VBox {
     private final DataStore store = DataStore.get();
+    private final StarRailStore hsr = StarRailStore.get();
 
-    public HomeView(Runnable openGenshin) {
+    public HomeView(Runnable openGenshin, Runnable openStarRail) {
+        Ui.useCss(this, "home.css", "genshin.css");
         setSpacing(18);
         setPadding(new Insets(24, 48, 40, 48));
 
@@ -29,7 +32,7 @@ public final class HomeView extends VBox {
         VBox intro = new VBox(6, Ui.label("Suivi des endgames", "chip", "chip-accent"), heading, heading2, sub);
         intro.setPadding(new Insets(0, 0, 18, 0));
 
-        HBox cards = new HBox(24, genshinCard(openGenshin), hsrCard());
+        HBox cards = new HBox(24, genshinCard(openGenshin), hsrCard(openStarRail));
         cards.setFillHeight(true);
 
         Label foot = Ui.label("Tout est enregistré en local dans le dossier data/ ", "muted", "small");
@@ -93,19 +96,57 @@ public final class HomeView extends VBox {
         return box;
     }
 
-    private Node hsrCard() {
-        Button soon = Ui.button("Page à venir");
-        soon.setDisable(true);
-        Label t = Ui.label("Honkai: Star Rail", "h1");
-        t.getStyleClass().add("h2");
-        t.setOpacity(0.7);
-        HBox title = new HBox(12, t, Ui.grow(), Ui.label("Bientôt", "chip"));
+    private Node hsrCard(Runnable open) {
+        Label moc = Ui.label("", "neon-green");
+        Label pf = Ui.label("", "neon-green");
+        Label apoc = Ui.label("", "neon-green");
+        Label arb = Ui.label("", "neon-magenta", "strong");
+        Label counts = Ui.label("", "muted");
+
+        Runnable refresh = () -> {
+            moc.setText(hsr.moc.isEmpty() ? "—" : MocPage.summary(hsr.moc.get(0)) + " · patch " + hsr.moc.get(0).patch);
+            pf.setText(hsr.pf.isEmpty() ? "—" : PureFictionPage.summary(hsr.pf.get(0)) + " · patch " + hsr.pf.get(0).patch);
+            apoc.setText(hsr.apoc.isEmpty() ? "—" : ApocPage.summary(hsr.apoc.get(0)) + " · patch " + hsr.apoc.get(0).patch);
+            arb.setText(hsr.arbitration.isEmpty() ? "—" : ArbitrationPage.summary(hsr.arbitration.get(0))
+                    + " · patch " + hsr.arbitration.get(0).patch + ArbitrationPage.frameSuffix(hsr.arbitration.get(0)));
+            counts.setText(hsr.teams.size() + " équipes · " + hsr.characters.size() + " personnages");
+        };
+        InvalidationListener l = o -> refresh.run();
+        hsr.moc.addListener(l);
+        hsr.pf.addListener(l);
+        hsr.apoc.addListener(l);
+        hsr.arbitration.addListener(l);
+        hsr.teams.addListener(l);
+        hsr.characters.addListener(l);
+        refresh.run();
+
+        Button openBtn = Ui.button("Ouvrir Honkai: Star Rail", "btn-primary");
+        openBtn.setOnAction(e -> open.run());
+
+        HBox title = new HBox(12, Ui.label("Honkai: Star Rail", "h1"), Ui.grow(), Ui.label("Actif", "chip", "chip-accent"));
         title.setAlignment(Pos.CENTER_LEFT);
-        Label text = Ui.label("La page Honkai: Star Rail sera ajoutée dans une prochaine étape.", "muted");
-        text.setWrapText(true);
-        HBox bottom = new HBox(Ui.grow(), soon);
-        VBox box = new VBox(10, title, text, Ui.grow(), bottom);
-        box.getStyleClass().add("glass-dashed");
+        title.getChildren().get(0).getStyleClass().add("h2");
+
+        HBox foot = new HBox(12, counts, Ui.grow(), openBtn);
+        foot.setAlignment(Pos.CENTER_LEFT);
+        foot.setPadding(new Insets(12, 0, 0, 0));
+        foot.getStyleClass().add("stat-line");
+
+        // Arbitration is highlighted: purple frame, bigger line.
+        HBox arbLine = statLine("Arbitre de l'instable", arb);
+        arbLine.getStyleClass().add("hsr-featured-line");
+        arbLine.setPadding(new Insets(20, 16, 20, 16));
+        VBox.setMargin(arbLine, new Insets(6, 0, 6, 0));
+
+        VBox box = new VBox(4, title,
+                Ui.label("Salle oubliée, Pure fiction, Fantômes de l'apocalypse et Arbitre de l'instable.", "muted"),
+                spacer(10),
+                statLine("Salle oubliée", moc),
+                statLine("Pure fiction", pf),
+                statLine("Fantômes de l'apocalypse", apoc),
+                arbLine,
+                spacer(8), foot);
+        box.getStyleClass().add("glass-accent");
         box.setPadding(new Insets(30));
         HBox.setHgrow(box, Priority.ALWAYS);
         box.setMaxWidth(Double.MAX_VALUE);

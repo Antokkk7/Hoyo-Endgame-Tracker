@@ -56,7 +56,7 @@ public final class TheatreAddDialog {
         List<ToggleButton> elementButtons = new ArrayList<>();
         Label elementCount = Ui.label("", "muted", "small");
         FlowPane elementsRow = new FlowPane(10, 10);
-        for (Element el : Element.values()) {
+        for (Element el : Element.genshin()) {
             ToggleButton tb = new ToggleButton(el.label(), new Circle(6, Color.web(el.color())));
             tb.getStyleClass().add("element-toggle");
             tb.setUserData(el);
@@ -277,6 +277,7 @@ public final class TheatreAddDialog {
         VBox.setVgrow(scroll, Priority.ALWAYS);
         root.setPadding(new Insets(24, 28, 24, 28));
 
+        Ui.useCss(root, "genshin.css");
         stage[0] = Ui.modal(owner, "Théâtre de l'imaginarium - clear", root, 1100, 880);
         stage[0].showAndWait();
         return Optional.ofNullable(result[0]);

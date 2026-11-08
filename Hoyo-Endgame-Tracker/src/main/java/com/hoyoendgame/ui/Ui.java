@@ -42,6 +42,10 @@ public final class Ui {
     public static final String STAR_OFF = "#2A2D3A";
     /** Default colour of a filled star (neon cyan). */
     public static final String STAR_ON = "#00F0FF";
+    /** Gold star (Honkai: Star Rail stars, Genshin Arcanum). */
+    public static final String STAR_GOLD = "#FFC83D";
+    /** Purple "prismatic" star of Honkai: Star Rail (stellar mode). */
+    public static final String STAR_PRISM = "#C77DFF";
 
     private static final java.util.Map<String, String> SHORT_NAMES = java.util.Map.of(
             "yumeglorpglorp", "Mizuki",
@@ -98,6 +102,20 @@ public final class Ui {
         a.setHeaderText(null);
         a.getDialogPane().getStylesheets().add(CSS);
         return a.showAndWait().filter(b -> b == ButtonType.OK).isPresent();
+    }
+
+    /** Adds the given classpath stylesheets (ex. "genshin.css") to a view or a window root. */
+    public static void useCss(Parent node, String... files) {
+        for (String f : files) {
+            if (f == null || f.isBlank()) continue;
+            java.net.URL url = Ui.class.getResource("/" + f);
+            if (url == null) {
+                System.err.println("[css] feuille de style introuvable : " + f);
+                continue;
+            }
+            String ext = url.toExternalForm();
+            if (!node.getStylesheets().contains(ext)) node.getStylesheets().add(ext);
+        }
     }
 
     // ---------------------------------------------------------------- controls
@@ -197,10 +215,15 @@ public final class Ui {
     }
 
     public static void tileStyle(Region tile, Element e) {
+        tileStyle(tile, e, 1.0);
+    }
+
+    /** Element-coloured tile; {@code alpha} is the opacity of the background colour (0.5 behind a picture). */
+    public static void tileStyle(Region tile, Element e, double alpha) {
         Color base = Color.web(elementColor(e));
         String light = hex(base.interpolate(Color.WHITE, 0.35));
-        tile.setStyle("-fx-background-radius:4;-fx-background-color:linear-gradient(to bottom," + light + "," + hex(base)
-                + ");-fx-border-color:" + rgba(elementColor(e), 0.9) + ";-fx-border-width:1;-fx-border-radius:4;");
+        tile.setStyle("-fx-background-radius:4;-fx-background-color:linear-gradient(to bottom," + rgba(light, alpha) + ","
+                + rgba(hex(base), alpha) + ");-fx-border-color:" + rgba(elementColor(e), 0.9) + ";-fx-border-width:1;-fx-border-radius:4;");
     }
 
     public static String initials(String name) {
@@ -214,13 +237,20 @@ public final class Ui {
      * when there is none, an element-coloured tile with the initials.
      */
     public static StackPane portrait(String name, Element element, double w, double h) {
+        return portrait(CharacterImages.folder(), name, element, w, h);
+    }
+
+    /** Same, with the pictures taken from another folder (Honkai: Star Rail characters). */
+    public static StackPane portrait(ImageFolder images, String name, Element element, double w, double h) {
         StackPane tile = new StackPane();
         tile.setPrefSize(w, h);
         tile.setMinSize(w, h);
         tile.setMaxSize(w, h);
         tileStyle(tile, element);
-        Image img = CharacterImages.get(name);
+        Image img = images.get(name);
         if (img != null && img.getWidth() > 0 && img.getHeight() > 0) {
+            // Honkai: Star Rail pictures: the colour behind them is 50 % transparent.
+            if (images != CharacterImages.folder()) tileStyle(tile, element, 0.5);
             tile.getChildren().add(cover(img, w, h, 8));
         } else {
             tile.getChildren().add(label(initials(name), "tile-text"));
@@ -245,26 +275,26 @@ public final class Ui {
         return iv;
     }
 
-    private static ImageFolder weaponFolder;
     private static final java.util.Set<String> MISSING_WEAPONS = new java.util.HashSet<>();
 
     /** Square with the weapon picture (armesIMG/&lt;weapon name&gt;.png), or an empty frame when there is none. */
     public static StackPane weaponTile(String weapon, double size) {
+        return weaponTile(GameProfile.genshin().weaponImages, weapon, size);
+    }
+
+    /** Same, with the pictures taken from another folder (Honkai: Star Rail cones). */
+    public static StackPane weaponTile(ImageFolder images, String weapon, double size) {
         StackPane box = new StackPane();
         box.getStyleClass().add("weapon-tile");
         box.setPrefSize(size, size);
         box.setMinSize(size, size);
         box.setMaxSize(size, size);
-        Image img;
-        synchronized (Ui.class) {
-            if (weaponFolder == null) weaponFolder = new ImageFolder(com.hoyoendgame.data.DataStore.get().weaponImagesDir());
-            img = weaponFolder.get(weapon);
-        }
+        Image img = images.get(weapon);
         if (img != null && img.getWidth() > 0 && img.getHeight() > 0) {
             box.getChildren().add(cover(img, size, size, 6));
         } else {
             if (weapon != null && !weapon.isBlank() && MISSING_WEAPONS.add(weapon)) {
-                System.err.println("[images] pas d'image d'arme pour : " + weapon);
+                System.err.println("[images] pas d'image pour : " + weapon);
             }
             box.getChildren().add(label("?", "muted", "small"));
         }
@@ -324,7 +354,9 @@ public final class Ui {
         String n = name.trim();
         String alias = SHORT_NAMES.get(CharacterImages.key(n));
         if (alias != null) return alias;
-        if (n.toLowerCase(java.util.Locale.ROOT).startsWith("traveler") && n.contains("(")) return "Traveler";
+        String lower = n.toLowerCase(java.util.Locale.ROOT);
+        if (lower.startsWith("traveler") && n.contains("(")) return "Traveler";
+        if (lower.startsWith("trailblazer") && n.contains("(")) return "Trailblazer";
         return n;
     }
 
@@ -335,7 +367,11 @@ public final class Ui {
      * @param meta optional muted line under it (e.g. "C2 · R1")
      */
     public static VBox avatar(String name, Element element, String sub, String meta, double w, double h) {
-        VBox box = new VBox(4, portrait(name, element, w, h));
+        return avatar(CharacterImages.folder(), name, element, sub, meta, w, h);
+    }
+
+    public static VBox avatar(ImageFolder images, String name, Element element, String sub, String meta, double w, double h) {
+        VBox box = new VBox(4, portrait(images, name, element, w, h));
         box.setAlignment(Pos.TOP_CENTER);
         box.setMinWidth(w + 8);
         if (sub != null) box.getChildren().add(label(sub, "lv"));

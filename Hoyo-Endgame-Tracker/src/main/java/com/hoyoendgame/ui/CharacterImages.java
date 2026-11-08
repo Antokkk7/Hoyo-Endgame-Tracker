@@ -10,6 +10,11 @@ public final class CharacterImages {
     private CharacterImages() {
     }
 
+    static synchronized ImageFolder folder() {
+        if (folder == null) folder = new ImageFolder(DataStore.get().imagesDir());
+        return folder;
+    }
+
     static String key(String name) {
         return ImageFolder.key(name);
     }

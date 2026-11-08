@@ -1,6 +1,5 @@
 package com.hoyoendgame.ui;
 
-import com.hoyoendgame.data.DataStore;
 import com.hoyoendgame.model.Element;
 import com.hoyoendgame.model.GenshinCharacter;
 import com.hoyoendgame.model.TeamMember;
@@ -36,9 +35,16 @@ public final class TeamPane extends GridPane {
     }
 
     private final List<Slot> slots = new ArrayList<>();
+    private final GameProfile profile;
+
+    /** Genshin team of 4. */
+    public TeamPane(int columns) {
+        this(columns, GameProfile.genshin());
+    }
 
     /** @param columns 1 for a vertical list, 2 for a 2x2 grid */
-    public TeamPane(int columns) {
+    public TeamPane(int columns, GameProfile profile) {
+        this.profile = profile;
         setHgap(14);
         setVgap(14);
         for (int i = 0; i < 4; i++) {
@@ -78,8 +84,8 @@ public final class TeamPane extends GridPane {
         return w.rarity() > 0 ? w.name() + " (" + w.rarity() + "★)" : w.name();
     }
 
-    private static Weapon weaponByName(String name) {
-        for (Weapon w : DataStore.get().weapons) {
+    private Weapon weaponByName(String name) {
+        for (Weapon w : profile.weapons) {
             if (w.name().equalsIgnoreCase(name)) return w;
         }
         return new Weapon(name, 0);
@@ -91,7 +97,7 @@ public final class TeamPane extends GridPane {
         final PickerButton<Weapon> weaponBtn;
         final StackPane weaponTile = new StackPane();
         final StackPane tile = new StackPane();
-        final Spinner<Integer> level = Ui.spinner(1, 90, 90);
+        final Spinner<Integer> level = Ui.spinner(1, profile.maxLevel, profile.maxLevel);
         final ToggleGroup cons = new ToggleGroup();
         final ToggleGroup refine = new ToggleGroup();
 
@@ -102,31 +108,33 @@ public final class TeamPane extends GridPane {
             charBtn = new PickerButton<>("Choisir un personnage", "Choisir un personnage…", TeamPane::characterLabel, () -> {
                 List<GenshinCharacter> l = new ArrayList<>();
                 l.add(NONE);
-                l.addAll(DataStore.get().characters);
+                l.addAll(profile.characters);
                 return l;
             });
             charBtn.setValue(NONE);
             charBtn.setSearchText(c -> c.name + " " + (c.element == null ? "" : c.element.label()));
             charBtn.setOnPick(this::updateTile);
 
-            weaponBtn = new PickerButton<>("Choisir une arme", "Choisir une arme…", TeamPane::weaponLabel, () -> {
+            String chooseWeapon = "arme".equals(profile.weaponWord) ? "Choisir une arme" : "Choisir un " + profile.weaponWord;
+            weaponBtn = new PickerButton<>(chooseWeapon, chooseWeapon + "…", TeamPane::weaponLabel, () -> {
                 List<Weapon> l = new ArrayList<>();
                 l.add(NO_WEAPON);
-                l.addAll(DataStore.get().weapons);
+                l.addAll(profile.weapons);
                 return l;
             });
+            weaponBtn.setCustomFactory(text -> new Weapon(text, 0));
             weaponBtn.setOnPick(this::updateWeaponTile);
             updateWeaponTile(null);
 
             updateTile(NONE);
 
             FlowPane consRow = new FlowPane(4, 4);
-            for (int k = 0; k <= 6; k++) consRow.getChildren().add(Ui.pill("C" + k, cons, k));
+            for (int k = 0; k <= 6; k++) consRow.getChildren().add(Ui.pill(profile.consPrefix + k, cons, k));
             Ui.keepOneSelected(cons);
             Ui.select(cons, 0);
 
             HBox refRow = new HBox(4); // no wrapping: a FlowPane would claim ~400px and squeeze the weapon name
-            for (int k = 1; k <= 5; k++) refRow.getChildren().add(Ui.pill("R" + k, refine, k));
+            for (int k = 1; k <= 5; k++) refRow.getChildren().add(Ui.pill(profile.refinePrefix + k, refine, k));
             Ui.keepOneSelected(refine);
             Ui.select(refine, 1);
 
@@ -141,9 +149,9 @@ public final class TeamPane extends GridPane {
             HBox weaponLine = new HBox(8, weaponTile, weaponBtn);
             weaponLine.setAlignment(Pos.CENTER_LEFT);
             HBox.setHgrow(weaponBtn, Priority.ALWAYS);
-            VBox weaponBox = new VBox(4, Ui.label("Arme", "muted", "small"), weaponLine);
+            VBox weaponBox = new VBox(4, Ui.label(profile.weaponTitle, "muted", "small"), weaponLine);
             HBox.setHgrow(weaponBox, Priority.ALWAYS);
-            VBox refBox = new VBox(4, Ui.label("Raffinement", "muted", "small"), refRow);
+            VBox refBox = new VBox(4, Ui.label(profile.refineTitle, "muted", "small"), refRow);
             refBox.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
             HBox weaponRow = new HBox(10, weaponBox, refBox);
             weaponRow.setAlignment(Pos.BOTTOM_LEFT);
@@ -153,13 +161,13 @@ public final class TeamPane extends GridPane {
 
         void updateTile(GenshinCharacter c) {
             boolean none = c == null || c == NONE;
-            tile.getChildren().setAll(Ui.portrait(none ? "?" : c.name, none ? null : c.element, 44, 52));
+            tile.getChildren().setAll(Ui.portrait(profile.characterImages, none ? "?" : c.name, none ? null : c.element, 44, 52));
             applyElementStyle(none ? null : c.element);
         }
 
         /** Picture of the chosen weapon, in a square to the left of the weapon button. */
         void updateWeaponTile(Weapon w) {
-            weaponTile.getChildren().setAll(Ui.weaponTile(w == null ? "" : w.name(), 40));
+            weaponTile.getChildren().setAll(Ui.weaponTile(profile.weaponImages, w == null ? "" : w.name(), 40));
         }
 
         /** Frame, glow and character button take the colour of the character's element. */
@@ -184,7 +192,7 @@ public final class TeamPane extends GridPane {
             m.characterId = c.id;
             m.name = c.name;
             m.element = c.element;
-            m.level = level.getValue() == null ? 90 : level.getValue();
+            m.level = level.getValue() == null ? profile.maxLevel : level.getValue();
             m.constellation = Ui.selectedInt(cons, 0);
             Weapon w = weaponBtn.getValue();
             m.weapon = w == null ? "" : w.name();
@@ -196,7 +204,7 @@ public final class TeamPane extends GridPane {
             if (m == null) {
                 charBtn.setValue(NONE);
                 updateTile(NONE);
-                level.getValueFactory().setValue(90);
+                level.getValueFactory().setValue(profile.maxLevel);
                 Ui.select(cons, 0);
                 Ui.select(refine, 1);
                 weaponBtn.setValue(null);
@@ -204,7 +212,7 @@ public final class TeamPane extends GridPane {
                 return;
             }
             GenshinCharacter found = null;
-            for (GenshinCharacter c : DataStore.get().characters) {
+            for (GenshinCharacter c : profile.characters) {
                 if ((m.characterId != null && m.characterId.equals(c.id)) || c.name.equalsIgnoreCase(m.name)) {
                     found = c;
                     break;
@@ -219,7 +227,7 @@ public final class TeamPane extends GridPane {
             }
             charBtn.setValue(found);
             updateTile(found);
-            level.getValueFactory().setValue(Math.max(1, Math.min(90, m.level)));
+            level.getValueFactory().setValue(Math.max(1, Math.min(profile.maxLevel, m.level)));
             Ui.select(cons, m.constellation);
             Weapon wp = m.weapon == null || m.weapon.isBlank() ? null : weaponByName(m.weapon);
             weaponBtn.setValue(wp);

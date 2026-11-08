@@ -28,12 +28,13 @@ final class JsonStore {
     private JsonStore() {
     }
 
-    static <T> List<T> readList(Path file, String key, Class<T> type) {
+    static <T> List<T> readList(Path file, String key, Class<T> type, String... alternativeKeys) {
         List<T> out = new ArrayList<>();
         if (!Files.exists(file)) return out;
         try {
             JsonNode root = MAPPER.readTree(file.toFile());
             JsonNode arr = root == null ? null : (root.isArray() ? root : root.get(key));
+            for (int i = 0; arr == null && root != null && i < alternativeKeys.length; i++) arr = root.get(alternativeKeys[i]);
             if (arr != null && arr.isArray()) {
                 for (JsonNode n : arr) out.add(MAPPER.treeToValue(n, type));
             }
@@ -60,6 +61,8 @@ final class JsonStore {
         try {
             JsonNode root = MAPPER.readTree(file.toFile());
             JsonNode w = root == null ? null : (root.isArray() ? root : root.get("weapons"));
+            if (w == null && root != null) w = root.get("cones"); // Honkai: Star Rail catalog
+            if (w == null && root != null) w = root.get("cones_de_lumiere");
             if (w == null) return out;
             if (w.isObject()) {
                 var fields = w.fields();
@@ -71,8 +74,11 @@ final class JsonStore {
                     for (JsonNode n : e.getValue()) out.add(new Weapon(n.asText(), rarity));
                 }
             } else if (w.isArray()) {
-                for (JsonNode n : w) out.add(new Weapon(n.isObject() && n.has("name") ? n.get("name").asText() : n.asText(),
-                        n.isObject() && n.has("rarity") ? n.get("rarity").asInt() : 0));
+                for (JsonNode n : w) {
+                    String name = n.isObject() ? (n.has("name") ? n.get("name").asText() : n.path("nom").asText()) : n.asText();
+                    int rarity = n.isObject() ? (n.has("rarity") ? n.get("rarity").asInt() : n.path("rarete").asInt(0)) : 0;
+                    out.add(new Weapon(name, rarity));
+                }
             }
         } catch (IOException | NumberFormatException e) {
             System.err.println("Impossible de lire " + file + " : " + e.getMessage());

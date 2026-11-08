@@ -28,6 +28,7 @@ public final class AbyssView extends VBox {
     private final VBox detail = new VBox(16);
 
     public AbyssView(Runnable onBack) {
+        Ui.useCss(this, "genshin.css");
         setSpacing(20);
         setPadding(new Insets(28, 48, 40, 48));
 

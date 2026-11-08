@@ -25,7 +25,7 @@ public final class CharacterDialog {
         TextField name = new TextField(base.name);
         name.setPromptText("Nom du personnage");
         ComboBox<Element> element = new ComboBox<>();
-        element.getItems().addAll(Element.values());
+        element.getItems().addAll(Element.genshin());
         element.setValue(base.element);
         element.setMaxWidth(Double.MAX_VALUE);
 

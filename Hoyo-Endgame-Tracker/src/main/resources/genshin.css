@@ -1,0 +1,128 @@
+/* Genshin Impact only: floors, difficulty badges, boss portraits, theatre mode cards, carousels. */
+
+.divider { -fx-background-color: rgba(0,240,255,0.45); -fx-background-radius: 1; }
+.boss-portrait {
+    -fx-background-color: linear-gradient(to bottom right, rgba(0,240,255,0.14), rgba(255,31,224,0.08));
+    -fx-background-radius: 4;
+    -fx-border-color: -line-soft;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+}
+.floor-badge {
+    -fx-background-color: rgba(0,240,255,0.10);
+    -fx-background-radius: 20;
+    -fx-border-color: -neon-cyan;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 20;
+    -fx-text-fill: -neon-cyan;
+    -fx-font-family: "Orbitron", "Space Grotesk", "System";
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+.strip {
+    -fx-background-color: rgba(0,0,0,0.50);
+    -fx-background-radius: 999;
+    -fx-border-color: -line-soft;
+    -fx-border-width: 1;
+    -fx-border-radius: 999;
+    -fx-padding: 8 14 8 14;
+}
+
+
+.element-toggle {
+    -fx-background-color: rgba(5,5,9,0.60);
+    -fx-background-insets: 0;
+    -fx-background-radius: 3;
+    -fx-border-color: -line;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-text-fill: -text;
+    -fx-font-weight: bold;
+    -fx-padding: 10 16 10 16;
+    -fx-cursor: hand;
+}
+.element-toggle:hover { -fx-border-color: rgba(0,240,255,0.6); }
+.element-toggle:selected {
+    -fx-background-color: rgba(0,240,255,0.14);
+    -fx-border-color: -neon-cyan;
+    -fx-effect: dropshadow(gaussian, rgba(0,240,255,0.25), 10, 0.1, 0, 0);
+}
+.element-toggle:disabled { -fx-opacity: 0.4; }
+
+.mode-card {
+    -fx-background-color: rgba(5,5,9,0.60);
+    -fx-background-insets: 0;
+    -fx-background-radius: 3;
+    -fx-border-color: -line;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-padding: 14;
+    -fx-alignment: top-left;
+    -fx-cursor: hand;
+}
+.mode-card:hover { -fx-border-color: rgba(0,240,255,0.6); }
+.mode-card:selected {
+    -fx-background-color: rgba(0,240,255,0.14);
+    -fx-border-color: -neon-cyan;
+    -fx-effect: dropshadow(gaussian, rgba(0,240,255,0.25), 12, 0.1, 0, 0);
+}
+
+.candidate {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4;
+    -fx-border-color: transparent;
+    -fx-border-width: 2;
+    -fx-border-radius: 4;
+    -fx-padding: 6;
+    -fx-cursor: hand;
+}
+.candidate:hover { -fx-border-color: -line; }
+.candidate:selected {
+    -fx-border-color: -neon-cyan;
+    -fx-background-color: rgba(0,240,255,0.10);
+}
+
+/* difficulty buttons keep their per-level colour (set inline), we only dim / highlight them */
+.diff-toggle {
+    -fx-background-insets: 0;
+    -fx-background-radius: 3;
+    -fx-text-fill: #07070C;
+    -fx-font-family: "Orbitron", "Space Grotesk", "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-min-width: 54;
+    -fx-min-height: 54;
+    -fx-opacity: 0.50;
+    -fx-cursor: hand;
+}
+.diff-toggle:hover { -fx-opacity: 0.8; }
+.diff-toggle:selected {
+    -fx-opacity: 1;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.45), 12, 0.1, 0, 0);
+}
+
+/* mode carousel (Théâtre): glow-blue = the next mode is Défi Lunaire */
+.carousel-btn { -fx-font-size: 16px; -fx-min-width: 40; }
+.carousel-btn.glow-blue {
+    -fx-background-color: rgba(0,240,255,0.22);
+    -fx-border-color: -neon-cyan;
+    -fx-effect: dropshadow(gaussian, rgba(0,240,255,0.95), 16, 0.6, 0, 0);
+}
+.clickable-star { -fx-cursor: hand; }
+
+
+.diff-badge {
+    -fx-background-radius: 3;
+    -fx-text-fill: #07070C;
+    -fx-font-family: "Orbitron", "Space Grotesk", "System";
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+
+.mvp-trial .label { -fx-text-fill: -text; }
+

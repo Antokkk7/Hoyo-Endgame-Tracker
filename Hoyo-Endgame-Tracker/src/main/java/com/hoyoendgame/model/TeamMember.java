@@ -41,6 +41,12 @@ public class TeamMember {
         return m;
     }
 
+    /** Same summary with other prefixes ("E2 · S1" for Honkai: Star Rail eidolon / superposition). */
+    public String meta(String consPrefix, String refinePrefix) {
+        return weapon == null || weapon.isBlank() ? consPrefix + constellation
+                : consPrefix + constellation + " · " + refinePrefix + refinement;
+    }
+
     /** "C2 · R1" style summary ("C2" alone when no weapon is set). */
     public String meta() {
         return weapon == null || weapon.isBlank() ? "C" + constellation : "C" + constellation + " · R" + refinement;

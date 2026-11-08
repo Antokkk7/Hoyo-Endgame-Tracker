@@ -1,0 +1,13 @@
+/* Home page only. */
+
+.hero { -fx-font-size: 42px; }
+
+/* Honkai: Star Rail card on the home page: the Arbitration line stands out. */
+.hsr-featured-line {
+    -fx-background-color: linear-gradient(to right, rgba(199,125,255,0.18), rgba(255,31,224,0.06));
+    -fx-background-radius: 4;
+    -fx-border-color: rgba(199,125,255,0.70);
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-effect: dropshadow(gaussian, rgba(199,125,255,0.35), 16, 0, 0, 0);
+}

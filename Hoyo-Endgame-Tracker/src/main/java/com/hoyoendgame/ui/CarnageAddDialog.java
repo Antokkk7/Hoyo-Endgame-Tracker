@@ -172,6 +172,7 @@ public final class CarnageAddDialog {
         VBox.setVgrow(scroll, Priority.ALWAYS);
         root.setPadding(new Insets(24, 28, 24, 28));
 
+        Ui.useCss(root, "genshin.css");
         stage[0] = Ui.modal(owner, "Carnage chtonien - clear", root, 1100, 880);
         stage[0].showAndWait();
         return Optional.ofNullable(result[0]);

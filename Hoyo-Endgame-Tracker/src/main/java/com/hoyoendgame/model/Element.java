@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.text.Normalizer;
 
-/** Genshin Impact elements. Serialized as the enum name (PYRO, HYDRO...). */
+/** Genshin Impact elements (first 7) and Honkai: Star Rail elements (last 7). Serialized as the enum name. */
 public enum Element {
     PYRO("Pyro", "#E2623F"),
     HYDRO("Hydro", "#3F86E8"),
@@ -13,7 +13,26 @@ public enum Element {
     ELECTRO("Électro", "#9660DC"),
     DENDRO("Dendro", "#72AA33"),
     CRYO("Cryo", "#68BEDB"),
-    GEO("Géo", "#D19B2C");
+    GEO("Géo", "#D19B2C"),
+
+    // Honkai: Star Rail
+    PHYSICAL("Physique", "#9AA3AD"),
+    FIRE("Feu", "#F2644A"),
+    ICE("Glace", "#57C7F0"),
+    LIGHTNING("Foudre", "#B36BFF"),
+    WIND("Vent", "#4FD6A6"),
+    QUANTUM("Quantique", "#6F7CFF"),
+    IMAGINARY("Imaginaire", "#F2D24B");
+
+    /** The 7 Genshin Impact elements. */
+    public static java.util.List<Element> genshin() {
+        return java.util.List.of(PYRO, HYDRO, ANEMO, ELECTRO, DENDRO, CRYO, GEO);
+    }
+
+    /** The 7 Honkai: Star Rail elements. */
+    public static java.util.List<Element> starRail() {
+        return java.util.List.of(PHYSICAL, FIRE, ICE, LIGHTNING, WIND, QUANTUM, IMAGINARY);
+    }
 
     private final String label;
     private final String color;

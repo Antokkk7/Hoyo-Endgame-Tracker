@@ -1,0 +1,17 @@
+/* Honkai: Star Rail only (page, endgame pages, add / edit windows). */
+
+/* Arbitration is the headline endgame: larger numbers, purple glow, thicker border. */
+.hsr-featured {
+    -fx-background-color: linear-gradient(to bottom right, rgba(40,20,60,0.92), rgba(13,13,21,0.92));
+    -fx-background-radius: 4;
+    -fx-border-color: #C77DFF;
+    -fx-border-width: 2;
+    -fx-border-radius: 4;
+    -fx-effect: dropshadow(gaussian, rgba(199,125,255,0.45), 28, 0.1, 0, 0);
+}
+.hsr-featured .big-number { -fx-font-size: 40px; }
+.hsr-featured .h2 { -fx-font-size: 24px; }
+.hsr-star-tag {
+    -fx-text-fill: #FFC83D;
+    -fx-font-weight: bold;
+}

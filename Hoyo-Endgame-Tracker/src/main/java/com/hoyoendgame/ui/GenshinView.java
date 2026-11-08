@@ -49,6 +49,7 @@ public final class GenshinView extends VBox {
 
     /** Each endgame opens inside the main window: the three runnables switch the current page. */
     public GenshinView(Runnable openAbyss, Runnable openTheatre, Runnable openCarnage) {
+        Ui.useCss(this, "genshin.css");
         this.openAbyss = openAbyss;
         this.openTheatre = openTheatre;
         this.openCarnage = openCarnage;

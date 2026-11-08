@@ -31,15 +31,20 @@ public final class TeamEditorDialog {
 
     /** @param existing the team to edit, or null for a new team. Returns the saved team (a new instance). */
     public static Optional<Team> show(Window owner, Team existing) {
+        return show(owner, existing, GameProfile.genshin());
+    }
+
+    /** Same form for another game (Honkai: Star Rail: cone, superposition, level 80). */
+    public static Optional<Team> show(Window owner, Team existing, GameProfile profile) {
         TextField name = new TextField(existing == null ? "" : existing.name);
         name.setPromptText("Nom de l'équipe");
         ComboBox<String> usage = new ComboBox<>();
-        usage.getItems().addAll(USAGES);
+        usage.getItems().addAll(profile.usages);
         usage.setEditable(false);
-        usage.setValue(existing != null && USAGES.contains(existing.usage) ? existing.usage : "Libre");
+        usage.setValue(existing != null && profile.usages.contains(existing.usage) ? existing.usage : "Libre");
         usage.setMaxWidth(Double.MAX_VALUE);
 
-        TeamPane pane = new TeamPane(2);
+        TeamPane pane = new TeamPane(2, profile);
         if (existing != null) pane.setMembers(existing.members);
 
         HBox.setHgrow(name, Priority.ALWAYS);
@@ -71,17 +76,18 @@ public final class TeamEditorDialog {
             result[0] = t;
             stage[0].close();
         });
-        HBox actions = new HBox(12, Ui.label("Les personnages du roster pré-remplissent niveau, doublons et arme.", "muted", "small"),
+        HBox actions = new HBox(12, Ui.label("Niveau max " + profile.maxLevel + " · " + profile.name, "muted", "small"),
                 Ui.grow(), cancel, save);
         actions.setAlignment(Pos.CENTER_LEFT);
 
         VBox body = new VBox(18,
                 Ui.label(existing == null ? "Nouvelle équipe" : "Modifier l'équipe", "h1"),
-                Ui.label("Choisissez 4 personnages avec leur niveau, leurs doublons et l'arme équipée.", "muted"),
+                Ui.label("Choisissez 4 personnages avec leur niveau, leurs doublons et " + ("arme".equals(profile.weaponWord) ? "l'arme équipée" : "le cône équipé") + ".", "muted"),
                 fields, pane);
         ScrollPane scroll = new ScrollPane(body);
         scroll.setFitToWidth(true);
         VBox root = new VBox(16, scroll, actions);
+        Ui.useCss(root, profile.css());
         VBox.setVgrow(scroll, Priority.ALWAYS);
         root.setPadding(new Insets(28));
 

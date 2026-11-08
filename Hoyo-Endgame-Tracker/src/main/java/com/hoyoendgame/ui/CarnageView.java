@@ -29,6 +29,7 @@ public final class CarnageView extends VBox {
     private final VBox detail = new VBox(14);
 
     public CarnageView(Runnable onBack) {
+        Ui.useCss(this, "genshin.css");
         setSpacing(20);
         setPadding(new Insets(28, 48, 40, 48));
 

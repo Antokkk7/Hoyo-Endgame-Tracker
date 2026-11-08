@@ -33,6 +33,7 @@ public final class TheatreView extends VBox {
     private final VBox detail = new VBox(8);
 
     public TheatreView(Runnable onBack) {
+        Ui.useCss(this, "genshin.css");
         setSpacing(20);
         setPadding(new Insets(28, 48, 40, 48));
 

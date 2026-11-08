@@ -1,0 +1,575 @@
+{
+  "jeu": "Honkai: Star Rail",
+  "version_max": "4.7",
+  "date_verification": "2026-11-07",
+  "sortie_version_4_7": "2026-11-11",
+  "langue_noms": "en",
+  "langue_voie": "fr",
+  "total_jouables": 94,
+  "personnages": [
+    {
+      "nom": "Acheron",
+      "rarete": 5,
+      "element": "Foudre",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Aeon ★ Aha",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Aglaea",
+      "rarete": 5,
+      "element": "Foudre",
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Anaxa",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Archer",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Argenti",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Arlan",
+      "rarete": 4,
+      "element": "Foudre",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Ashveil",
+      "rarete": 5,
+      "element": "Foudre",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Asta",
+      "rarete": 4,
+      "element": "Feu",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Aventurine",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Aventurine • Waveflair",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Bailu",
+      "rarete": 5,
+      "element": "Foudre",
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Black Swan",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Blade",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Boothill",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Bronya",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Castorice",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Cerydra",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Cipher",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Clara",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Cyrene",
+      "rarete": 5,
+      "element": "Glace",
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Dan Heng",
+      "rarete": 4,
+      "element": "Vent",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Dan Heng • Imbibitor Lunae",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Dan Heng • Permansor Terrae",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Dr. Ratio",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Evanescia",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Evernight",
+      "rarete": 5,
+      "element": "Glace",
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Feixiao",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Firefly",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Fu Xuan",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Fugue",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Gallagher",
+      "rarete": 4,
+      "element": "Feu",
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Gepard",
+      "rarete": 5,
+      "element": "Glace",
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Gilgamesh",
+      "rarete": 5,
+      "element": "Foudre",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Guinaifen",
+      "rarete": 4,
+      "element": "Feu",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Hanya",
+      "rarete": 4,
+      "element": "Physique",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Herta",
+      "rarete": 4,
+      "element": "Glace",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Himeko",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Himeko • Nova",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Hook",
+      "rarete": 4,
+      "element": "Feu",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Huohuo",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Hyacine",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Hysilens",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Jade",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Jiaoqiu",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Jing Yuan",
+      "rarete": 5,
+      "element": "Foudre",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Jingliu",
+      "rarete": 5,
+      "element": "Glace",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Kafka",
+      "rarete": 5,
+      "element": "Foudre",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Lingsha",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Luka",
+      "rarete": 4,
+      "element": "Physique",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Luocha",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Lynx",
+      "rarete": 4,
+      "element": "Quantique",
+      "voie": "Abondance"
+    },
+    {
+      "nom": "March 7th",
+      "rarete": 4,
+      "element": "Glace",
+      "voie": "Préservation"
+    },
+    {
+      "nom": "March 7th (The Hunt)",
+      "rarete": 4,
+      "element": "Imaginaire",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Misha",
+      "rarete": 4,
+      "element": "Glace",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Mortenax Blade",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Moze",
+      "rarete": 4,
+      "element": "Foudre",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Mydei",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Natasha",
+      "rarete": 4,
+      "element": "Physique",
+      "voie": "Abondance"
+    },
+    {
+      "nom": "Pearl",
+      "rarete": 5,
+      "element": "Glace",
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Pela",
+      "rarete": 4,
+      "element": "Glace",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Phainon",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Qingque",
+      "rarete": 4,
+      "element": "Quantique",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Rappa",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Rin Tohsaka",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Robin",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Robin • Summeretto",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Ruan Mei",
+      "rarete": 5,
+      "element": "Glace",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Saber",
+      "rarete": 5,
+      "element": "Vent",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Sampo",
+      "rarete": 4,
+      "element": "Vent",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Seele",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Serval",
+      "rarete": 4,
+      "element": "Foudre",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Silver Wolf",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Silver Wolf LV.999",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Sparkle",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Sparxie",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Sunday",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Sushang",
+      "rarete": 4,
+      "element": "Physique",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "The Dahlia",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "The Herta",
+      "rarete": 5,
+      "element": "Glace",
+      "voie": "Érudition"
+    },
+    {
+      "nom": "Tingyun",
+      "rarete": 4,
+      "element": "Foudre",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Topaz & Numby",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Trailblazer (Destruction)",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Trailblazer (Elation)",
+      "rarete": 5,
+      "element": "Foudre",
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Trailblazer (Harmony)",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Trailblazer (Preservation)",
+      "rarete": 5,
+      "element": "Feu",
+      "voie": "Préservation"
+    },
+    {
+      "nom": "Trailblazer (Remembrance)",
+      "rarete": 5,
+      "element": "Glace",
+      "voie": "Souvenir"
+    },
+    {
+      "nom": "Tribbie",
+      "rarete": 5,
+      "element": "Quantique",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Welt",
+      "rarete": 5,
+      "element": "Imaginaire",
+      "voie": "Nihilité"
+    },
+    {
+      "nom": "Xueyi",
+      "rarete": 4,
+      "element": "Quantique",
+      "voie": "Destruction"
+    },
+    {
+      "nom": "Yanqing",
+      "rarete": 5,
+      "element": "Glace",
+      "voie": "Chasse"
+    },
+    {
+      "nom": "Yao Guang",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Allégresse"
+    },
+    {
+      "nom": "Yukong",
+      "rarete": 4,
+      "element": "Imaginaire",
+      "voie": "Harmonie"
+    },
+    {
+      "nom": "Yunli",
+      "rarete": 5,
+      "element": "Physique",
+      "voie": "Destruction"
+    }
+  ]
+}

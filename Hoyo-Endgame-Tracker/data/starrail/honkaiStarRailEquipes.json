@@ -1,0 +1,41 @@
+{
+  "version" : 1,
+  "teams" : [ {
+    "id" : "b9a94fb2-12f2-4a3e-b29a-516bf3626dbe",
+    "name" : "Raiden Mei",
+    "usage" : "Libre",
+    "members" : [ {
+      "characterId" : "876e1b4e-df73-4d92-8450-594d9825951d",
+      "name" : "Acheron",
+      "element" : "LIGHTNING",
+      "level" : 80,
+      "constellation" : 3,
+      "weapon" : "Along the Passing Shore",
+      "refinement" : 1
+    }, {
+      "characterId" : "16b07a43-032b-4b04-8351-b9fc010602a2",
+      "name" : "Mortenax Blade",
+      "element" : "FIRE",
+      "level" : 80,
+      "constellation" : 2,
+      "weapon" : "Resolution Shines As Pearls of Sweat",
+      "refinement" : 5
+    }, {
+      "characterId" : "72cd6001-2e1c-4fb2-8ea3-b2a288066881",
+      "name" : "Robin • Summeretto",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Memory's Curtain Never Falls",
+      "refinement" : 5
+    }, {
+      "characterId" : "a0d49fcd-9d7d-434b-bad2-fbcf43d2154e",
+      "name" : "Huohuo",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Quid Pro Quo",
+      "refinement" : 5
+    } ]
+  } ]
+}

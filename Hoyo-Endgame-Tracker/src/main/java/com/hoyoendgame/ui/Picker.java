@@ -35,6 +35,15 @@ public final class Picker {
     /** @param searchText what the search box filters on (e.g. the full name while the label shows a short one) */
     public static <T> Optional<T> pick(Window owner, String title, List<T> items, Function<T, String> label,
                                        Function<T, String> searchText) {
+        return pick(owner, title, items, label, searchText, null);
+    }
+
+    /**
+     * @param custom when not null, a typed text that matches nothing can be used as a new value
+     *               (for a weapon or cone missing from the catalog file)
+     */
+    public static <T> Optional<T> pick(Window owner, String title, List<T> items, Function<T, String> label,
+                                       Function<T, String> searchText, Function<String, T> custom) {
         TextField search = new TextField();
         search.setPromptText("Rechercher…");
 
@@ -60,6 +69,9 @@ public final class Picker {
         Runnable choose = () -> {
             T sel = list.getSelectionModel().getSelectedItem();
             if (sel == null && !filtered.isEmpty()) sel = filtered.get(0);
+            if (sel == null && custom != null && search.getText() != null && !search.getText().isBlank()) {
+                sel = custom.apply(search.getText().trim());
+            }
             if (sel != null) {
                 result.set(sel);
                 stage[0].close();
@@ -74,7 +86,21 @@ public final class Picker {
         Button ok = Ui.button("Choisir", "btn-primary");
         cancel.setOnAction(e -> stage[0].close());
         ok.setOnAction(e -> choose.run());
-        HBox actions = new HBox(12, Ui.grow(), cancel, ok);
+        Button useText = Ui.button("Utiliser le texte saisi", "btn-small");
+        useText.setVisible(false);
+        useText.setManaged(false);
+        if (custom != null) {
+            useText.setOnAction(e -> {
+                result.set(custom.apply(search.getText().trim()));
+                stage[0].close();
+            });
+            search.textProperty().addListener((o, a, q) -> {
+                boolean show = q != null && !q.isBlank() && filtered.isEmpty();
+                useText.setVisible(show);
+                useText.setManaged(show);
+            });
+        }
+        HBox actions = new HBox(12, useText, Ui.grow(), cancel, ok);
         actions.setAlignment(Pos.CENTER_RIGHT);
 
         VBox root = new VBox(12, Ui.label(title, "h3"), search, list, actions);

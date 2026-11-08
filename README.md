@@ -1,7 +1,10 @@
 # Hoyo Endgame Tracker
 
-Application de bureau (Java 21 + JavaFX) pour suivre ses endgames **Genshin Impact** : Abysses spiralées,
-Théâtre de l'imaginarium et Carnage chtonien. La page **Honkai: Star Rail** viendra plus tard.
+Application de bureau (Java 21 + JavaFX) pour suivre ses endgames :
+
+- **Genshin Impact** : Abysses spiralées, Théâtre de l'imaginarium, Carnage chtonien ;
+- **Honkai: Star Rail** : Salle oubliée (MOC), Pure fiction (PF), Fantômes de l'apocalypse (APOC) et Arbitre de l'instable
+  (mis en avant).
 
 ## Lancer
 
@@ -11,8 +14,9 @@ Prérequis : JDK 21+ et Maven.
 mvn javafx:run
 ```
 
-> Lancez la commande **depuis la racine du projet** : le dossier `data/genshin/` est lu et écrit à côté de `src/`.
-> Pour utiliser un autre dossier, ajoutez `-Dhoyo.data.dir=C:\chemin\data\genshin` aux options de la JVM
+> Lancez la commande **depuis la racine du projet** : les dossiers `data/genshin/` et `data/starrail/` sont lus et écrits à côté de `src/`.
+> Pour utiliser un autre dossier, ajoutez `-Dhoyo.data.dir=C:\chemin\data\genshin` (Genshin) ou
+> `-Dhoyo.starrail.dir=C:\chemin\data\starrail` (Star Rail) aux options de la JVM
 > (dans IntelliJ : ouvrir le `pom.xml`, puis lancer `com.hoyoendgame.App` avec la racine du projet comme répertoire de travail).
 
 ## Structure
@@ -28,14 +32,27 @@ data/genshin/                  <- vos données (même niveau que src/)
   genshinCarnage.json          historique du Carnage chtonien
   personnagesIMG/              images des personnages
   bossIMG/                     images des boss
+  armesIMG/                    images des armes
   assetsOthers/                diff1.png ... diff6.png (badges de difficulté)
+data/starrail/                 <- données Honkai: Star Rail
+  honkaiStarRailCharacters.json  personnages (nom, rareté, élément, voie) - lecture seule
+  honkaiStarRailCones.json       catalogue de cônes (lecture seule, à remplir par vous)
+  honkaiStarRailEquipes.json     équipes enregistrées
+  honkaiStarRailMoc.json         historique Salle oubliée
+  honkaiStarRailPf.json          historique Pure fiction
+  honkaiStarRailApoc.json        historique Fantômes de l'apocalypse
+  honkaiStarRailArbitration.json historique Arbitre de l'instable
+  personnagesIMG/  conesIMG/     images (mêmes règles que Genshin)
 src/main/java/com/hoyoendgame/
   App.java                     fenêtre principale + navigation (tout reste dans la même fenêtre)
   model/                       classes de données (sérialisées en JSON)
   data/                        JsonStore (écriture atomique), DataStore, BossCatalog, ExcelService (Apache POI)
   ui/                          vues, formulaires et chargement des images
 src/main/resources/
-  style.css                    thème néon (cyan / magenta / vert sur fond noir quadrillé)
+  style.css                    thème néon commun (couleurs, boutons, champs, panneaux)
+  home.css                     accueil uniquement
+  genshin.css                  Genshin uniquement (étages, difficulté, boss, modes du Théâtre)
+  starrail.css                 Honkai: Star Rail uniquement (carte Arbitre mise en avant)
   fonts/                       Orbitron + Space Grotesk (licence SIL OFL, textes inclus)
 ```
 
@@ -108,20 +125,40 @@ raffinement) ; `characterId` est optionnel.
 Tri des historiques : le Théâtre du mois le plus récent au plus ancien, le Carnage du patch le plus récent au plus ancien
 (et non par date d'ajout).
 
+## Honkai: Star Rail
+
+Vocabulaire : doublons = **E0 à E6** (éidolons), arme = **Cône**, raffinement = **Superposition** (S1 à S5), niveau max **80**,
+4 personnages par équipe. `Trailblazer (Destruction)` s'affiche `Trailblazer`.
+
+- **Salle oubliée** : 12 salles (étoiles + cycles **utilisés**), total /36 et cycles totaux. Le mode stellaire de la salle 12 donne l'étoile
+  violette et une 3e équipe.
+- **Pure fiction** : score de chacune des 4 salles (80 000 max, 120 000 pour la salle 4 en mode stellaire), score total, équipes de la dernière salle.
+- **Fantômes de l'apocalypse** : au choix Difficulté 3 (2 boss), Difficulté 4 (2 boss) ou Difficulté 4 stellaire (3 boss) ; score de
+  chaque boss (4 000 max), total /8 000 ou /12 000, une équipe par boss.
+- **Arbitre de l'instable** : cycles utilisés contre chacun des 3 Cavaliers (0-2 : 3 étoiles, 3-4 : 2, 5-6 : 1, plus : 0), case « K.O. »
+  (-1 étoile, jamais sous 0) ; Roi : cycles et étoiles (0 à 3), cadre calculé : 1 Bronze, 2 Argent, 3 Dorée, 3 en 0 cycle Prismatique.
+  Seule l'équipe du Roi est enregistrée.
+
+`honkaiStarRailCharacters.json` s'écrit `{ "personnages": [ { "nom", "rarete", "element", "voie" } ] }` (éléments en français : Physique,
+Feu, Glace, Foudre, Vent, Quantique, Imaginaire). Il n'est jamais réécrit. `honkaiStarRailCones.json` a la même forme que
+`genshinWeapons.json` (`{ "cones": { "5_star": [...], "4_star": [...], "3_star": [...] } }`) ; tant qu'il est vide, tapez le nom du cône
+dans le sélecteur puis « Utiliser le texte saisi ». L'import Excel de la page Star Rail ne fusionne que les équipes.
+
 ## Images
 
 Toutes les images sont facultatives : sans image, l'application affiche une pastille de couleur (initiales du personnage,
-« ? » pour un boss, carré coloré pour la difficulté).
+« ? » pour un boss ou une arme, carré coloré pour la difficulté).
 
 | Dossier | Contenu | Nom du fichier |
 |---|---|---|
 | `personnagesIMG/` | portrait d'un personnage | nom du personnage : `Furina.png`, `Kamisato Ayaka` ↔ `kamisatoayaka.png` |
+| `armesIMG/` | carré à gauche du nom de l'arme dans l'éditeur d'équipe (équipes, Abysses, Carnage) | nom de l'arme comme dans `genshinWeapons.json` : `Skyward Blade.png` |
 | `bossIMG/` | image d'un boss, tous patchs confondus | nom du boss tel qu'écrit dans `genshinBoss.json` : `Tulpa.png` |
 | `assetsOthers/` | badge de difficulté | `diff1.png` à `diff6.png` |
 
 - La correspondance ignore les majuscules, les espaces et la ponctuation.
-- Formats lus : png, jpg, jpeg, gif, bmp. **WebP n'est pas supporté par JavaFX** (le fichier est ignoré et un message
-  s'affiche dans la console) : convertissez-le en PNG.
+- Formats lus : png, jpg, jpeg, gif, bmp. **WebP n'est pas supporté par JavaFX**, même renommé en `.png` (un message
+  s'affiche dans la console) : convertissez-le avec `python tools/convert_to_png.py data/genshin/armesIMG` (nécessite `pip install pillow`).
 - Les images sont recadrées au centre pour remplir leur cadre.
 - Les images sont lues au premier affichage : relancez l'application après avoir ajouté un nouveau dossier.
 

@@ -1,0 +1,168 @@
+{
+  "version" : 1,
+  "clears" : [ {
+    "id" : "95c6cac0-2594-43bf-bc5c-f1cafee8a176",
+    "patch" : "4.6",
+    "cycles" : [ 0, 2, 2 ],
+    "down" : [ false, false, false ],
+    "kingCycles" : 0,
+    "kingDown" : false,
+    "team" : [ {
+      "characterId" : "571d22ba-cda2-4fb6-bfff-ca804897bec1",
+      "name" : "Acheron",
+      "element" : "LIGHTNING",
+      "level" : 80,
+      "constellation" : 3,
+      "weapon" : "Along the Passing Shore",
+      "refinement" : 1
+    }, {
+      "characterId" : "5370518c-6cf4-48a0-8f1c-b189a69f0470",
+      "name" : "Mortenax Blade",
+      "element" : "FIRE",
+      "level" : 80,
+      "constellation" : 2,
+      "weapon" : "Resolution Shines As Pearls of Sweat",
+      "refinement" : 5
+    }, {
+      "characterId" : "1b88af41-90be-442a-bd21-9ff848386d5b",
+      "name" : "Robin • Summeretto",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Memory's Curtain Never Falls",
+      "refinement" : 5
+    }, {
+      "characterId" : "28e0446f-4f8b-454b-b3c9-2637effb9149",
+      "name" : "Huohuo",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Quid Pro Quo",
+      "refinement" : 5
+    } ],
+    "horsemenTeams" : [ [ {
+      "characterId" : "571d22ba-cda2-4fb6-bfff-ca804897bec1",
+      "name" : "Acheron",
+      "element" : "LIGHTNING",
+      "level" : 80,
+      "constellation" : 3,
+      "weapon" : "Along the Passing Shore",
+      "refinement" : 1
+    }, {
+      "characterId" : "5370518c-6cf4-48a0-8f1c-b189a69f0470",
+      "name" : "Mortenax Blade",
+      "element" : "FIRE",
+      "level" : 80,
+      "constellation" : 2,
+      "weapon" : "Resolution Shines As Pearls of Sweat",
+      "refinement" : 5
+    }, {
+      "characterId" : "1b88af41-90be-442a-bd21-9ff848386d5b",
+      "name" : "Robin • Summeretto",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Memory's Curtain Never Falls",
+      "refinement" : 5
+    }, {
+      "characterId" : "28e0446f-4f8b-454b-b3c9-2637effb9149",
+      "name" : "Huohuo",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Quid Pro Quo",
+      "refinement" : 5
+    } ], [ {
+      "characterId" : "571d22ba-cda2-4fb6-bfff-ca804897bec1",
+      "name" : "Acheron",
+      "element" : "LIGHTNING",
+      "level" : 80,
+      "constellation" : 3,
+      "weapon" : "Along the Passing Shore",
+      "refinement" : 1
+    }, {
+      "characterId" : "5370518c-6cf4-48a0-8f1c-b189a69f0470",
+      "name" : "Mortenax Blade",
+      "element" : "FIRE",
+      "level" : 80,
+      "constellation" : 2,
+      "weapon" : "Resolution Shines As Pearls of Sweat",
+      "refinement" : 5
+    }, {
+      "characterId" : "1b88af41-90be-442a-bd21-9ff848386d5b",
+      "name" : "Robin • Summeretto",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Memory's Curtain Never Falls",
+      "refinement" : 5
+    }, {
+      "characterId" : "28e0446f-4f8b-454b-b3c9-2637effb9149",
+      "name" : "Huohuo",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Quid Pro Quo",
+      "refinement" : 5
+    } ], [ {
+      "characterId" : "571d22ba-cda2-4fb6-bfff-ca804897bec1",
+      "name" : "Acheron",
+      "element" : "LIGHTNING",
+      "level" : 80,
+      "constellation" : 3,
+      "weapon" : "Along the Passing Shore",
+      "refinement" : 1
+    }, {
+      "characterId" : "5370518c-6cf4-48a0-8f1c-b189a69f0470",
+      "name" : "Mortenax Blade",
+      "element" : "FIRE",
+      "level" : 80,
+      "constellation" : 2,
+      "weapon" : "Resolution Shines As Pearls of Sweat",
+      "refinement" : 5
+    }, {
+      "characterId" : "1b88af41-90be-442a-bd21-9ff848386d5b",
+      "name" : "Robin • Summeretto",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Memory's Curtain Never Falls",
+      "refinement" : 5
+    }, {
+      "characterId" : "28e0446f-4f8b-454b-b3c9-2637effb9149",
+      "name" : "Huohuo",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Quid Pro Quo",
+      "refinement" : 5
+    } ] ]
+  }, {
+    "id" : "9eede6dc-9760-4e6c-a5fd-cda1786e2406",
+    "patch" : "4.5",
+    "cycles" : [ 1, 4, 1 ],
+    "down" : [ false, false, false ],
+    "kingCycles" : 0,
+    "kingDown" : false,
+    "team" : [ ],
+    "horsemenTeams" : [ [ ], [ ], [ ] ]
+  }, {
+    "id" : "437afdb0-208d-41e8-a89e-311c66ab15c0",
+    "patch" : "4.4",
+    "cycles" : [ 1, 2, 0 ],
+    "down" : [ false, false, false ],
+    "kingCycles" : 0,
+    "kingDown" : false,
+    "team" : [ ],
+    "horsemenTeams" : [ [ ], [ ], [ ] ]
+  }, {
+    "id" : "ebb854aa-7cb9-45c2-9172-df336655e4be",
+    "patch" : "4.3",
+    "cycles" : [ 2, 1, 2 ],
+    "down" : [ false, false, false ],
+    "kingCycles" : 0,
+    "kingDown" : false,
+    "team" : [ ],
+    "horsemenTeams" : [ [ ], [ ], [ ] ]
+  } ]
+}
