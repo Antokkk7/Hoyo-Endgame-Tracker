@@ -1,6 +1,111 @@
 {
   "version" : 1,
   "clears" : [ {
+    "id" : "5af80f7c-bfc3-4471-8344-2e8905fe18b0",
+    "patch" : "4.6",
+    "stars" : [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ],
+    "cycles" : [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12 ],
+    "stellar" : true,
+    "auto9" : true,
+    "auto10" : true,
+    "teams" : [ [ {
+      "characterId" : "1ea76c4f-38be-4aed-9d4c-bafe628838da",
+      "name" : "Himeko • Nova",
+      "element" : "FIRE",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "A Star That Lights the Night",
+      "refinement" : 1
+    }, {
+      "characterId" : "7793f8df-ce65-410d-a84f-b4622d122120",
+      "name" : "Sunday",
+      "element" : "IMAGINARY",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "But the Battle Isn't Over",
+      "refinement" : 1
+    }, {
+      "characterId" : "d4d8ab22-1412-441c-9461-e311a502673f",
+      "name" : "Robin",
+      "element" : "PHYSICAL",
+      "level" : 80,
+      "constellation" : 1,
+      "weapon" : "Flowing Nightglow",
+      "refinement" : 1
+    }, {
+      "characterId" : "0418937f-b7bb-42c6-8571-54c4718cbc9f",
+      "name" : "Huohuo",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Quid Pro Quo",
+      "refinement" : 5
+    } ], [ {
+      "characterId" : "4f79589d-99f8-4d1a-b3b7-41fe73d4b9e9",
+      "name" : "Phainon",
+      "element" : "PHYSICAL",
+      "level" : 80,
+      "constellation" : 6,
+      "weapon" : "Thus Burns the Dawn",
+      "refinement" : 1
+    }, {
+      "characterId" : "def074ae-08ca-4ec2-b0cf-5a870a58ae4b",
+      "name" : "Cyrene",
+      "element" : "ICE",
+      "level" : 80,
+      "constellation" : 2,
+      "weapon" : "This Love, Forever",
+      "refinement" : 1
+    }, {
+      "characterId" : "4e1f292b-2a15-4d5f-9306-9b591bfa06d3",
+      "name" : "Cerydra",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 1,
+      "weapon" : "Epoch Etched in Golden Blood",
+      "refinement" : 1
+    }, {
+      "characterId" : "930cef55-01f3-493c-a3e5-3e47b60ac49b",
+      "name" : "Robin • Summeretto",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Memory's Curtain Never Falls",
+      "refinement" : 5
+    } ], [ {
+      "characterId" : "46fd0d9c-c002-4719-968e-a11a329fef74",
+      "name" : "Acheron",
+      "element" : "LIGHTNING",
+      "level" : 80,
+      "constellation" : 3,
+      "weapon" : "Along the Passing Shore",
+      "refinement" : 1
+    }, {
+      "characterId" : "7a3e1791-7ac9-4277-87d1-a024fee55e88",
+      "name" : "Trailblazer (Remembrance)",
+      "element" : "ICE",
+      "level" : 80,
+      "constellation" : 6,
+      "weapon" : "Fly Into a Pink Tomorrow",
+      "refinement" : 5
+    }, {
+      "characterId" : "b1d443c1-1d0a-494c-ba46-32566dea5afa",
+      "name" : "Mortenax Blade",
+      "element" : "FIRE",
+      "level" : 80,
+      "constellation" : 2,
+      "weapon" : "Resolution Shines As Pearls of Sweat",
+      "refinement" : 5
+    }, {
+      "characterId" : "8dfe6128-6b3b-4d91-82fd-7fb86fbdf379",
+      "name" : "Dan Heng • Permansor Terrae",
+      "element" : "PHYSICAL",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Journey, Forever Peaceful",
+      "refinement" : 2
+    } ] ]
+  }, {
     "id" : "7df690a8-063a-4ce1-bda9-cc2646bd6aaf",
     "patch" : "4.5",
     "stars" : [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ],

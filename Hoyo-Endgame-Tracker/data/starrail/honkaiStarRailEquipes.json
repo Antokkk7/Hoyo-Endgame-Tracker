@@ -37,5 +37,129 @@
       "weapon" : "Quid Pro Quo",
       "refinement" : 5
     } ]
+  }, {
+    "id" : "f9497df3-25bb-4f8a-9009-f1699071035e",
+    "name" : "Kebin",
+    "usage" : "Libre",
+    "members" : [ {
+      "characterId" : "4f79589d-99f8-4d1a-b3b7-41fe73d4b9e9",
+      "name" : "Phainon",
+      "element" : "PHYSICAL",
+      "level" : 80,
+      "constellation" : 6,
+      "weapon" : "Thus Burns the Dawn",
+      "refinement" : 1
+    }, {
+      "characterId" : "def074ae-08ca-4ec2-b0cf-5a870a58ae4b",
+      "name" : "Cyrene",
+      "element" : "ICE",
+      "level" : 80,
+      "constellation" : 2,
+      "weapon" : "This Love, Forever",
+      "refinement" : 1
+    }, {
+      "characterId" : "4e1f292b-2a15-4d5f-9306-9b591bfa06d3",
+      "name" : "Cerydra",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 1,
+      "weapon" : "Epoch Etched in Golden Blood",
+      "refinement" : 1
+    }, {
+      "characterId" : "930cef55-01f3-493c-a3e5-3e47b60ac49b",
+      "name" : "Robin • Summeretto",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Memory's Curtain Never Falls",
+      "refinement" : 5
+    } ]
+  }, {
+    "id" : "aa3c94c5-74bd-410a-8693-bd65a0ffcb47",
+    "name" : "Trailblaze",
+    "usage" : "Libre",
+    "members" : [ {
+      "characterId" : "1ea76c4f-38be-4aed-9d4c-bafe628838da",
+      "name" : "Himeko • Nova",
+      "element" : "FIRE",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "A Star That Lights the Night",
+      "refinement" : 1
+    }, {
+      "characterId" : "7793f8df-ce65-410d-a84f-b4622d122120",
+      "name" : "Sunday",
+      "element" : "IMAGINARY",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "But the Battle Isn't Over",
+      "refinement" : 1
+    }, {
+      "characterId" : "00e0bc69-040c-4729-ba8b-6e0783a43c27",
+      "name" : "March 7th (The Hunt)",
+      "element" : "IMAGINARY",
+      "level" : 80,
+      "constellation" : 6,
+      "weapon" : "In the Night",
+      "refinement" : 1
+    }, {
+      "characterId" : "8dfe6128-6b3b-4d91-82fd-7fb86fbdf379",
+      "name" : "Dan Heng • Permansor Terrae",
+      "element" : "PHYSICAL",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Journey, Forever Peaceful",
+      "refinement" : 2
+    } ]
+  }, {
+    "id" : "4d0ef3d8-bf2b-40c8-af11-6d6fc36f12c4",
+    "name" : "ArcheRin",
+    "usage" : "Libre",
+    "members" : [ {
+      "characterId" : "8e7a82c8-88d1-4997-a65c-1a4dc8c72143",
+      "name" : "Archer",
+      "element" : "QUANTUM",
+      "level" : 80,
+      "constellation" : 1,
+      "weapon" : "The Hell Where Ideals Burn",
+      "refinement" : 1
+    }, {
+      "characterId" : "75994f65-11a7-40d0-906f-507fb93ef097",
+      "name" : "Rin Tohsaka",
+      "element" : "QUANTUM",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Eternal Calculus",
+      "refinement" : 5
+    } ]
+  }, {
+    "id" : "ab074ebb-1ba3-46df-9648-07ba4aa89145",
+    "name" : "Anaxagoras",
+    "usage" : "Libre",
+    "members" : [ {
+      "characterId" : "8f7607c4-d71d-49af-a340-34c4b9a6d7c4",
+      "name" : "Anaxa",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "Into the Unreachable Veil",
+      "refinement" : 1
+    }, {
+      "characterId" : "def074ae-08ca-4ec2-b0cf-5a870a58ae4b",
+      "name" : "Cyrene",
+      "element" : "ICE",
+      "level" : 80,
+      "constellation" : 2,
+      "weapon" : "This Love, Forever",
+      "refinement" : 1
+    }, {
+      "characterId" : "4e1f292b-2a15-4d5f-9306-9b591bfa06d3",
+      "name" : "Cerydra",
+      "element" : "WIND",
+      "level" : 80,
+      "constellation" : 1,
+      "weapon" : "Epoch Etched in Golden Blood",
+      "refinement" : 1
+    } ]
   } ]
 }

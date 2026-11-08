@@ -8,55 +8,55 @@
     "auto1" : true,
     "auto2" : true,
     "teams" : [ [ {
-      "characterId" : "876e1b4e-df73-4d92-8450-594d9825951d",
-      "name" : "Acheron",
-      "element" : "LIGHTNING",
+      "characterId" : "4f79589d-99f8-4d1a-b3b7-41fe73d4b9e9",
+      "name" : "Phainon",
+      "element" : "PHYSICAL",
       "level" : 80,
-      "constellation" : 3,
-      "weapon" : "Along the Passing Shore",
+      "constellation" : 6,
+      "weapon" : "Thus Burns the Dawn",
       "refinement" : 1
     }, {
-      "characterId" : "16b07a43-032b-4b04-8351-b9fc010602a2",
-      "name" : "Mortenax Blade",
-      "element" : "FIRE",
+      "characterId" : "def074ae-08ca-4ec2-b0cf-5a870a58ae4b",
+      "name" : "Cyrene",
+      "element" : "ICE",
       "level" : 80,
       "constellation" : 2,
-      "weapon" : "Resolution Shines As Pearls of Sweat",
-      "refinement" : 5
+      "weapon" : "This Love, Forever",
+      "refinement" : 1
     }, {
-      "characterId" : "72cd6001-2e1c-4fb2-8ea3-b2a288066881",
-      "name" : "Robin • Summeretto",
+      "characterId" : "4e1f292b-2a15-4d5f-9306-9b591bfa06d3",
+      "name" : "Cerydra",
       "element" : "WIND",
       "level" : 80,
-      "constellation" : 0,
-      "weapon" : "Memory's Curtain Never Falls",
-      "refinement" : 5
+      "constellation" : 1,
+      "weapon" : "Epoch Etched in Golden Blood",
+      "refinement" : 1
     }, {
-      "characterId" : "a0d49fcd-9d7d-434b-bad2-fbcf43d2154e",
-      "name" : "Huohuo",
-      "element" : "WIND",
+      "characterId" : "7a3e1791-7ac9-4277-87d1-a024fee55e88",
+      "name" : "Trailblazer (Remembrance)",
+      "element" : "ICE",
       "level" : 80,
-      "constellation" : 0,
-      "weapon" : "Quid Pro Quo",
+      "constellation" : 6,
+      "weapon" : "Fly Into a Pink Tomorrow",
       "refinement" : 5
     } ], [ {
-      "characterId" : "876e1b4e-df73-4d92-8450-594d9825951d",
-      "name" : "Acheron",
-      "element" : "LIGHTNING",
-      "level" : 80,
-      "constellation" : 3,
-      "weapon" : "Along the Passing Shore",
-      "refinement" : 1
-    }, {
-      "characterId" : "16b07a43-032b-4b04-8351-b9fc010602a2",
-      "name" : "Mortenax Blade",
+      "characterId" : "1ea76c4f-38be-4aed-9d4c-bafe628838da",
+      "name" : "Himeko • Nova",
       "element" : "FIRE",
       "level" : 80,
-      "constellation" : 2,
-      "weapon" : "Resolution Shines As Pearls of Sweat",
-      "refinement" : 5
+      "constellation" : 0,
+      "weapon" : "A Star That Lights the Night",
+      "refinement" : 1
     }, {
-      "characterId" : "72cd6001-2e1c-4fb2-8ea3-b2a288066881",
+      "characterId" : "7793f8df-ce65-410d-a84f-b4622d122120",
+      "name" : "Sunday",
+      "element" : "IMAGINARY",
+      "level" : 80,
+      "constellation" : 0,
+      "weapon" : "But the Battle Isn't Over",
+      "refinement" : 1
+    }, {
+      "characterId" : "930cef55-01f3-493c-a3e5-3e47b60ac49b",
       "name" : "Robin • Summeretto",
       "element" : "WIND",
       "level" : 80,
@@ -64,44 +64,44 @@
       "weapon" : "Memory's Curtain Never Falls",
       "refinement" : 5
     }, {
-      "characterId" : "a0d49fcd-9d7d-434b-bad2-fbcf43d2154e",
-      "name" : "Huohuo",
-      "element" : "WIND",
+      "characterId" : "8dfe6128-6b3b-4d91-82fd-7fb86fbdf379",
+      "name" : "Dan Heng • Permansor Terrae",
+      "element" : "PHYSICAL",
       "level" : 80,
       "constellation" : 0,
-      "weapon" : "Quid Pro Quo",
-      "refinement" : 5
+      "weapon" : "Journey, Forever Peaceful",
+      "refinement" : 2
     } ], [ {
-      "characterId" : "876e1b4e-df73-4d92-8450-594d9825951d",
-      "name" : "Acheron",
-      "element" : "LIGHTNING",
+      "characterId" : "dc3190a7-2c2f-4688-9b2f-b97ca3d79e67",
+      "name" : "Black Swan",
+      "element" : "WIND",
       "level" : 80,
-      "constellation" : 3,
-      "weapon" : "Along the Passing Shore",
-      "refinement" : 1
+      "constellation" : 1,
+      "weapon" : "Eyes of the Prey",
+      "refinement" : 5
     }, {
-      "characterId" : "16b07a43-032b-4b04-8351-b9fc010602a2",
+      "characterId" : "b1d443c1-1d0a-494c-ba46-32566dea5afa",
       "name" : "Mortenax Blade",
       "element" : "FIRE",
       "level" : 80,
-      "constellation" : 2,
+      "constellation" : 1,
       "weapon" : "Resolution Shines As Pearls of Sweat",
       "refinement" : 5
     }, {
-      "characterId" : "72cd6001-2e1c-4fb2-8ea3-b2a288066881",
-      "name" : "Robin • Summeretto",
-      "element" : "WIND",
+      "characterId" : "c6bc4603-6232-4684-b4d0-dbdc669de88c",
+      "name" : "Tribbie",
+      "element" : "QUANTUM",
       "level" : 80,
       "constellation" : 0,
-      "weapon" : "Memory's Curtain Never Falls",
-      "refinement" : 5
+      "weapon" : "Dance! Dance! Dance!",
+      "refinement" : 3
     }, {
-      "characterId" : "a0d49fcd-9d7d-434b-bad2-fbcf43d2154e",
-      "name" : "Huohuo",
-      "element" : "WIND",
+      "characterId" : "472bd548-c51a-4c05-8316-4b7291c66617",
+      "name" : "Herta",
+      "element" : "ICE",
       "level" : 80,
-      "constellation" : 0,
-      "weapon" : "Quid Pro Quo",
+      "constellation" : 6,
+      "weapon" : "Passkey",
       "refinement" : 5
     } ] ]
   }, {
