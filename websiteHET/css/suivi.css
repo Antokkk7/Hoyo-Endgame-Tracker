@@ -1,0 +1,411 @@
+/* Suivi des personnages Genshin Impact : une carte globale, trois colonnes de même hauteur. */
+
+.suivi-global {
+    margin-top: 18px;
+    padding: 20px;
+    border: 1px solid var(--bordure);
+    border-radius: 14px;
+    background: var(--surface);
+}
+
+.sg-entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 18px;
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--bordure);
+}
+
+.sg-joueur {
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+.sg-joueur h2 {
+    font-size: 1.2rem;
+}
+
+.sg-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sg-chip {
+    padding: 2px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+}
+
+.sg-chip:hover {
+    border-color: var(--bordure);
+}
+
+.sg-chip[aria-selected="true"] {
+    border-color: var(--element);
+    box-shadow: 0 0 12px -2px var(--element);
+}
+
+.sg-corps {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: stretch;
+    gap: 16px;
+}
+
+.sg-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.sg-carte-perso {
+    --element: #8b90a6;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    border: 1px solid color-mix(in srgb, var(--element) 55%, transparent);
+    border-radius: 12px;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--element) 20%, var(--surface-2)), var(--surface-2) 70%);
+}
+
+.sg-nom-ligne {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.sg-nom-ligne h3 {
+    font-size: 1.5rem;
+}
+
+.sg-niveau {
+    color: var(--or);
+    font-family: var(--police-titre);
+    font-weight: 800;
+}
+
+.sg-illustration {
+    position: relative;
+    flex: 1;
+    min-height: 260px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--element) 30%, transparent), transparent 70%);
+}
+
+.sg-splash {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+}
+
+.sg-illustration-repli {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    min-height: 260px;
+}
+
+.sg-constellations {
+    display: flex;
+    gap: 8px;
+}
+
+.sg-constellation {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--bordure);
+    border-radius: 50%;
+    color: var(--texte-doux);
+    font-size: 0.8rem;
+}
+
+.sg-constellation.active {
+    border-color: var(--element);
+    background: color-mix(in srgb, var(--element) 35%, transparent);
+    color: var(--texte);
+}
+
+.sg-talents {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.sg-talent {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    padding: 10px 6px;
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    background: var(--surface-2);
+    text-align: center;
+}
+
+.sg-talent strong {
+    font-family: var(--police-titre);
+    font-size: 1.4rem;
+}
+
+.sg-talent.bonus strong {
+    color: var(--cyan);
+}
+
+.sg-talent span {
+    color: var(--texte-doux);
+    font-size: 0.72rem;
+}
+
+.sg-arme {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    background: var(--surface-2);
+}
+
+.sg-arme > div {
+    display: grid;
+    min-width: 0;
+}
+
+.sg-arme-icone {
+    width: 64px;
+    height: 64px;
+    flex: none;
+    object-fit: contain;
+}
+
+.sg-arme-icone.vide {
+    border-radius: 8px;
+    background: var(--fond);
+}
+
+.sg-etiquette {
+    color: var(--texte-doux);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.sg-bloc {
+    padding: 16px;
+    border: 1px solid var(--bordure);
+    border-radius: 12px;
+    background: var(--surface-2);
+}
+
+.sg-bloc h3 {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.sg-stats .sg-bloc:first-child {
+    flex: 1;
+}
+
+.sg-liste-stats {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sg-liste-stats li {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 9px 0;
+    border-top: 1px solid var(--bordure);
+}
+
+.sg-liste-stats li:first-child {
+    border-top: 0;
+}
+
+.sg-liste-stats li.crit strong {
+    color: var(--rouge);
+}
+
+.sg-sets {
+    border-color: color-mix(in srgb, var(--prisme) 55%, transparent);
+}
+
+.sg-set {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+}
+
+.sg-pieces {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--prisme) 30%, transparent);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.sg-cv {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--bordure);
+}
+
+.sg-cv strong {
+    color: var(--prisme);
+    font-family: var(--police-titre);
+    font-size: 1.4rem;
+}
+
+.sg-artefacts {
+    justify-content: stretch;
+}
+
+.sg-artefact {
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(104px, 0.7fr) minmax(0, 1.6fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--bordure);
+    border-radius: 12px;
+    background: var(--surface-2);
+}
+
+.sg-artefact-gauche {
+    display: grid;
+    justify-items: start;
+    gap: 3px;
+}
+
+.sg-artefact-icone {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+}
+
+.sg-artefact-icone.vide {
+    border-radius: 8px;
+    background: var(--fond);
+}
+
+.sg-principale {
+    display: grid;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.sg-principale span {
+    font-family: var(--police-titre);
+    font-size: 1.05rem;
+}
+
+.sg-sous {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.82rem;
+}
+
+.sg-sous li {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: var(--texte-doux);
+}
+
+.sg-sous-valeur {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--texte);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sg-lancers {
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #3a3d52;
+    font-size: 0.68rem;
+}
+
+.sg-lancers.l2 {
+    background: var(--prisme);
+    color: #07070d;
+}
+
+.sg-lancers.l3 {
+    background: var(--or);
+    color: #07070d;
+}
+
+.sg-note {
+    min-width: 2.6em;
+    font-family: var(--police-titre);
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.sg-note.sss,
+.sg-note.ss {
+    color: var(--or);
+}
+
+.sg-note.splus {
+    color: var(--prisme);
+}
+
+.sg-note.s,
+.sg-note.a,
+.sg-note.b {
+    color: var(--texte-doux);
+}
+
+@media (max-width: 1080px) {
+    .sg-corps {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sg-illustration {
+        min-height: 320px;
+    }
+}
+
+@media (max-width: 520px) {
+    .sg-artefact {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .sg-sous {
+        grid-column: 1 / -1;
+    }
+}

@@ -7,6 +7,8 @@ import { rangeeEquipe, normaliserMembre } from "./equipes.js";
 import { initJeu, pastille, pastilleElement, etoiles, vide } from "./jeu-commun.js";
 import { portrait } from "./portraits.js";
 import { bilanAbysse, bilanTheatre, couleurDifficulte, MOIS, secondesCarnage } from "./regles.js";
+import { rendrePlanGenshin } from "./plan-genshin.js";
+import { rendreSuiviGenshin } from "./suivi-genshin.js";
 import { jeton } from "./session.js";
 
 const JEU = "genshin";
@@ -167,4 +169,4 @@ async function endgames(zone) {
     accueil();
 }
 
-initJeu({ jeu: JEU, nomJeu: "Genshin Impact", prefixes: PREFIXES, endgames });
+initJeu({ jeu: JEU, nomJeu: "Genshin Impact", prefixes: PREFIXES, endgames, suivi: rendreSuiviGenshin, planificateur: rendrePlanGenshin });

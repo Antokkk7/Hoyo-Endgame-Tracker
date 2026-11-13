@@ -23,6 +23,18 @@ const MESSAGES = {
     limite_atteinte: "Limite atteinte.",
     introuvable: "Élément introuvable (supprimé depuis un autre appareil ?).",
     jeu_invalide: "Jeu invalide.",
+    uid_inconnu: "Saisissez d'abord votre UID.",
+    donnees_invalides: "Les données reçues sont invalides.",
+    plan_invalide: "Objectif invalide.",
+    plan_deja_present: "Cet élément est déjà dans votre planificateur.",
+    enka_400: "UID invalide pour Enka Network.",
+    enka_404: "Cet UID n'existe pas (ou le joueur est introuvable).",
+    enka_424: "Le jeu est en maintenance : Enka Network est temporairement indisponible.",
+    enka_429: "Trop de requêtes vers Enka Network. Réessayez dans une minute.",
+    enka_500: "Enka Network rencontre un problème. Réessayez plus tard.",
+    enka_503: "Enka Network est indisponible. Réessayez plus tard.",
+    enka_indisponible: "Impossible de joindre Enka Network. Réessayez plus tard.",
+    enka_vitrine_vide: "Aucun personnage n'est affiché dans la vitrine de votre profil. Dans le jeu : Profil > Vitrine des personnages, ajoutez-en et autorisez l'affichage des détails.",
 };
 
 export class ErreurApi extends Error {

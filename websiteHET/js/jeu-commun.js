@@ -121,8 +121,12 @@ export function initJeu(cfg) {
     const boutons = [...document.querySelectorAll("[data-onglet]")];
     const panneaux = [...document.querySelectorAll(".panneau[data-panneau]")];
     const rendeurs = {
-        suivi: (zone) => rendreSuivi(zone, cfg),
-        planificateur: (zone) => rendrePlanificateur(zone, cfg),
+        suivi: async (zone) => {
+            if (!estConnecte()) return exigerConnexion(zone);
+            if (cfg.suivi) await cfg.suivi(zone);
+            else await rendreSuivi(zone, cfg);
+        },
+        planificateur: (zone) => (cfg.planificateur ? cfg.planificateur(zone) : rendrePlanificateur(zone, cfg)),
         equipes: async (zone) => {
             if (!estConnecte()) return exigerConnexion(zone, "Connectez-vous pour gérer vos équipes.");
             await rendreEquipes(zone, cfg);
