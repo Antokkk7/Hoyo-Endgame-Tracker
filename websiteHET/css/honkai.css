@@ -1,0 +1,46 @@
+/* Page Honkai: Star Rail : thème et éléments propres au jeu. */
+
+body.honkai {
+    --accent: #b78bff;
+    background:
+        radial-gradient(900px 420px at 80% -10%, rgba(183, 139, 255, 0.16), transparent 70%),
+        radial-gradient(700px 380px at -10% 10%, rgba(255, 31, 224, 0.07), transparent 70%),
+        var(--fond);
+}
+
+/* L'Arbitre de l'instable est mis en avant ; son contour suit le cadre obtenu. */
+.carte-arbitre {
+    padding: 26px 28px;
+    border: 2px solid var(--cadre, var(--bordure));
+    box-shadow: 0 0 28px color-mix(in srgb, var(--cadre, transparent) 35%, transparent);
+}
+
+.carte-arbitre .carte-total {
+    font-size: 2.2rem;
+    color: var(--magenta);
+}
+
+.arbitre-cadre {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    margin: 6px 0 16px;
+}
+
+.arbitre-cadre img {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+}
+
+.arbitre-cavaliers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 22px;
+}
+
+.nom-cadre {
+    font-weight: 700;
+    color: var(--cadre, var(--texte-doux));
+}

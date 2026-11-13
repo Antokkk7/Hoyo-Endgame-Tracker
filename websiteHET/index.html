@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hoyo Tracker - Suivi d'endgames</title>
+    <meta name="description" content="Suivez vos endgames Genshin Impact et Honkai: Star Rail.">
+    <meta name="theme-color" content="#07070d">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Space+Grotesk:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/composants.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body class="accueil">
+    <a class="accueil-marque" href="index.html">HOYO <span>TRACKER</span></a>
+    <main class="bandes" id="haut">
+        <div class="bandes-piste">
+                <a class="bande bande-honkai" href="honkai.html">
+                    <div class="bande-fond">
+                        <div class="bande-texte">
+                            <span class="bande-numero">01</span>
+                            <span class="bande-nom">Honkai: Star Rail</span>
+                            
+                            <span class="bande-fleche" aria-hidden="true">&#8599;</span>
+                        </div>
+                    </div>
+                </a>
+                <a class="bande bande-genshin" href="genshin.html">
+                    <div class="bande-fond">
+                        <div class="bande-texte">
+                            <span class="bande-numero">02</span>
+                            <span class="bande-nom">Genshin Impact</span>
+                            
+                            <span class="bande-fleche" aria-hidden="true">&#8599;</span>
+                        </div>
+                    </div>
+                </a>
+                <a class="bande bande-zzz" href="zzz.html">
+                    <div class="bande-fond">
+                        <div class="bande-texte">
+                            <span class="bande-numero">03</span>
+                            <span class="bande-nom">Zenless Zone Zero</span>
+                            <span class="bande-bientot">Bientôt</span>
+                            <span class="bande-fleche" aria-hidden="true">&#8599;</span>
+                        </div>
+                    </div>
+                </a>
+                <a class="bande bande-wuthering" href="wuthering-waves.html">
+                    <div class="bande-fond">
+                        <div class="bande-texte">
+                            <span class="bande-numero">04</span>
+                            <span class="bande-nom">Wuthering Waves</span>
+                            <span class="bande-bientot">Bientôt</span>
+                            <span class="bande-fleche" aria-hidden="true">&#8599;</span>
+                        </div>
+                    </div>
+                </a>
+                <a class="bande bande-petit-planet" href="petit-planet.html">
+                    <div class="bande-fond">
+                        <div class="bande-texte">
+                            <span class="bande-numero">05</span>
+                            <span class="bande-nom">Petit Planet</span>
+                            <span class="bande-bientot">Bientôt</span>
+                            <span class="bande-fleche" aria-hidden="true">&#8599;</span>
+                        </div>
+                    </div>
+                </a>
+        </div>
+    </main>
+    <section class="ecran-connexion" id="connexion" aria-labelledby="titre-connexion">
+        <div class="carte-connexion">
+            <span class="surtitre">Votre compte</span>
+            <h2 id="titre-connexion">Se connecter</h2>
+            <p class="doux">Connectez-vous pour retrouver vos personnages, vos builds et l'historique de vos endgames.</p>
+            <div id="zone-connexion"></div>
+        </div>
+    </section>
+    <button class="defilement" id="defilement" type="button" aria-label="Aller à la connexion">
+        <span class="defilement-texte">Se connecter</span>
+        <span class="defilement-fleche" aria-hidden="true">&#8595;</span>
+    </button>
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>

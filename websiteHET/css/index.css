@@ -1,0 +1,253 @@
+/* Page d'accueil : cinq bandes en diagonale à 45 degrés, une par jeu. */
+
+/* Déconnecté : deux écrans (les jeux, puis la connexion). Connecté : un seul écran, sans défilement. */
+body.accueil.connecte {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.accueil-marque {
+    position: fixed;
+    top: 20px;
+    left: clamp(16px, 3vw, 36px);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--police-titre);
+    font-size: clamp(1.2rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    text-decoration: none;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+}
+
+.accueil-marque span {
+    color: var(--cyan);
+}
+
+/* L'inclinaison pivote autour du milieu de chaque bande : au centre de l'écran les bandes occupent toute la largeur.
+   Les deux coins laissés vides par l'inclinaison prennent la couleur de la première et de la dernière bande. */
+.bandes {
+    --hauteur: 100vh;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(90deg, #2a1a4d 50%, #3a1536 50%);
+}
+
+.bandes-piste {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.bande {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    transform: skewX(-45deg);
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    text-decoration: none;
+    transition: flex-grow 0.45s ease;
+}
+
+.bande:hover,
+.bande:focus-visible {
+    flex-grow: 1.9;
+}
+
+.bande-fond {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--hauteur) / -2);
+    right: calc(var(--hauteur) / -2);
+    transform: skewX(45deg);
+    background:
+        linear-gradient(180deg, rgba(5, 5, 12, 0.15), rgba(5, 5, 12, 0.5)),
+        var(--image, none) center / cover no-repeat,
+        linear-gradient(160deg, var(--couleur-a), var(--couleur-b));
+    transition: filter 0.3s;
+    filter: saturate(0.9) brightness(0.9);
+}
+
+.bande:hover .bande-fond,
+.bande:focus-visible .bande-fond {
+    filter: saturate(1.15) brightness(1);
+}
+
+.bande-texte {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 16px;
+    text-align: center;
+}
+
+.bande-numero {
+    color: var(--prisme);
+    font-family: var(--police-titre);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+}
+
+.bande-nom {
+    font-family: var(--police-titre);
+    font-size: clamp(0.95rem, 1.55vw, 1.6rem);
+    font-weight: 800;
+    line-height: 1.15;
+    max-width: 8.5em;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+}
+
+.bande-fleche {
+    color: var(--prisme);
+    font-size: 1.3rem;
+    transition: transform 0.3s;
+}
+
+.bande:hover .bande-fleche {
+    transform: translate(4px, -4px);
+}
+
+.bande-bientot {
+    color: var(--texte-doux);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+    body.accueil.connecte {
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+    }
+
+    .bandes {
+        height: auto;
+        min-height: 100vh;
+        padding-top: 70px;
+    }
+
+    .bandes-piste {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .bande {
+        flex: none;
+        height: 18vh;
+        min-height: 110px;
+        transform: none;
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .bande-fond {
+        left: 0;
+        right: 0;
+        transform: none;
+    }
+}
+
+/* Une image facultative par jeu (assets/img/accueil/<jeu>.jpg) ; sans fichier, le dégradé s'affiche. */
+.bande-honkai {
+    --image: url("../assets/img/accueil/honkai.jpg");
+    --couleur-a: #2a1a4d;
+    --couleur-b: #7a49c8;
+}
+
+.bande-genshin {
+    --image: url("../assets/img/accueil/genshin.jpg");
+    --couleur-a: #0f3b45;
+    --couleur-b: #33a8a8;
+}
+
+.bande-zzz {
+    --image: url("../assets/img/accueil/zzz.jpg");
+    --couleur-a: #3a2c12;
+    --couleur-b: #d6a63c;
+}
+
+.bande-wuthering {
+    --image: url("../assets/img/accueil/wuthering-waves.jpg");
+    --couleur-a: #121f3d;
+    --couleur-b: #4468b8;
+}
+
+.bande-petit-planet {
+    --image: url("../assets/img/accueil/petit-planet.jpg");
+    --couleur-a: #3a1536;
+    --couleur-b: #d8589f;
+}
+
+/* Section de connexion sous les bandes */
+.ecran-connexion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 80px 16px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(122, 73, 200, 0.22), transparent 60%), var(--fond, #07070d);
+}
+
+.ecran-connexion[hidden] {
+    display: none;
+}
+
+.carte-connexion {
+    width: min(440px, 100%);
+    padding: 28px 28px 24px;
+    border: 1px solid var(--bordure);
+    border-radius: 12px;
+    background: var(--surface);
+}
+
+.carte-connexion h2 {
+    margin: 4px 0 8px;
+    font-size: 1.5rem;
+}
+
+.carte-connexion .doux {
+    margin-bottom: 18px;
+}
+
+/* Bouton monter / descendre */
+.defilement {
+    position: fixed;
+    left: 50%;
+    bottom: clamp(12px, 2vw, 28px);
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px;
+    transform: translateX(-50%);
+    border: 1px solid var(--bordure);
+    border-radius: 999px;
+    background: rgba(14, 15, 25, 0.92);
+    backdrop-filter: blur(8px);
+    color: var(--texte);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.defilement:hover {
+    border-color: var(--cyan);
+}
+
+.defilement[hidden] {
+    display: none;
+}
+
+.defilement-fleche {
+    color: var(--cyan);
+    font-size: 1.1rem;
+}

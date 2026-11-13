@@ -1,0 +1,166 @@
+/* Page de gestion du compte. */
+
+.compte-grille {
+    display: grid;
+    gap: 20px;
+}
+
+.bloc-compte {
+    padding: 22px 24px;
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    background: var(--surface);
+}
+
+.bloc-compte h2 {
+    margin-bottom: 14px;
+    font-size: 1.1rem;
+}
+
+.bloc-compte form {
+    max-width: 420px;
+}
+
+.identite {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.identite h1 {
+    font-size: 1.6rem;
+}
+
+.avatar-onglets {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.avatar-onglets button {
+    padding: 6px 14px;
+    border: 1px solid var(--bordure);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--texte-doux);
+    font: inherit;
+    cursor: pointer;
+}
+
+.avatar-onglets button[aria-selected="true"] {
+    border-color: var(--cyan);
+    color: var(--texte);
+}
+
+.avatar-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 10px;
+    max-height: 340px;
+    overflow-y: auto;
+    padding: 6px;
+    margin-top: 12px;
+}
+
+.avatar-choix {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    padding: 6px 2px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--texte-doux);
+    font: inherit;
+    font-size: 0.7rem;
+    cursor: pointer;
+}
+
+.avatar-choix:hover {
+    border-color: var(--bordure);
+}
+
+.avatar-choix[aria-pressed="true"] {
+    border-color: var(--cyan);
+    color: var(--texte);
+}
+
+/* Derniers clears, jeu par jeu */
+.synthese-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.synthese-carte {
+    padding: 18px;
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    background: var(--surface-2, rgba(255, 255, 255, 0.03));
+}
+
+.synthese-carte h3 {
+    margin-bottom: 12px;
+    font-size: 1.05rem;
+}
+
+.synthese-genshin h3 {
+    color: #3fd0c0;
+}
+
+.synthese-starrail h3 {
+    color: #c77dff;
+}
+
+.synthese-lignes {
+    display: grid;
+    gap: 8px;
+}
+
+.synthese-ligne {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--bordure);
+    border-radius: 8px;
+}
+
+.synthese-ligne.mise-en-avant {
+    border-color: var(--cadre);
+    box-shadow: 0 0 0 1px var(--cadre), 0 0 18px -6px var(--cadre);
+}
+
+.synthese-cadre {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.synthese-nom {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+}
+
+.synthese-nom small {
+    display: block;
+    color: var(--texte-doux);
+    font-weight: 400;
+    font-size: 0.78rem;
+}
+
+.synthese-valeur {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--police-titre);
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.synthese-pied {
+    margin-top: 12px;
+}

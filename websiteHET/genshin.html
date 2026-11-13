@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Genshin Impact - Hoyo Tracker</title>
+    <meta name="description" content="Suivi Genshin Impact : personnages, builds, équipes recommandées et endgames.">
+    <meta name="theme-color" content="#07070d">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Space+Grotesk:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/composants.css">
+    <link rel="stylesheet" href="css/jeu.css">
+    <link rel="stylesheet" href="css/genshin.css">
+</head>
+<body class="genshin">
+    <header class="entete">
+        <a class="marque" href="index.html">HOYO <span>TRACKER</span></a>
+        <nav class="menu" aria-label="Tableau de bord">
+            <a href="genshin.html" aria-current="page">Tableau de bord</a>
+        </nav>
+    </header>
+    <main class="page">
+        <span class="surtitre">Genshin Impact</span>
+        <h1 class="titre-page">Tableau de bord</h1>
+        <p class="doux">Suivez vos personnages, vos builds et l'historique de vos Abysses, Théâtres et Carnages.</p>
+        <div id="bandeau-base" class="bandeau-info cache" style="margin-top:16px">La base de données n'est pas encore configurée : renseignez js/config.js pour activer les comptes et les données.</div>
+
+        <nav class="onglets" role="tablist" aria-label="Sections">
+            <button type="button" role="tab" data-onglet="suivi" aria-selected="true">Suivi des personnages</button>
+            <button type="button" role="tab" data-onglet="builds" aria-selected="false">Builds</button>
+            <button type="button" role="tab" data-onglet="recos" aria-selected="false">Recommandations d'équipes</button>
+            <button type="button" role="tab" data-onglet="endgames" aria-selected="false">Endgame tracker</button>
+        </nav>
+
+        <section class="panneau" data-panneau="suivi">
+            <h2>Suivi des personnages</h2>
+            <p class="doux">Renseignez votre UID Genshin Impact pour suivre vos personnages.</p>
+            <div data-zone></div>
+        </section>
+        <section class="panneau cache" data-panneau="builds">
+            <h2>Builds des personnages</h2>
+            <p class="doux">Le build de chaque personnage de votre compte.</p>
+            <div data-zone></div>
+        </section>
+        <section class="panneau cache" data-panneau="recos">
+            <h2>Recommandations d'équipes</h2>
+            <p class="doux">Choisissez un personnage pour voir les équipes conseillées.</p>
+            <div data-zone></div>
+        </section>
+        <section class="panneau cache" data-panneau="endgames">
+            <h2>Endgame tracker</h2>
+            <p class="doux">L'historique de vos clears.</p>
+            <div data-zone></div>
+        </section>
+    </main>
+    <script type="module" src="js/genshin.js"></script>
+</body>
+</html>
