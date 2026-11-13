@@ -32,3 +32,86 @@ body.genshin {
     align-items: center;
     gap: 12px;
 }
+
+/* Endgame tracker : cartes d'accueil */
+
+.eg-liste {
+    display: grid;
+    gap: 18px;
+}
+
+.eg-accueil {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px 26px;
+    border: 1px solid rgba(63, 208, 192, 0.35);
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(63, 208, 192, 0.06), rgba(255, 255, 255, 0.01)), var(--surface);
+}
+
+.eg-accueil:hover {
+    border-color: rgba(63, 208, 192, 0.8);
+}
+
+.eg-gauche {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+}
+
+.eg-gauche h3 {
+    font-size: 1.5rem;
+}
+
+.eg-droite {
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    min-width: 160px;
+    text-align: center;
+}
+
+.eg-grand {
+    font-family: var(--police-titre);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+}
+
+.eg-grand.vert {
+    color: var(--vert);
+    text-shadow: 0 0 18px rgba(57, 255, 106, 0.55);
+}
+
+.eg-grand.magenta {
+    color: var(--magenta);
+    text-shadow: 0 0 18px rgba(255, 31, 224, 0.55);
+}
+
+.eg-grand.cyan {
+    color: var(--cyan);
+}
+
+.eg-legende {
+    color: var(--texte-doux);
+    font-size: 0.85rem;
+}
+
+.eg-difficulte {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+
+@media (max-width: 560px) {
+    .eg-accueil {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .eg-droite {
+        justify-items: start;
+        text-align: left;
+    }
+}

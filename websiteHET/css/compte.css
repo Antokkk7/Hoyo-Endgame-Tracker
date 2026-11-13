@@ -52,39 +52,6 @@
     color: var(--texte);
 }
 
-.avatar-grille {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-    gap: 10px;
-    max-height: 340px;
-    overflow-y: auto;
-    padding: 6px;
-    margin-top: 12px;
-}
-
-.avatar-choix {
-    display: grid;
-    justify-items: center;
-    gap: 4px;
-    padding: 6px 2px;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--texte-doux);
-    font: inherit;
-    font-size: 0.7rem;
-    cursor: pointer;
-}
-
-.avatar-choix:hover {
-    border-color: var(--bordure);
-}
-
-.avatar-choix[aria-pressed="true"] {
-    border-color: var(--cyan);
-    color: var(--texte);
-}
-
 /* Derniers clears, jeu par jeu */
 .synthese-grille {
     display: grid;
@@ -163,4 +130,45 @@
 
 .synthese-pied {
     margin-top: 12px;
+}
+
+/* Blocs repliables */
+.pliable h2 {
+    margin: 0;
+}
+
+.bloc-entete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.bloc-entete:hover {
+    color: var(--cyan);
+}
+
+.bloc-fleche {
+    color: var(--cyan);
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+.bloc-entete[aria-expanded="true"] .bloc-fleche {
+    transform: rotate(180deg);
+}
+
+.bloc-corps {
+    margin-top: 16px;
+}
+
+.bloc-corps[hidden] {
+    display: none;
 }

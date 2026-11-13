@@ -15,6 +15,14 @@ const MESSAGES = {
     avatar_invalide: "Image de profil invalide.",
     uid_invalide: "UID invalide : 6 à 12 chiffres.",
     acces_refuse: "Accès refusé.",
+    patch_invalide: "Patch invalide (exemple : 7.1).",
+    clear_invalide: "Les valeurs de ce clear ne sont pas valides.",
+    theatre_elements: "Sélectionnez exactement 3 éléments différents.",
+    membres_invalides: "Équipe invalide : 1 à 4 personnages, chacun avec un nom.",
+    equipe_nom_invalide: "Donnez un nom à l'équipe (40 caractères maximum).",
+    limite_atteinte: "Limite atteinte.",
+    introuvable: "Élément introuvable (supprimé depuis un autre appareil ?).",
+    jeu_invalide: "Jeu invalide.",
 };
 
 export class ErreurApi extends Error {

@@ -5,6 +5,8 @@ import { rpc } from "./api.js";
 import { baseConfiguree } from "./config.js";
 import { initConnexion, ouvrirConnexion } from "./connexion.js";
 import { element } from "./elements.js";
+import { chargerDonnees } from "./donnees.js";
+import { rendreEquipes } from "./page-equipes.js";
 import { chargerManifeste, portrait } from "./portraits.js";
 import { estConnecte, jeton } from "./session.js";
 
@@ -55,11 +57,11 @@ async function rendreSuivi(zone, cfg) {
     remplacer(zone, formulaire, message, liste);
 }
 
-async function rendreBuilds(zone, cfg) {
+async function rendrePlanificateur(zone, cfg) {
     if (!estConnecte()) return exigerConnexion(zone);
     const builds = await rpc("builds", { p_token: jeton(), p_jeu: cfg.jeu });
     if (!builds.length) {
-        remplacer(zone, h("div", { classe: "etat-vide" }, "Aucun build pour l'instant. Vous pourrez bientôt préciser le build de chaque personnage."));
+        remplacer(zone, h("div", { classe: "etat-vide" }, "Aucun plan pour l'instant. Vous pourrez bientôt planifier le build de chaque personnage."));
         return;
     }
     remplacer(zone, h("div", { classe: "suivi-grille" }, builds.map((b) =>
@@ -116,11 +118,15 @@ export function initJeu(cfg) {
     if (!baseConfiguree()) {
         document.getElementById("bandeau-base")?.classList.remove("cache");
     }
-    const boutons = [...document.querySelectorAll(".onglets [data-onglet]")];
+    const boutons = [...document.querySelectorAll("[data-onglet]")];
     const panneaux = [...document.querySelectorAll(".panneau[data-panneau]")];
     const rendeurs = {
         suivi: (zone) => rendreSuivi(zone, cfg),
-        builds: (zone) => rendreBuilds(zone, cfg),
+        planificateur: (zone) => rendrePlanificateur(zone, cfg),
+        equipes: async (zone) => {
+            if (!estConnecte()) return exigerConnexion(zone, "Connectez-vous pour gérer vos équipes.");
+            await rendreEquipes(zone, cfg);
+        },
         recos: (zone) => rendreRecos(zone, cfg),
         endgames: async (zone) => {
             if (!estConnecte()) return exigerConnexion(zone, "Connectez-vous pour voir l'historique de vos endgames.");
@@ -155,7 +161,9 @@ export function initJeu(cfg) {
         faits.clear();
         rendre(courant);
     });
-    chargerManifeste().then(() => afficher(location.hash.slice(1) || "suivi"));
+    const ANCIENS = { builds: "planificateur" };
+    const depart = location.hash.slice(1);
+    Promise.all([chargerManifeste(), chargerDonnees()]).then(() => afficher(ANCIENS[depart] || depart || "suivi"));
 }
 
 // Barre de sous-onglets (par exemple un endgame par bouton) ; renvoie le conteneur à remplir.

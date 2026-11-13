@@ -1,0 +1,98 @@
+{
+ "5.7": {
+  "periode": "2025.06.25 - 2025.07.29",
+  "boss": [
+   "Tulpa",
+   "LavaDrake",
+   "Automaton"
+  ]
+ },
+ "5.8": {
+  "periode": "2025.08.06 - 2025.09.09",
+  "boss": [
+   "Papille",
+   "Tortue",
+   "Pipilpan"
+  ]
+ },
+ "6.0": {
+  "periode": "2025.09.17 - 2025.10.21",
+  "boss": [
+   "DragonCataclysmique",
+   "BloomCrab",
+   "ShockTrooper"
+  ]
+ },
+ "6.1": {
+  "periode": "2025.10.29 - 2025.12.02",
+  "boss": [
+   "Herra",
+   "Sigurd",
+   "FrostOperative"
+  ]
+ },
+ "6.2": {
+  "periode": "2025.12.10 - 2026.01.13",
+  "boss": [
+   "Lustrateur",
+   "Iktomisaure",
+   "PlungeShill"
+  ]
+ },
+ "6.3": {
+  "periode": "2026.01.21 - 2026.02.24",
+  "boss": [
+   "Murmureur",
+   "ShockTrooper",
+   "PyroCrab"
+  ]
+ },
+ "6.4": {
+  "periode": "2026.03.04 - 2026.04.07",
+  "boss": [
+   "Mandragore",
+   "KnuckleDuckle",
+   "Automaton"
+  ]
+ },
+ "6.5": {
+  "periode": "2026.04.15 - 2026.05.19",
+  "boss": [
+   "Gecko",
+   "Papille",
+   "Herra"
+  ]
+ },
+ "6.6": {
+  "periode": "2026.05.27 - 2026.06.30",
+  "boss": [
+   "LoupGlacial",
+   "Tulpa",
+   "Watcher"
+  ]
+ },
+ "6.7": {
+  "periode": "2026.07.08 - 2026.08.11",
+  "boss": [
+   "StellarHive",
+   "Murmureur",
+   "SourceAutomaton"
+  ]
+ },
+ "7.0": {
+  "periode": "2026.08.19 - 2026.09.30",
+  "boss": [
+   "LionChimere",
+   "WindOperative",
+   "KnuckleDuckle"
+  ]
+ },
+ "7.1": {
+  "periode": "2026.09.30 - 2026.11.11",
+  "boss": [
+   "Churin",
+   "Automaton",
+   "Pavlina"
+  ]
+ }
+}

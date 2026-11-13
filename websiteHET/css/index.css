@@ -32,7 +32,7 @@ body.accueil.connecte {
     position: relative;
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(90deg, #2a1a4d 50%, #3a1536 50%);
+    background: linear-gradient(90deg, #0f3b45 50%, #3a1536 50%);
 }
 
 .bandes-piste {

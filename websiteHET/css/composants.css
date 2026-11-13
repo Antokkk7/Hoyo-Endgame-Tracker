@@ -6,7 +6,8 @@
     z-index: 20;
     display: flex;
     align-items: center;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: 8px 24px;
     padding: 14px clamp(16px, 4vw, 48px);
     background: rgba(7, 7, 13, 0.88);
     backdrop-filter: blur(10px);
@@ -42,6 +43,26 @@
 
 .menu a:hover {
     color: var(--texte);
+}
+
+.menu button {
+    padding: 4px 0;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: var(--texte-doux);
+    font: inherit;
+    font-size: 0.92rem;
+    cursor: pointer;
+}
+
+.menu button:hover {
+    color: var(--texte);
+}
+
+.menu button[aria-selected="true"] {
+    color: var(--texte);
+    border-bottom-color: var(--accent);
 }
 
 .menu a[aria-current="page"] {
@@ -328,4 +349,49 @@
     background: rgba(255, 200, 61, 0.08);
     color: var(--or);
     font-size: 0.92rem;
+}
+
+/* Grille de choix de personnages (image de profil, MVP) */
+
+.avatar-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 10px;
+    max-height: 340px;
+    overflow-y: auto;
+    padding: 6px;
+    margin-top: 12px;
+}
+
+.avatar-choix {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    padding: 6px 2px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--texte-doux);
+    font: inherit;
+    font-size: 0.7rem;
+    cursor: pointer;
+}
+
+.avatar-choix:hover {
+    border-color: var(--bordure);
+}
+
+.avatar-choix[aria-pressed="true"] {
+    border-color: var(--cyan);
+    color: var(--texte);
+}
+
+.bouton-petit {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+/* Laisse la place à la pastille de compte fixée en bas à droite */
+main.page {
+    padding-bottom: 110px;
 }

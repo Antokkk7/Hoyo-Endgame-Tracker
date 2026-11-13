@@ -70,14 +70,14 @@ function blocAvatar() {
         dessiner();
     });
     dessiner();
-    return h("section", { classe: "bloc-compte" }, h("h2", {}, "Image de profil"), onglets,
+    return h("div", {}, onglets,
         h("div", { classe: "champ", style: "max-width:320px;margin:0" }, h("label", { for: "recherche-avatar", classe: "sr-only" }, "Rechercher"), recherche), msg, grille);
 }
 
 function blocPseudo() {
     const msg = message();
     const champ = h("input", { id: "nouveau-pseudo", type: "text", maxlength: "24", required: true, value: compte().pseudo, autocomplete: "username" });
-    return h("section", { classe: "bloc-compte" }, h("h2", {}, "Pseudo"),
+    return h("div", {},
         h("form", {
             novalidate: true,
             onsubmit: async (e) => {
@@ -99,7 +99,7 @@ function blocMotDePasse() {
     const ancien = h("input", { id: "mdp-ancien", type: "password", required: true, autocomplete: "current-password", maxlength: "72" });
     const nouveau = h("input", { id: "mdp-nouveau", type: "password", required: true, autocomplete: "new-password", maxlength: "72" });
     const confirmation = h("input", { id: "mdp-confirmation", type: "password", required: true, autocomplete: "new-password", maxlength: "72" });
-    return h("section", { classe: "bloc-compte" }, h("h2", {}, "Mot de passe"),
+    return h("div", {},
         h("form", {
             novalidate: true,
             onsubmit: async (e) => {
@@ -118,6 +118,33 @@ function blocMotDePasse() {
         h("div", { classe: "champ" }, h("label", { for: "mdp-nouveau" }, "Nouveau mot de passe (8 caractères minimum)"), nouveau),
         h("div", { classe: "champ" }, h("label", { for: "mdp-confirmation" }, "Confirmer le nouveau mot de passe"), confirmation),
         msg, h("button", { classe: "bouton bouton-principal", type: "submit" }, "Modifier le mot de passe")));
+}
+
+const ouverts = new Set(); // blocs repliables ouverts, conservés d'un redessin à l'autre
+
+// Bloc repliable : son contenu (par exemple la grille d'images) n'est construit qu'à la première ouverture.
+function blocPliable(id, titre, construire) {
+    const corps = h("div", { classe: "bloc-corps", id: `corps-${id}` });
+    let construit = false;
+    function majCorps() {
+        const ouvert = ouverts.has(id);
+        corps.hidden = !ouvert;
+        if (ouvert && !construit) {
+            construit = true;
+            corps.append(construire());
+        }
+    }
+    const bouton = h("button", {
+        classe: "bloc-entete", type: "button", "aria-expanded": String(ouverts.has(id)), "aria-controls": `corps-${id}`,
+        onclick: () => {
+            if (ouverts.has(id)) ouverts.delete(id);
+            else ouverts.add(id);
+            bouton.setAttribute("aria-expanded", String(ouverts.has(id)));
+            majCorps();
+        },
+    }, h("span", {}, titre), h("span", { classe: "bloc-fleche", "aria-hidden": "true" }, "\u25BE"));
+    majCorps();
+    return h("section", { classe: "bloc-compte pliable" }, h("h2", {}, bouton), corps);
 }
 
 let synthese = null;
@@ -139,7 +166,10 @@ function dessinerPage() {
         synthese = zoneSynthese;
         chargerSynthese(zoneSynthese);
     }
-    remplacer(racine, info, h("div", { classe: "compte-grille" }, blocIdentite(), zoneSynthese, blocAvatar(), blocPseudo(), blocMotDePasse()));
+    remplacer(racine, info, h("div", { classe: "compte-grille" }, blocIdentite(), zoneSynthese,
+        blocPliable("avatar", "Changer d'image de profil", blocAvatar),
+        blocPliable("pseudo", "Changer de pseudo", blocPseudo),
+        blocPliable("mdp", "Modifier mon mot de passe", blocMotDePasse)));
 }
 
 initConnexion();

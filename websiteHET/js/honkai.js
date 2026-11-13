@@ -3,7 +3,7 @@
 import { h } from "./dom.js";
 import { nombre } from "./dom.js";
 import { rpc } from "./api.js";
-import { rangeeEquipe, listeEquipes } from "./equipes.js";
+import { rangeeEquipe } from "./equipes.js";
 import { initJeu, pastille, etoiles, sousOnglets, vide } from "./jeu-commun.js";
 import { bilanApoc, bilanArbitre, bilanMoc, cycles, maxSallePf, SCORE_BOSS, scoreSallePf } from "./regles.js";
 import { jeton } from "./session.js";
@@ -95,7 +95,6 @@ async function endgames(zone) {
         { titre: "Pure fiction", rendu: () => liste(d.pf, cartePf, "Aucun clear de Pure fiction enregistré.") },
         { titre: "Fantômes de l'apocalypse", rendu: () => liste(d.apoc, carteApoc, "Aucun clear des Fantômes de l'apocalypse enregistré.") },
         { titre: "Arbitre de l'instable", rendu: () => liste(d.arbitre, carteArbitre, "Aucun clear de l'Arbitre enregistré.") },
-        { titre: "Équipes", rendu: () => listeEquipes(JEU, d.equipes, PREFIXES) },
     ]);
 }
 
