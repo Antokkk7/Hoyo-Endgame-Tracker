@@ -47,7 +47,7 @@ export function urlDifficulte(n) {
 // Image de la difficulté du Carnage chtonien ; le chiffre coloré si l'image est introuvable.
 export function imageDifficulte(n, classe = "") {
     return h("img", {
-        classe, src: urlDifficulte(n), alt: `Difficulté ${n}`, title: `Difficulté ${n}`,
+        classe, width: "40", height: "40", src: urlDifficulte(n), alt: `Difficulté ${n}`, title: `Difficulté ${n}`,
         onerror: (e) => e.target.replaceWith(h("span", { classe: "badge-difficulte", style: `--couleur:${couleurDifficulte(n)}`, title: `Difficulté ${n}` }, String(n))),
     });
 }
@@ -59,7 +59,7 @@ export function imageTheatre(t, bilan, classe = "") {
     const n = IMAGE_THEATRE[t.mode];
     if (!n || !bilan.max || bilan.total < bilan.max) return null;
     return h("img", {
-        classe, alt: bilan.mode.nom, title: `${bilan.mode.nom} : tous les astres`,
+        classe, width: "44", height: "44", alt: bilan.mode.nom, title: `${bilan.mode.nom} : tous les astres`,
         src: new URL(`../assets/img/difficulte/Theater_${n}.webp`, import.meta.url).href, onerror: (e) => e.target.remove(),
     });
 }

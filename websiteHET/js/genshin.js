@@ -63,8 +63,10 @@ function carteCarnage(c) {
         h("summary", { classe: "carte-tete carnage-resume" },
             h("h3", {}, `Patch ${c.patch}`),
             h("span", { classe: "doux" }, c.periode || ""),
-            h("span", { classe: "carnage-total", title: "Temps total" }, `${secondesCarnage(c)} s`),
-            imageDifficulte(c.difficulte, "carnage-difficulte")),
+            h("span", { classe: "carnage-droite", style: "margin-left:auto" },
+                h("span", { classe: "carnage-total", title: "Temps total" }, `${secondesCarnage(c)} s`),
+                imageDifficulte(c.difficulte, "carnage-difficulte"),
+                h("span", { classe: "carnage-chevron", title: "Afficher le détail", "aria-hidden": "true" }, "\u2228"))),
         (c.boss || []).map((b) =>
             h("div", { classe: "carnage-boss" },
                 h("div", { classe: "carnage-boss-tete" },
