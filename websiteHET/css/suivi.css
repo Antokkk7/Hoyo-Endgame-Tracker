@@ -411,7 +411,9 @@
 .sg-slot-ligne > .sg-slot-champ:only-child { grid-column: 1 / -1; }
 .sg-slot select { max-width: 74px; padding: 7px 6px; background: var(--surface); color: var(--texte); border: 1px solid var(--bordure); border-radius: var(--rayon); font: inherit; }
 .sg-slot .selecteur-bouton { min-height: 38px; padding: 4px 8px; }
-.sg-slot .selecteur-texte small { display: none; }
+.sg-slot .selecteur-bouton .selecteur-texte small { display: none; }
+.sg-mini { flex: none; width: 28px; height: 28px; object-fit: contain; border-radius: 6px; }
+.sg-slot .selecteur-panneau { overflow-x: hidden; }
 .sg-slot-principal .sg-slot-nom { font-weight: 600; color: var(--texte); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .sg-modes { display: flex; gap: 4px; }
@@ -420,7 +422,7 @@
 
 .sg-effets { margin-top: 4px; font-size: .82rem; min-width: 0; }
 .sg-effets summary { cursor: pointer; color: var(--texte-doux); }
-.sg-effets-liste { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; max-height: 300px; overflow: auto; }
+.sg-effets-liste { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
 .sg-effet label { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px; align-items: start; }
 .sg-effet-texte { display: grid; min-width: 0; overflow-wrap: anywhere; }
 .sg-effet-texte strong { font-weight: 500; }

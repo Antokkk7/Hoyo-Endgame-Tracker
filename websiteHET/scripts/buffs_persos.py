@@ -146,7 +146,7 @@ PERSOS["Ningguang"] = perso(on=[e("dmg_GEO", 12, "A4 : après avoir traversé l'
 PERSOS["Navia"] = perso(off=[e("res_GEO", 20, "C4 : après un coup du déchaînement", cm=4)], on=[e("atk_pct", 20, "A4 : après un éclat de cristallisation")])
 PERSOS["Noelle"] = perso(on=[e("atk", None, "Déchaînement : 72 % de la DÉF en ATQ", f={"b": "def", "k": 0.72})])
 PERSOS["Yun Jin"] = perso(off=[e("dmg_na", 15, "C2", cm=2)])
-PERSOS["Xilonen"] = perso(off=[e("res_GEO", 36, "Compétence : échantillon actif"), e("atk_pct", 45, "C2 : bénéficiaire Pyro", cm=2, pour=["PYRO"]), e("hp_pct", 45, "C2 : bénéficiaire Hydro", cm=2, pour=["HYDRO"]),
+PERSOS["Xilonen"] = perso(off=[e("res_GEO", 36, "Compétence : échantillon actif"), e("res_ELEM", 36, "Compétence : échantillon converti à l'élément du personnage (Pyro, Hydro, Cryo, Électro)", pour=["PYRO", "HYDRO", "ELECTRO", "CRYO"]), e("atk_pct", 45, "C2 : bénéficiaire Pyro", cm=2, pour=["PYRO"]), e("hp_pct", 45, "C2 : bénéficiaire Hydro", cm=2, pour=["HYDRO"]),
                                e("cd", 60, "C2 : bénéficiaire Cryo", cm=2, pour=["CRYO"]), e("dmg", 50, "C2 : bénéficiaire Géo", cm=2, pour=["GEO"])])
 PERSOS["Linnea"] = perso(off=[e("res_GEO", 15, "A1 : Lumi")])
 
@@ -179,11 +179,9 @@ PERSOS["Odette"] = perso(
         e("base_stellar", 14, "Passif : DGT de base stellaires (plafond à 2000 ATQ)"), e("stellar_direct", 30, "A4 : DGT stellaires directs (plafond à 3000 ATQ)"),
         e("atk_pct", 28, "C2 : +7 % d'ATQ par cumul (4 cumuls)", cm=2),
         e(["res_CRYO", "res_ELECTRO", "res_ANEMO"], 20, "C2 : RÉS réduite près du double de danse", cm=2),
-        e("res_PHYS", 40, "Conduction stellaire : RÉS Physique -40 %"),
         e("dmg_ELEM", 40, "Conduction stellaire : bonus Électro et Cryo (maximum 40 %)", pour=["ELECTRO", "CRYO"])],
     off=[e("rx_stellar", 15, "A1 : 1 cumul de Splendeur merveilleuse", g="odette:a1"), e("base_stellar", 14, "Passif : DGT de base stellaires (plafond à 2000 ATQ)", g="stellar:base"),
          e(["res_CRYO", "res_ELECTRO", "res_ANEMO"], 20, "C2 : RÉS réduite près du double de danse", cm=2),
-         e("res_PHYS", 40, "Conduction stellaire : RÉS Physique -40 %"),
          e("dmg_ELEM", 40, "Conduction stellaire : bonus Électro et Cryo (maximum 40 %)", pour=["ELECTRO", "CRYO"])])
 PERSOS["Durin"] = perso(
     on=[e(["res_PYRO", "res_DENDRO", "res_ELECTRO", "res_ANEMO", "res_GEO"], 35, "A1 : forme de flamme blanche (20 %, 35 % avec 2 Hexerei)"),

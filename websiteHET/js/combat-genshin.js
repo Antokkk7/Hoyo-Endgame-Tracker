@@ -156,15 +156,15 @@ export function calculerCombat(perso, equipe, etat = {}) {
         return copie;
     });
 
-    // Non-cumul : à valeur égale d'un même groupe et d'une même statistique, seul le meilleur bonus compte
+    // Non-cumul (sets d'artéfacts uniquement ; talents, armes et constellations se cumulent toujours) : à valeur égale d'un même groupe et d'une même statistique, seul le meilleur bonus compte
     const meilleurs = {};
     for (const eff of evalues) {
-        if (eff.statut !== "actif" || !eff.groupe || eff.v === undefined || eff.v === null) continue;
+        if (eff.statut !== "actif" || !eff.groupe || !eff.id.startsWith("s:") || eff.v === undefined || eff.v === null) continue;
         const cle = `${eff.groupe}|${eff.s}`;
         if (!meilleurs[cle] || eff.v > meilleurs[cle].v) meilleurs[cle] = eff;
     }
     for (const eff of evalues) {
-        if (eff.statut === "actif" && eff.groupe && meilleurs[`${eff.groupe}|${eff.s}`] !== eff && eff.v !== undefined && eff.v !== null) {
+        if (eff.statut === "actif" && eff.groupe && eff.id.startsWith("s:") && meilleurs[`${eff.groupe}|${eff.s}`] !== eff && eff.v !== undefined && eff.v !== null) {
             eff.statut = "doublon";
             eff.raison = "Non cumulable avec le même bonus d'un autre personnage";
         }
