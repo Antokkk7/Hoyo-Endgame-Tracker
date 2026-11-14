@@ -57,6 +57,7 @@ function carteCategorie(jeu, cat, catalogue) {
     function dessiner() {
         const actuels = slots.map((s, i) => s[choix[i]] || s[0]);
         const noms = actuels.map((o) => o.perso);
+        const pris = actuels.map((o) => o.perso.toLowerCase());
         const bascule = h("button", { classe: "reco-bascule", type: "button", "aria-expanded": String(ouvert), "aria-label": ouvert ? "Replier" : "Déplier", onclick: () => { ouvert = !ouvert; dessiner(); } },
             h("span", { classe: `reco-chevron${ouvert ? " ouvert" : ""}`, "aria-hidden": "true" }));
         const tete = h("div", { classe: "reco-tete" },
@@ -76,9 +77,10 @@ function carteCategorie(jeu, cat, catalogue) {
                         h("div", { classe: "reco-options" }, s.map((o, j) =>
                             h("button", {
                                 classe: `reco-option${j === (choix[i] || 0) ? " choisi" : ""}`, type: "button", "aria-pressed": String(j === (choix[i] || 0)),
+                                disabled: j !== (choix[i] || 0) && pris.includes(o.perso.toLowerCase()),
+                                title: j !== (choix[i] || 0) && pris.includes(o.perso.toLowerCase()) ? "Déjà dans l'équipe" : null,
                                 onclick: () => { choix[i] = j; dessiner(); },
-                            }, tuile(o.perso, 24), h("span", { classe: "reco-nom" }, o.perso)))),
-                        s.length === 1 && i === 0 ? h("span", { classe: "reco-toujours" }, "Toujours") : null))))
+                            }, tuile(o.perso, 24), h("span", { classe: "reco-nom" }, o.perso))))))))
             : null;
         remplacer(carte, tete, corps);
     }

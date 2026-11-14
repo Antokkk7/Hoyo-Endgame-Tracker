@@ -253,7 +253,7 @@
 
 .reco-slot {
     display: grid;
-    grid-template-columns: 52px minmax(0, 1fr) auto;
+    grid-template-columns: 52px minmax(0, 1fr);
     gap: 10px;
     align-items: start;
     padding: 10px 0;
@@ -297,10 +297,9 @@
     background: color-mix(in srgb, var(--prisme) 22%, var(--surface-2));
 }
 
-.reco-toujours {
-    padding-top: 8px;
-    font-size: 0.75rem;
-    color: var(--texte-doux);
+.reco-option:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
 }
 
 @media (max-width: 960px) {
