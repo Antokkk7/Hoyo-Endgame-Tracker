@@ -45,12 +45,13 @@ body.honkai {
     color: var(--cadre, var(--texte-doux));
 }
 
-/* Suivi des personnages : pas d'illustration pleine hauteur, un portrait suffit */
+/* Suivi Star Rail : le splash art remplit le bloc, les éidolons restent en bas */
 
-.suivi-global .sg-perso .sg-illustration,
-.suivi-global .sg-perso .sg-illustration-repli {
-    flex: none;
-    min-height: 0;
-    height: auto;
-    padding: 18px 0;
+.suivi-global .sg-perso .sg-illustration {
+    min-height: 300px;
+}
+
+.suivi-global .sg-perso .sg-splash {
+    object-fit: cover;
+    object-position: 50% 20%;
 }

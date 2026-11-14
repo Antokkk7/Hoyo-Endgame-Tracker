@@ -27,6 +27,7 @@ const MESSAGES = {
     donnees_invalides: "Les données reçues sont invalides.",
     plan_invalide: "Objectif invalide.",
     plan_deja_present: "Cet élément est déjà dans votre planificateur.",
+    fonction_absente: "Une fonction SQL manque dans Supabase : exécutez les scripts du dossier sql/ (notamment 10_starrail.sql) dans le SQL Editor.",
     enka_400: "UID invalide pour Enka Network.",
     enka_404: "Cet UID n'existe pas (ou le joueur est introuvable).",
     enka_424: "Le jeu est en maintenance : Enka Network est temporairement indisponible.",
@@ -64,6 +65,7 @@ export async function rpc(nom, parametres = {}) {
     if (reponse.status === 204) return null;
     const corps = await reponse.json().catch(() => null);
     if (!reponse.ok) {
+        if (reponse.status === 404 || (corps && corps.code === "PGRST202")) throw new ErreurApi("fonction_absente");
         const code = corps && typeof corps.message === "string" ? corps.message : "inconnue";
         if (code === "session_invalide") effacerSession();
         throw new ErreurApi(code);

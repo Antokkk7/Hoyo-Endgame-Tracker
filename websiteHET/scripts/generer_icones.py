@@ -125,8 +125,8 @@ def starrail(src, noms_catalogue):
     reliques = lire(src / "hsr" / "relics.json")
     icones = {}
     for it in reliques["Items"].values():
-        # Une pièce par set : la tête pour les sets d'artéfacts, la sphère planaire pour les ornements.
-        if it.get("Type") in ("HEAD", "OBJECT"):
+        # Une pièce par set : la tête pour les sets de reliques, la sphère planaire (NECK) pour les ornements.
+        if it.get("Type") in ("HEAD", "NECK"):
             icones[str(it["SetID"])] = it["Icon"].lstrip("/").removeprefix("ui/")
     sets = {}
     for sid, s in reliques["Sets"].items():

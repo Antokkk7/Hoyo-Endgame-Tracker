@@ -4,7 +4,7 @@ import { h, nombre, remplacer } from "./dom.js";
 import { rpc } from "./api.js";
 import { chargerReferenceStarRail, normaliserStarRail, recupererStarRail, VOIES } from "./enka-starrail.js";
 import { element as infoElement } from "./elements.js";
-import { imageEnka, urlsArme } from "./icones.js";
+import { imageEnka, urlsArme, urlsSplash } from "./icones.js";
 import { portrait } from "./portraits.js";
 import { jeton } from "./session.js";
 
@@ -50,7 +50,7 @@ function colonnePersonnage(p, contexte) {
         h("div", { classe: "sg-carte-perso" },
             h("div", { classe: "sg-nom-ligne" }, h("h3", {}, p.nom), h("span", { classe: "sg-niveau" }, `Niv.${p.niveau}`)),
             h("p", { classe: "petit" }, `${el.nom || "-"} - ${VOIES[p.voie] || "-"}`),
-            h("div", { classe: "sg-illustration" }, h("div", { classe: "sg-illustration-repli" }, portrait("starrail", p.en || p.nom, { taille: 140, elementCle: p.element }))),
+            h("div", { classe: "sg-illustration" }, imageEnka(urlsSplash("starrail", p.id), { classe: "sg-splash", alt: p.nom, repli: () => h("div", { classe: "sg-illustration-repli" }, portrait("starrail", p.en || p.nom, { taille: 140, elementCle: p.element })) })),
             h("p", { classe: "petit sg-constellations-titre" }, `Éidolons : E${p.rang}`),
             h("div", { classe: "sg-constellations" }, [1, 2, 3, 4, 5, 6].map((n) =>
                 h("span", { classe: "sg-constellation" + (n <= p.rang ? " active" : ""), "aria-label": `Éidolon ${n}` }, String(n))))),

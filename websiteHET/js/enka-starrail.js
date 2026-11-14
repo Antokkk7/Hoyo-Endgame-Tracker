@@ -41,8 +41,8 @@ export const VOIES = {
     Warlock: "Nihilité", Priest: "Abondance", Memory: "Mémoire", Elation: "Allégresse",
 };
 export const ELEMENTS_HSR = { Fire: "FIRE", Ice: "ICE", Wind: "WIND", Thunder: "LIGHTNING", Lightning: "LIGHTNING", Physical: "PHYSICAL", Quantum: "QUANTUM", Imaginary: "IMAGINARY" };
-const EMPLACEMENTS = { HEAD: [1, "Tête"], HAND: [2, "Mains"], BODY: [3, "Torse"], FOOT: [4, "Bottes"], OBJECT: [5, "Sphère"], NECK: [6, "Corde"] };
-const TYPES_RELIQUE = { 1: "HEAD", 2: "HAND", 3: "BODY", 4: "FOOT", 5: "OBJECT", 6: "NECK" };
+const EMPLACEMENTS = { HEAD: [1, "Tête"], HAND: [2, "Mains"], BODY: [3, "Torse"], FOOT: [4, "Bottes"], NECK: [5, "Sphère"], OBJECT: [6, "Corde"] };
+const TYPES_RELIQUE = { 1: "HEAD", 2: "HAND", 3: "BODY", 4: "FOOT", 5: "NECK", 6: "OBJECT" };
 
 const LIBELLES = {
     HPDelta: "PV", AttackDelta: "ATQ", DefenceDelta: "DÉF", SpeedDelta: "VIT",

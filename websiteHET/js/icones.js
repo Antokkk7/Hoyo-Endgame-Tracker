@@ -55,6 +55,12 @@ export function urlsPerso(jeu, nom) {
     return [url(`UI_AvatarIcon_${ref}.png`), url(`UI_AvatarIcon_${ref}_Circle.png`), url(`UI_AvatarIcon_Side_${ref}.png`)];
 }
 
+// Illustration pleine taille (splash art) d'un personnage Star Rail, à partir de son identifiant Enka.
+export function urlsSplash(jeu, id) {
+    if (jeu !== "starrail" || !id) return [];
+    return [url(`hsr/SpriteOutput/AvatarDrawCard/${id}.png`)];
+}
+
 // Personnages du catalogue du site avec leur icône : [{ nom }]
 export function listePersonnages(jeu) {
     return jeuTable(jeu).liste.map(([nom]) => ({ nom }));
