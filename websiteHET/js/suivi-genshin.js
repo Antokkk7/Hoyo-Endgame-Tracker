@@ -38,11 +38,14 @@ function carteArtefact(art) {
             art.icone ? image(urlIconeEnka(art.icone), art.emplacement, "sg-artefact-icone") : h("span", { classe: "sg-artefact-icone vide" }),
             h("span", { classe: "doux petit" }, `${art.emplacement} +${art.niveau}`),
             h("strong", { classe: "sg-principale" }, art.principale.libelle, h("span", {}, format(art.principale.valeur, art.principale.pct)))),
+        // Trois colonnes alignées : nom de la substat, valeur, nombre d'améliorations (case vide s'il n'y en a pas).
         h("ul", { classe: "sg-sous" }, art.sous.map((s) =>
-            h("li", {}, h("span", {}, s.libelle), h("span", { classe: "sg-sous-valeur" }, format(s.valeur, s.pct),
+            h("li", {},
+                h("span", { classe: "sg-sous-nom" }, s.libelle),
+                h("span", { classe: "sg-sous-valeur" }, format(s.valeur, s.pct)),
                 s.lancers > 1
                     ? h("span", { classe: `sg-lancers l${Math.min(3, s.lancers)}`, title: `${s.lancers - 1} amélioration${s.lancers > 2 ? "s" : ""}` }, String(s.lancers - 1))
-                    : null)))),
+                    : h("span", { classe: "sg-lancers vide", "aria-hidden": "true" })))),
         h("span", { classe: `sg-note ${note.classe}`, title: `Valeur critique : ${format(art.cv, false)}` }, note.texte));
 }
 

@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Génère assets/personnages/manifeste.json : la liste des portraits disponibles pour le site.
+"""Génère assets/personnages/manifeste.json : les images locales de personnages qui remplacent celles d'Enka Network.
 
-Copiez vos images dans websiteHET/assets/personnages/genshin/ et websiteHET/assets/personnages/starrail/
-(par exemple depuis data/genshin/personnagesIMG et data/starrail/personnagesIMG), puis lancez, depuis la racine du repo :
+Les portraits viennent d'Enka (scripts/generer_icones.py). Ce dossier ne garde que ce qu'Enka ne fournit pas :
+les Traveler de Genshin (Traveler (Pyro).png, etc.). Une image locale est toujours prioritaire sur celle d'Enka :
+copiez-la dans websiteHET/assets/personnages/genshin/ ou starrail/ (le nom du fichier est le nom du personnage),
+puis lancez, depuis la racine du repo :
 
     python websiteHET/scripts/generer_manifeste.py
 
-Le nom du fichier doit être le nom du personnage (Mavuika.png). La correspondance ignore la casse,
-les espaces et la ponctuation.
+La correspondance ignore la casse, les espaces et la ponctuation.
 """
 import json
 import re

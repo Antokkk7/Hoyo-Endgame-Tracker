@@ -305,7 +305,9 @@
 
 .sg-sous {
     display: grid;
-    gap: 4px;
+    grid-template-columns: minmax(0, 1fr) auto 18px;
+    align-items: center;
+    gap: 4px 8px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -313,18 +315,17 @@
 }
 
 .sg-sous li {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
+    display: contents;
+}
+
+.sg-sous-nom {
     color: var(--texte-doux);
 }
 
 .sg-sous-valeur {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
     color: var(--texte);
     font-weight: 600;
+    text-align: right;
     white-space: nowrap;
 }
 
@@ -336,6 +337,10 @@
     border-radius: 50%;
     background: #3a3d52;
     font-size: 0.68rem;
+}
+
+.sg-lancers.vide {
+    background: none;
 }
 
 .sg-lancers.l2 {

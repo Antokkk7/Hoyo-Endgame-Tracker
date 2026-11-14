@@ -3,8 +3,8 @@
 // sets d'artéfacts et remplacements possibles par emplacement. Format des données : voir sql/09_recommandations.sql.
 import { h, remplacer } from "./dom.js";
 import { rpc } from "./api.js";
-import { urlArme } from "./donnees.js";
 import { element as infoElement } from "./elements.js";
+import { imageEnka, nomsDeSets, urlsArme, urlsSet } from "./icones.js";
 import { portrait } from "./portraits.js";
 import { selecteur } from "./selecteur.js";
 
@@ -18,10 +18,15 @@ function pluriel(n, mot) {
 }
 
 function iconeArme(jeu, nom) {
-    const url = urlArme(jeu, nom);
-    return url
-        ? h("img", { classe: "reco-arme-icone", src: url, alt: "", loading: "lazy", onerror: (e) => e.target.replaceWith(h("span", { classe: "reco-arme-glyphe", "aria-hidden": "true" }, "⚔")) })
-        : h("span", { classe: "reco-arme-glyphe", "aria-hidden": "true" }, "⚔");
+    const glyphe = () => h("span", { classe: "reco-arme-glyphe", "aria-hidden": "true" }, "⚔");
+    return imageEnka(urlsArme(jeu, nom), { classe: "reco-arme-icone", repli: glyphe }) || glyphe();
+}
+
+// Icône de la fleur du set (pièce de tête pour Star Rail) ; deux icônes pour un 2P+2P ; le type du set (4P, 2P…) si l'icône est introuvable.
+function iconesSet(jeu, set, rang) {
+    const badge = () => h("span", { classe: `reco-badge b${Math.min(rang, 2)}` }, set.type || "4P");
+    const icones = nomsDeSets(set.nom).map((nom) => imageEnka(urlsSet(jeu, nom), { classe: "reco-set-icone", repli: badge }) || badge());
+    return h("span", { classe: "reco-set-icones", title: set.type || "4P" }, icones.length ? icones : badge());
 }
 
 function ligneBuild(jeu, option) {
@@ -39,7 +44,7 @@ function ligneBuild(jeu, option) {
             sets.length
                 ? h("div", { classe: "reco-puces" }, sets.map((s, i) =>
                     h("span", { classe: `reco-puce${i === 0 ? " premier" : ""}` },
-                        h("span", { classe: `reco-badge b${i}` }, s.type || "4P"), h("span", { classe: "reco-nom" }, s.nom))))
+                        iconesSet(jeu, s, i), h("span", { classe: "reco-nom" }, s.nom))))
                 : h("span", { classe: "doux petit" }, "Pas de recommandation pour l'instant.")));
 }
 

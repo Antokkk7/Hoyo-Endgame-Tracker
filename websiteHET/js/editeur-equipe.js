@@ -1,6 +1,7 @@
 // Éditeur d'équipe : 4 emplacements (personnage, niveau, doublons, arme ou cône, raffinement), comme dans l'application.
 import { h, remplacer } from "./dom.js";
-import { armesPour, urlArme } from "./donnees.js";
+import { armesPour } from "./donnees.js";
+import { imageEnka, urlsArme } from "./icones.js";
 import { element as infoElement } from "./elements.js";
 import { normaliserMembre } from "./equipes.js";
 import { portrait } from "./portraits.js";
@@ -50,8 +51,8 @@ export function editeurEquipe({ jeu, catalogue, colonnes = 2, modeles = null }) 
     }
 
     function visuelArme(nom) {
-        const url = urlArme(jeu, nom);
-        return h("span", { classe: "tuile-arme" }, url ? h("img", { src: url, alt: "", loading: "lazy" }) : h("span", { classe: "doux" }, "?"));
+        const inconnu = () => h("span", { classe: "doux" }, "?");
+        return h("span", { classe: "tuile-arme" }, imageEnka(urlsArme(jeu, nom), { repli: inconnu }) || inconnu());
     }
 
     function creerSlot(numero) {

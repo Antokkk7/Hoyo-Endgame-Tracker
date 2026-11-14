@@ -219,6 +219,20 @@
     color: var(--texte-doux);
 }
 
+.reco-set-icones {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 2px;
+}
+
+.reco-set-icone {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
 .reco-badge {
     flex: none;
     padding: 1px 6px;
