@@ -29,9 +29,9 @@ export const NOMS_STATS = {
     hp_pct: "PV", atk_pct: "ATQ", def_pct: "DÉF", spd_pct: "VIT", hp: "PV (fixe)", atk: "ATQ (fixe)", def: "DÉF (fixe)", spd: "VIT (fixe)",
     cr: "Taux CRIT", cd: "DGT CRIT", brk: "Effet de rupture", err: "Régén. d'énergie", ehr: "Taux de touche des effets", eres: "RÉS aux effets",
     dmg: "Bonus de DGT (tous types)", heal: "Bonus de soins", vuln: "Vulnérabilité de l'ennemi", res_pen: "Pénétration de RÉS", def_red: "Réduction de DÉF ennemie",
-    shield: "Puissance de bouclier", autre: "Effet spécial",
+    shield: "Puissance de bouclier", def_ign: "DÉF ignorée", autre: "Effet spécial",
 };
-const POURCENT = new Set(["hp_pct", "atk_pct", "def_pct", "spd_pct", "cr", "cd", "brk", "err", "ehr", "eres", "dmg", "heal", "vuln", "res_pen", "def_red", "shield"]);
+const POURCENT = new Set(["hp_pct", "atk_pct", "def_pct", "spd_pct", "cr", "cd", "brk", "err", "ehr", "eres", "dmg", "heal", "vuln", "res_pen", "def_red", "def_ign", "shield"]);
 
 export function libelleStat(s) {
     if (NOMS_STATS[s]) return NOMS_STATS[s];
@@ -60,6 +60,7 @@ function preparer(liste, origine, idBase, contexte, qui, avecOrigine = false) {
     const sortie = [];
     (liste || []).forEach((eff, i) => {
         if (eff.cm && (contexte.eidolon || 0) < eff.cm) return;
+        if (eff.pp && !eff.pp.includes(contexte.principal)) return;
         const v = Array.isArray(eff.v) ? eff.v[indice] : eff.v;
         sortie.push({ ...eff, v, origine: avecOrigine && eff.o ? `${origine} · ${eff.o}` : origine, qui, id: `${idBase}:${i}` });
     });
@@ -86,7 +87,7 @@ export function calculerCombat(perso, equipe, etat = {}) {
 
     membres.forEach((m, k) => {
         const info = ref.persos[m.id];
-        effets.push(...preparer(b.persos[m.id]?.off, info.nom, `p:${info.en}:off`, { eidolon: m.e || 0 }, k, true));
+        effets.push(...preparer(b.persos[m.id]?.off, info.nom, `p:${info.en}:off`, { eidolon: m.e || 0, principal: perso.id }, k, true));
         if (m.cone?.id && ref.cones[m.cone.id]) {
             const c = ref.cones[m.cone.id];
             effets.push(...preparer((b.cones[c.en] || []).filter((x) => x.cible === "equipe"), `${info.nom} : ${c.nom}`, `c:${c.en}:${k}`, { superposition: m.cone.r || 1 }, k));

@@ -233,6 +233,49 @@ def personnages(res):
     return sortie
 
 
+# Cyrène : les « Odes » de sa compétence de mémosprite dépendent du personnage sur lequel elle est utilisée ; pp = identifiants des
+# personnages principaux concernés. Données saisies d'après les descriptions du jeu ; sans v : effet affiché sans calcul.
+ID_CYRENE = "1415"
+ODES = [
+    ("1402", "Ode à la Romance", [("dmg", 72, 1, "Aglaé et le Faiseur d'habits : DGT infligés +72 % jusqu'à la sortie de la Posture suprême (effet unique)"),
+                                  ("def_ign", 36, 1, "Aglaé et le Faiseur d'habits ignorent 36 % de la DÉF de la cible")]),
+    ("1405", "Ode à la Raison", [("atk_pct", 60, 1, "Avec « Vraie connaissance » : ATQ de tous les personnages de la Voie de l'Érudition +60 % (et DGT de compétence +40 %) jusqu'au début du prochain tour d'Anaxa")]),
+    ("1407", "Ode à la vie et à la mort", [(None, None, 0, "Pour tout le combat : « Nouvelle pousse » peut déborder jusqu'à 200 %. À l'invocation de l'Aile-du-Néant, le débordement consommé augmente son multiplicateur de DGT de 0,2 % par 1 % consommé (+0,5 % s'il y a 2 ennemis ou moins)")]),
+    ("1412", "Ode à la Loi", [(None, None, 0, "Pour tout le combat : les DGT critiques du personnage portant le « Mérite militaire » augmentent de 30 %")]),
+    ("1406", "Ode à la Ruse", [("dmg", 36, 0, "Pour tout le combat : DGT infligés par Cipher +36 %"),
+                              ("def_red", 20, 0, "DÉF du « Mécène » −20 %"), ("def_red", 12, 0, "DÉF des autres ennemis −12 %")]),
+    ("1414", "Ode à la Terre", [(None, None, 0, "Le « Lien » inflige 24 % de DGT en plus tant que Dan Heng • Permansor Terrae possède « Ode à la Terre » ; avance l'action du Dragon d'âme de 100 %")]),
+    ("1409", "Ode au Ciel", [(None, None, 0, "Régénère 24 d'énergie ; les soins de la compétence de mémosprite de Petite Ica augmentent de 72 % de la valeur de soin tant qu'« Ode au Ciel » est active")]),
+    ("1410", "Ode à l'Océan", [("dmg", 60, 0, "Effet unique : DGT infligés par Hysilens +60 % pour ce combat")]),
+    ("1413", "Ode au Temps", [(None, None, 0, "Pour tout le combat : DGT de la compétence de mémosprite d'Evey +18 % ; l'augmentation de DGT critiques de la compétence est accrue de 12 % des DGT critiques d'Evernight")]),
+    ("1404", "Ode à la Discorde", [("cd", 200, 1, "Effet unique : DGT critiques de Mydei +200 % pendant cette attaque")]),
+    ("1408", "Ode à celui qui porte le monde", [("cr", 16, 1, "Tant que « Ignition éternelle » dure : taux CRIT de Khaslana +16 %"),
+                                                ("cd", 72, 1, "À la transformation, +12 % de DGT critiques de Khaslana par point de « Flamme-cœur » au-delà de 12 (maximum 72 %)")]),
+    ("8007", "Ode à la Genèse", [(None, None, 0, "Pour tout le combat : l'ATQ du Pionnier augmente de 16 % des PV max de Cyrène et son taux CRIT de 72 % du taux CRIT de Cyrène")]),
+    ("8008", "Ode à la Genèse", [(None, None, 0, "Pour tout le combat : l'ATQ du Pionnier augmente de 16 % des PV max de Cyrène et son taux CRIT de 72 % du taux CRIT de Cyrène")]),
+    ("1403", "Ode au Passage", [("def_ign", 12, 0, "Pour tout le combat : les DGT de Tribbie ignorent 12 % de la DÉF de l'ennemi")]),
+]
+
+
+def odes_cyrene(persos):
+    cyrene = persos.setdefault(ID_CYRENE, {"on": [], "off": []})
+    for cle in ("on", "off"):
+        cyrene[cle] = [e for e in cyrene[cle] if not e["o"].startswith("Compétence de mémosprite")]
+    for cible, nom, effets in ODES:
+        for stat, valeur, conditionnel, texte in effets:
+            e = {"s": stat or "autre", "o": f"Compétence de mémosprite : {nom}", "c": texte, "cible": "equipe", "pp": [cible]}
+            if valeur is not None:
+                e["v"] = valeur
+            if conditionnel:
+                e["d"] = 1
+            cyrene["off"].append(e)
+
+
+def odes_cyrene_appliquer(persos):
+    odes_cyrene(persos)
+    return persos
+
+
 def cones(res):
     lc_en, lr_en, lr_fr = lire(res, "en", "light_cones"), lire(res, "en", "light_cone_ranks"), lire(res, "fr", "light_cone_ranks")
     sortie = {}
@@ -277,7 +320,7 @@ def main():
     sortie = {
         "version": 2,
         "aide": "Généré par scripts/generer_buffs_starrail.py (voir son en-tête). Effet : s statistique, v valeur (tableau de 5 pour les cônes, une valeur par superposition), c texte, o origine, cible equipe (bonus apporté aux alliés ou débuff ennemi), al allié ciblé, en effet sur l'ennemi, cm éidolon minimum, d désactivé par défaut (effet conditionnel).",
-        "persos": personnages(args.res), "cones": cones(args.res), "sets": sets(args.res, bonus),
+        "persos": odes_cyrene_appliquer(personnages(args.res)), "cones": cones(args.res), "sets": sets(args.res, bonus),
     }
     chemin = SITE / "assets" / "donnees" / "starrail_buffs.json"
     chemin.write_text(json.dumps(sortie, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
