@@ -153,9 +153,8 @@ body.genshin {
 }
 
 .carnage-chevron {
+    flex: none;
     color: var(--texte-doux);
-    font-size: 1.1rem;
-    font-weight: 700;
     transition: transform 0.15s;
 }
 
