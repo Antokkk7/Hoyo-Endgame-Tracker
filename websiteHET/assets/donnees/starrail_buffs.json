@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "aide": "Bonus d'équipe de Star Rail. persos[nom anglais] = { on: effets du personnage sur lui-même, off: effets qu'il apporte à ses alliés } ; cones[nom anglais] = effets ; sets[nom anglais] = { deux: [...], quatre: [...] }. Un effet : { s: statistique, v: valeur (un nombre, ou 5 valeurs pour les superpositions S1 à S5 d'un cône), c: description, d: 1 pour désactivé par défaut, cm: éidolon minimum, cible: \"equipe\" pour un bonus apporté aux alliés }. Statistiques : hp_pct atk_pct def_pct spd_pct hp atk def spd cr cd brk err ehr eres dmg dmg_PHYSICAL (FIRE ICE LIGHTNING WIND QUANTUM IMAGINARY) heal vuln res_pen def_red shield autre.",
+  "persos": {},
+  "cones": {},
+  "sets": {
+    "Messenger Traversing Hackerspace": {
+      "deux": [],
+      "quatre": [{ "s": "spd_pct", "v": 12, "cible": "equipe", "d": 1, "c": "Ultime du porteur lancé sur un allié : VIT de tous les alliés +12 % (1 tour)" }]
+    },
+    "Broken Keel": {
+      "deux": [{ "s": "cd", "v": 10, "cible": "equipe", "d": 1, "c": "RÉS aux effets du porteur ≥ 30 % : DGT CRIT de tous les alliés +10 %" }],
+      "quatre": []
+    },
+    "Fleet of the Ageless": {
+      "deux": [{ "s": "atk_pct", "v": 8, "cible": "equipe", "d": 1, "c": "VIT du porteur ≥ 120 : ATQ de tous les alliés +8 %" }],
+      "quatre": []
+    }
+  }
+}

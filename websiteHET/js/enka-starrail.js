@@ -24,6 +24,10 @@ function ref() {
     return reference || VIDE;
 }
 
+export function referenceStarRail() {
+    return ref();
+}
+
 export async function recupererStarRail(uid) {
     let reponse;
     try {
@@ -149,13 +153,20 @@ function calculerStats(a, info, reliques) {
     const propElement = BONUS_ELEMENT[info.element];
     if (propElement) stats.push({ libelle: LIBELLES[propElement], valeur: arrondi(s(propElement) * 100), pct: true });
     if (s("HealRatioBase")) stats.push({ libelle: "Bonus de soins", valeur: arrondi(s("HealRatioBase") * 100), pct: true });
-    return stats;
+    const brutes = {
+        hp: hp, atk: atk, def: def, spd: vit, bhp: base.hp, batk: base.atk, bdef: base.def, bspd: b[6],
+        cr: (b[7] + s("CriticalChanceBase")) * 100, cd: (b[8] + s("CriticalDamageBase")) * 100, brk: s("BreakDamageAddedRatioBase") * 100,
+        err: 100 + s("SPRatioBase") * 100, ehr: s("StatusProbabilityBase") * 100, eres: s("StatusResistanceBase") * 100,
+        dgt: propElement ? s(propElement) * 100 : 0, heal: s("HealRatioBase") * 100,
+    };
+    return { stats, brutes };
 }
 
 function normaliserPersonnage(a) {
     const tables = ref();
     const info = tables.persos[String(a.avatarId)] || { nom: `Personnage ${a.avatarId}`, en: "", element: "", voie: "", rarete: 4 };
     const reliques = (a.relicList || []).map(normaliserRelique).sort((x, y) => x.rang - y.rang);
+    const calcul = calculerStats(a, info, reliques);
     const parSet = {};
     for (const r of reliques) if (r.setId) parSet[r.setId] = { nom: r.set, en: r.setEn, pieces: (parSet[r.setId]?.pieces || 0) + 1 };
     return {
@@ -163,7 +174,7 @@ function normaliserPersonnage(a) {
         voie: info.voie, rarete: info.rarete, niveau: Number(a.level || 1), rang: Number(a.rank || 0),
         cone: normaliserCone(a.equipment, info.voie), reliques,
         sets: Object.values(parSet).filter((s) => s.pieces >= 2).map((s) => ({ nom: s.nom, en: s.en, pieces: s.pieces >= 4 ? 4 : 2 })),
-        stats: calculerStats(a, info, reliques),
+        stats: calcul.stats, brutes: calcul.brutes,
         cvTotal: arrondi(reliques.reduce((somme, r) => somme + r.cv, 0)),
     };
 }

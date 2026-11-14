@@ -7,6 +7,8 @@ import { element as infoElement } from "./elements.js";
 import { imageEnka, urlsArme, urlsSplash } from "./icones.js";
 import { portrait } from "./portraits.js";
 import { jeton } from "./session.js";
+import { chargerBuffsStarRail } from "./combat-starrail.js";
+import { blocCombatStarRail } from "./equipe-combat-starrail.js";
 
 const BASE_ICONES = "https://enka.network/ui/";
 const FORMAT_DATE = new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" });
@@ -78,11 +80,19 @@ function boutonRecos(p, contexte) {
     }, `Équipes recommandées (${n})`);
 }
 
-function colonneStats(p) {
+function colonneStats(p, combat) {
     return h("div", { classe: "sg-col sg-stats" },
-        h("section", { classe: "sg-bloc" }, h("h3", {}, "Statistiques"),
-            h("ul", { classe: "sg-liste-stats" }, p.stats.map((s) => h("li", {}, h("span", {}, s.libelle), h("strong", {}, format(s.valeur, s.pct))))),
-            h("p", { classe: "doux petit" }, "Base, cône, reliques, bonus de sets et traces. Les effets conditionnels (passifs du cône, talents, éidolons) ne sont pas inclus.")));
+        h("section", { classe: "sg-bloc" }, h("h3", {}, p.brutes ? "Statistiques en combat" : "Statistiques"),
+            p.brutes
+                ? combat.resultat
+                : [h("ul", { classe: "sg-liste-stats" }, p.stats.map((s) => h("li", {}, h("span", {}, s.libelle), h("strong", {}, format(s.valeur, s.pct))))), combat.resultat],
+            h("p", { classe: "doux petit" }, "Base, cône, reliques, bonus de sets et traces, puis bonus de l'équipe. Les effets conditionnels du personnage lui-même ne sont pas inclus.")));
+}
+
+function ligneEquipe(combat) {
+    return h("section", { classe: "sg-bloc sg-sets sg-equipe-ligne" }, h("h3", {}, "Équipe"),
+        h("p", { classe: "doux petit" }, "Choisissez les 3 coéquipiers : leurs bonus, cônes et sets de reliques s'ajoutent aux statistiques. Le détail des bonus est déroulable sous chaque personnage."),
+        combat.equipe);
 }
 
 function colonneReliques(p) {
@@ -98,6 +108,7 @@ function carteGlobale(cache, choisi, surChoix, contexte) {
         j.niveauMonde ? `Niveau d'équilibre ${j.niveauMonde}` : null, j.niveau ? `Rang d'aventure ${j.niveau}` : null, `UID ${cache.uid}`,
         `Dernière mise à jour : ${FORMAT_DATE.format(new Date(cache.maj_le))}`,
     ].filter(Boolean);
+    const combat = blocCombatStarRail(p, contexte.equipes[p.id], (d) => contexte.sauver(p.id, d));
     return h("section", { classe: "suivi-global", "aria-label": "Personnages du compte" },
         h("header", { classe: "sg-entete" },
             portrait("starrail", j.avatar || p.en, { taille: 56, rond: true }),
@@ -107,17 +118,35 @@ function carteGlobale(cache, choisi, surChoix, contexte) {
                     classe: "sg-chip", type: "button", role: "tab", "aria-selected": String(x.id === p.id), title: `${x.nom} · Niv.${x.niveau}`,
                     style: `--element:${infoElement(x.element).couleur}`, onclick: () => surChoix(x.id),
                 }, portrait("starrail", x.en || x.nom, { taille: 46, rond: true, elementCle: x.element }))))),
-        h("div", { classe: "sg-corps" }, colonnePersonnage(p, contexte), colonneStats(p), colonneReliques(p)));
+        h("div", { classe: "sg-corps" }, colonnePersonnage(p, contexte), colonneStats(p, combat), colonneReliques(p)),
+        ligneEquipe(combat));
 }
 
 export async function rendreSuiviStarRail(zone) {
-    const [uidEnregistre, cacheInitial, indexRecos] = await Promise.all([
+    const [uidEnregistre, cacheInitial, indexRecos, equipesEnregistrees] = await Promise.all([
         rpc("uid_lire", { p_token: jeton(), p_jeu: "starrail" }),
         rpc("enka_jeu_lire", { p_token: jeton(), p_jeu: "starrail" }),
         rpc("recos_personnages", { p_jeu: "starrail" }).catch(() => []),
+        rpc("suivi_equipe_jeu_lire", { p_token: jeton(), p_jeu: "starrail" }).catch(() => ({})),
         chargerReferenceStarRail(),
+        chargerBuffsStarRail(),
     ]);
-    const contexte = { recos: new Map((indexRecos || []).map((r) => [String(r.personnage).toLowerCase(), r.categories])) };
+    const equipes = equipesEnregistrees || {};
+    const minuteries = {};
+    const contexte = {
+        equipes,
+        recos: new Map((indexRecos || []).map((r) => [String(r.personnage).toLowerCase(), r.categories])),
+        sauver(persoId, donnees) {
+            equipes[persoId] = donnees;
+            clearTimeout(minuteries[persoId]);
+            minuteries[persoId] = setTimeout(() => {
+                rpc("suivi_equipe_jeu_enregistrer", { p_token: jeton(), p_jeu: "starrail", p_perso_id: String(persoId), p_donnees: donnees }).catch((err) => {
+                    message.className = "message erreur";
+                    message.textContent = err.message;
+                });
+            }, 500);
+        },
+    };
     let cache = cacheInitial && String(cacheInitial.uid) === String(uidEnregistre) ? cacheInitial : null;
     let choisi = null;
 
