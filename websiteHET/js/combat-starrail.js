@@ -1,7 +1,7 @@
 // Calcul des statistiques en combat (Star Rail) : statistiques du personnage + bonus de ses 3 coéquipiers (talents, cône,
 // sets de reliques et ornement planaire), de son propre cône et de ses sets. Les bonus viennent de assets/donnees/starrail_buffs.json
 // (format décrit dans le champ « aide » de ce fichier).
-import { referenceStarRail } from "./enka-starrail.js";
+import { brutesDepuisStats, referenceStarRail } from "./enka-starrail.js";
 
 let buffs = null;
 let chargement = null;
@@ -53,13 +53,13 @@ export function idsOrnements() {
     return ids;
 }
 
-function preparer(liste, origine, idBase, contexte, qui) {
+function preparer(liste, origine, idBase, contexte, qui, avecOrigine = false) {
     const indice = Math.min(4, Math.max(0, (contexte.superposition || 1) - 1));
     const sortie = [];
     (liste || []).forEach((eff, i) => {
         if (eff.cm && (contexte.eidolon || 0) < eff.cm) return;
         const v = Array.isArray(eff.v) ? eff.v[indice] : eff.v;
-        sortie.push({ ...eff, v, origine, qui, id: `${idBase}:${i}` });
+        sortie.push({ ...eff, v, origine: avecOrigine && eff.o ? `${origine} · ${eff.o}` : origine, qui, id: `${idBase}:${i}` });
     });
     return sortie;
 }
@@ -68,12 +68,12 @@ function preparer(liste, origine, idBase, contexte, qui) {
 export function calculerCombat(perso, equipe, etat = {}) {
     const b = donneesBuffsStarRail();
     const ref = referenceStarRail();
-    const S = perso.brutes;
+    const S = perso.brutes || brutesDepuisStats(perso);
     if (!S) return null;
     const membres = (equipe || []).filter((m) => m && m.id && ref.persos[m.id]);
     const effets = [];
 
-    effets.push(...preparer(b.persos[perso.en]?.on, `${perso.nom} (talents)`, `p:${perso.en}:on`, { eidolon: perso.rang }, "p"));
+    effets.push(...preparer(b.persos[perso.id]?.on, perso.nom, `p:${perso.en}:on`, { eidolon: perso.rang }, "p", true));
     if (perso.cone) effets.push(...preparer(b.cones[perso.cone.en], `${perso.nom} : ${perso.cone.nom}`, `c:${perso.cone.en}:soi`, { superposition: perso.cone.rang }, "p"));
     for (const s of perso.sets || []) {
         const d = b.sets[s.en];
@@ -84,7 +84,7 @@ export function calculerCombat(perso, equipe, etat = {}) {
 
     membres.forEach((m, k) => {
         const info = ref.persos[m.id];
-        effets.push(...preparer(b.persos[info.en]?.off, `${info.nom} (talents)`, `p:${info.en}:off`, { eidolon: m.e || 0 }, k));
+        effets.push(...preparer(b.persos[m.id]?.off, info.nom, `p:${info.en}:off`, { eidolon: m.e || 0 }, k, true));
         if (m.cone?.id && ref.cones[m.cone.id]) {
             const c = ref.cones[m.cone.id];
             effets.push(...preparer((b.cones[c.en] || []).filter((x) => x.cible === "equipe"), `${info.nom} : ${c.nom}`, `c:${c.en}:${k}`, { superposition: m.cone.r || 1 }, k));

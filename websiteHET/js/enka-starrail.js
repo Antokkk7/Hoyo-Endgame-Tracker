@@ -162,6 +162,26 @@ function calculerStats(a, info, reliques) {
     return { stats, brutes };
 }
 
+// Personnages enregistrés avant l'ajout des valeurs de base : on les reconstitue d'après les statistiques enregistrées et les tables de référence.
+const PALIERS = [20, 30, 40, 50, 60, 70];
+export function brutesDepuisStats(p) {
+    if (!p?.stats?.length) return null;
+    const tables = ref();
+    const val = (libelle) => p.stats.find((x) => x.libelle === libelle)?.valeur ?? 0;
+    const promo = (niveau) => String(PALIERS.filter((t) => Number(niveau) > t).length);
+    const b = tables.base[String(p.id)]?.[promo(p.niveau)] || [0, 0, 0, 0, 0, 0, 100, 0.05, 0.5];
+    const nc = Number(p.cone?.niveau || 1) - 1;
+    const c = p.cone ? tables.cones[String(p.cone.id)]?.base?.[promo(p.cone.niveau)] : null;
+    const n = Number(p.niveau || 1) - 1;
+    const dgt = p.stats.find((x) => /^DGT /.test(x.libelle) && x.libelle !== "DGT CRIT")?.valeur ?? 0;
+    return {
+        hp: val("PV"), atk: val("ATQ"), def: val("DÉF"), spd: val("VIT"),
+        bhp: b[0] + b[1] * n + (c ? c[0] + c[1] * nc : 0), batk: b[2] + b[3] * n + (c ? c[2] + c[3] * nc : 0), bdef: b[4] + b[5] * n + (c ? c[4] + c[5] * nc : 0), bspd: b[6],
+        cr: val("Taux CRIT"), cd: val("DGT CRIT"), brk: val("Effet de rupture"), err: val("Régén. d'énergie"),
+        ehr: val("Taux de touche des effets"), eres: val("RÉS aux effets"), dgt, heal: val("Bonus de soins"),
+    };
+}
+
 function normaliserPersonnage(a) {
     const tables = ref();
     const info = tables.persos[String(a.avatarId)] || { nom: `Personnage ${a.avatarId}`, en: "", element: "", voie: "", rarete: 4 };

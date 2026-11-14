@@ -442,3 +442,11 @@
 @media (max-width: 640px) { .sg-equipe-ligne .sg-equipe { grid-template-columns: minmax(0, 1fr); } }
 
 .sg-reco-bouton { width: 100%; margin-top: 12px; }
+
+.sg-effet-desc {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+}

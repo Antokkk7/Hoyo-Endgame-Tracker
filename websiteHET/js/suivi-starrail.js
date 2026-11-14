@@ -82,10 +82,7 @@ function boutonRecos(p, contexte) {
 
 function colonneStats(p, combat) {
     return h("div", { classe: "sg-col sg-stats" },
-        h("section", { classe: "sg-bloc" }, h("h3", {}, p.brutes ? "Statistiques en combat" : "Statistiques"),
-            p.brutes
-                ? combat.resultat
-                : [h("ul", { classe: "sg-liste-stats" }, p.stats.map((s) => h("li", {}, h("span", {}, s.libelle), h("strong", {}, format(s.valeur, s.pct))))), combat.resultat],
+        h("section", { classe: "sg-bloc" }, h("h3", {}, "Statistiques en combat"), combat.resultat,
             h("p", { classe: "doux petit" }, "Base, cône, reliques, bonus de sets et traces, puis bonus de l'équipe. Les effets conditionnels du personnage lui-même ne sont pas inclus.")));
 }
 

@@ -164,9 +164,9 @@ export function blocCombatStarRail(perso, donneesEnregistrees, surSauvegarde) {
                         case_.checked = x.statut === "actif";
                         case_.addEventListener("change", () => { donnees.etat[x.id] = case_.checked; surSauvegarde(donnees); afficher(); });
                         return h("li", { classe: `sg-effet ${x.statut}` },
-                            h("label", {}, case_, h("span", { classe: "sg-effet-texte" }, h("strong", {}, x.origine), h("span", { classe: "doux" }, x.c || libelleStat(x.s))),
+                            h("label", {}, case_, h("span", { classe: "sg-effet-texte" }, h("strong", {}, x.origine), h("span", { classe: "doux sg-effet-desc", title: x.c || "" }, x.c || libelleStat(x.s))),
                                 x.v !== undefined && x.v !== null ? h("span", { classe: "sg-effet-valeur" }, `${formaterEffet(x.s, Math.round(x.v * 10) / 10)} ${libelleStat(x.s)}`) : null),
-                            x.statut === "hors" ? h("span", { classe: "sg-effet-note petit" }, x.raison) : null);
+                            x.statut === "hors" ? h("span", { classe: "sg-effet-note petit" }, x.raison) : x.al ? h("span", { classe: "sg-effet-note petit" }, "Allié ciblé : à cocher si c'est le personnage principal") : x.en ? h("span", { classe: "sg-effet-note petit" }, "Effet sur l'ennemi") : null);
                     }))
                     : h("p", { classe: "doux petit" }, "Aucun bonus renseigné pour l'instant."));
             noeud.open = ouvert;
