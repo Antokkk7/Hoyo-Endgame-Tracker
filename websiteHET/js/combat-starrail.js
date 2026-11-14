@@ -36,12 +36,14 @@ const POURCENT = new Set(["hp_pct", "atk_pct", "def_pct", "spd_pct", "cr", "cd",
 export function libelleStat(s) {
     if (NOMS_STATS[s]) return NOMS_STATS[s];
     const m = /^dmg_([A-Z]+)$/.exec(s);
-    return m ? `Bonus de DGT ${ELEMENTS[m[1]] || "élémentaire"}` : s;
+    if (m) return `Bonus de DGT ${ELEMENTS[m[1]] || "élémentaire"}`;
+    const r = /^res_pen_([A-Z]+)$/.exec(s);
+    return r ? `Pénétration de RÉS ${ELEMENTS[r[1]] || "élémentaire"}` : s;
 }
 
 export function formaterEffet(s, v) {
     if (v === undefined || v === null) return "";
-    const pct = POURCENT.has(s) || /^dmg_/.test(s);
+    const pct = POURCENT.has(s) || /^(dmg|res_pen)_/.test(s);
     const nombre = Number.isInteger(v) ? String(v) : String(Math.round(v * 10) / 10).replace(".", ",");
     return `${v >= 0 ? "+" : ""}${nombre}${pct ? " %" : ""}`;
 }

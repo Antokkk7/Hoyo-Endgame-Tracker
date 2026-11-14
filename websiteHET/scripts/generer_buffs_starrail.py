@@ -25,6 +25,7 @@ STATS = [
     ("Effect RES", "eres"), ("Outgoing Healing", "heal"), ("Max HP", "hp"), ("ATK", "atk"), ("DEF", "def"), ("SPD", "spd"),
     ("All-Type RES PEN", "res_pen"),
 ]
+RES_PEN_ELEMENT = re.compile(r"(Physical|Fire|Ice|Lightning|Wind|Quantum|Imaginary) RES PEN")
 ELEMENTS = {"Physical": "PHYSICAL", "Fire": "FIRE", "Ice": "ICE", "Lightning": "LIGHTNING", "Wind": "WIND", "Quantum": "QUANTUM", "Imaginary": "IMAGINARY"}
 TYPES_DEGATS = r"(Basic ATK|Skill|Ultimate|Follow-Up ATK|Follow-up ATK|Break|DoT|Additional|Elation|Memosprite|Super Break|Lightning-Lord|Counter|Enhanced)"
 CONDITION = re.compile(
@@ -62,6 +63,8 @@ def analyser(phrase):
     resultats = []
     debut = 0
     cible_prec = None
+    verbe_prec = None
+    debut_phrase = False
     for m in re.finditer(r"\bby (?:up to )?(\d+(?:\.\d+)?)(%?)", phrase):
         segment = phrase[debut:m.start()]
         debut = m.end()
@@ -71,10 +74,18 @@ def analyser(phrase):
         valeur = float(m.group(1))
         pct = bool(m.group(2))
         verbe = re.search(r"\b(increas|boost|rais|enhanc|reduc|decreas|lower|diminish)\w*", segment, re.I)
+        if verbe:
+            verbe_prec = verbe.group(1)
+        elif verbe_prec and re.match(r"\s*(?:,|and|as well as|;)?\s*(?:the |this unit's |their |its |his |her |[A-Z][\w']+'s )?[A-Za-z' -]{0,40}$", segment) and debut_phrase:
+            verbe = True
         if not verbe:
             continue
-        negatif = bool(re.match(r"(reduc|decreas|lower|diminish)", verbe.group(1), re.I))
-        enn = bool(re.search(r"\benem", segment, re.I))
+        negatif = bool(re.match(r"(reduc|decreas|lower|diminish)", verbe_prec, re.I))
+        debut_phrase = True
+        local = re.split(r"[,;]", segment)[-1]
+        if not re.search(r"increas|boost|rais|reduc|decreas|lower|\bDMG\b|ATK|DEF|SPD|CRIT|HP|RES|Effect|Break|Energy", local):
+            local = segment
+        enn = bool(re.search(r"\benem", local, re.I))
         if enn:
             if re.search(r"DMG taken", segment) and not negatif:
                 resultats.append(("vuln", valeur, "ennemi"))
@@ -85,7 +96,7 @@ def analyser(phrase):
             continue
         if negatif:
             continue
-        zone = segment + " " + queue
+        zone = local + " " + queue
         sans_soi = bool(re.search(r"exclud|except|other than", zone, re.I))
         if re.search(r"all allies|allies'|teammates|all ally|all other allies|all characters", zone, re.I):
             cible = "equipe"
@@ -106,6 +117,10 @@ def analyser(phrase):
             for sm in re.finditer(r"(?<![\w-])" + re.escape(nom) + r"(?!\w)", segment):
                 if sm.start() > dernier:
                     dernier, stat = sm.start(), cle
+        m_rp = RES_PEN_ELEMENT.search(segment)
+        if m_rp and pct:
+            resultats.append((f"res_pen_{ELEMENTS[m_rp.group(1)]}", valeur, cible))
+            continue
         m_el = re.search(r"(Physical|Fire|Ice|Lightning|Wind|Quantum|Imaginary) DMG", segment)
         if m_el and (m_el.start() > dernier):
             if re.search(TYPES_DEGATS + r"[^,.;]{0,12}DMG", original):
@@ -113,7 +128,8 @@ def analyser(phrase):
             resultats.append((f"dmg_{ELEMENTS[m_el.group(1)]}", valeur, cible))
             continue
         if stat is None and re.search(r"DMG", original):
-            if re.search(TYPES_DEGATS, original) or re.search(r"DMG taken|vulnerab|absorb|max DMG|per |each ", original, re.I):
+            if (re.search(TYPES_DEGATS + r"[^,.;]{0,12}DMG", original) or re.search(r"DMG(?: dealt)?(?: by| through| from| of)[^,.;]{0,24}" + TYPES_DEGATS, original)
+                    or re.search(r"DMG taken|vulnerab|absorb|max DMG", original, re.I)):
                 continue
             stat = "dmg"
         if stat is None or (typee and stat in ("cr", "cd")):
