@@ -72,14 +72,13 @@ function colonneStats(p, combat) {
         h("section", { classe: "sg-bloc" }, h("h3", {}, p.brutes ? "Statistiques en combat" : "Statistiques"),
             p.brutes
                 ? combat.resultat
-                : [h("ul", { classe: "sg-liste-stats" }, p.stats.map((s) => h("li", { classe: s.crit ? "crit" : "" }, h("span", {}, s.libelle), h("strong", {}, format(s.valeur, s.pct))))), combat.resultat],
-            h("div", { classe: "sg-cv" }, h("span", { classe: "doux" }, "Valeur critique totale"), h("strong", {}, format(p.cvTotal, false)))));
+                : [h("ul", { classe: "sg-liste-stats" }, p.stats.map((s) => h("li", {}, h("span", {}, s.libelle), h("strong", {}, format(s.valeur, s.pct))))), combat.resultat]));
 }
 
 function ligneEquipe(combat) {
     return h("section", { classe: "sg-bloc sg-sets sg-equipe-ligne" }, h("h3", {}, "Équipe"),
-        h("p", { classe: "doux petit" }, "Choisissez les 3 coéquipiers : leurs bonus hors terrain, armes et sets d'artéfacts s'ajoutent aux statistiques."),
-        combat.equipe, combat.details);
+        h("p", { classe: "doux petit" }, "Choisissez les 3 coéquipiers : leurs bonus hors terrain, armes et sets d'artéfacts s'ajoutent aux statistiques. Le détail des bonus est déroulable sous chaque personnage."),
+        combat.equipe);
 }
 
 function colonneArtefacts(p) {

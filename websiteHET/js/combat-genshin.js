@@ -14,7 +14,7 @@ export function chargerBuffs() {
         chargement = Promise.all([lire("genshin_buffs_persos.json"), lire("genshin_sets.json"), lire("genshin_buffs_armes.json")]).then(([p, s, a]) => {
             const sets = s?.sets || [];
             buffs = {
-                persos: p?.persos || {}, resonances: p?.resonances || {}, armes: a?.armes || {}, sets,
+                persos: p?.persos || {}, resonances: p?.resonances || {}, armes: a?.armes || {}, bp: a?.bp || [], sets,
                 setsParId: Object.fromEntries(sets.map((x) => [String(x.id), x])),
                 setsParHash: Object.fromEntries(sets.map((x) => [String(x.hash), x])),
             };
@@ -25,13 +25,17 @@ export function chargerBuffs() {
 }
 
 export function donneesBuffs() {
-    return buffs || { persos: {}, resonances: {}, armes: {}, sets: [], setsParId: {}, setsParHash: {} };
+    return buffs || { persos: {}, resonances: {}, armes: {}, bp: [], sets: [], setsParId: {}, setsParHash: {} };
 }
 
 export const NOMS_STATS = {
     hp_pct: "PV", atk_pct: "ATQ", def_pct: "DÉF", hp: "PV (fixe)", atk: "ATQ (fixe)", def: "DÉF (fixe)", em: "Maîtrise élémentaire", cr: "Taux CRIT", cd: "DGT CRIT", er: "Recharge d'énergie",
     dmg: "Bonus de DGT (tous types)", dmg_na: "DGT attaque normale", dmg_ca: "DGT attaque chargée", dmg_pa: "DGT attaque plongeante", dmg_skill: "DGT compétence", dmg_burst: "DGT déchaînement",
-    heal: "Bonus de soins", shield: "Puissance de bouclier", def_red: "Réduction de DÉF ennemie", def_ign: "DÉF ignorée", autre: "Effet spécial",
+    heal: "Bonus de soins", rx_lunar: "DGT des réactions lunaires", rx_stellar: "DGT des réactions stellaires", base_stellar: "DGT de base stellaires",
+    stellar_direct: "DGT stellaires directs", rx_superconduct: "DGT Supraconduction", rx_overloaded: "DGT Surcharge", rx_burning: "DGT Brûlure", rx_vaporize: "DGT Vaporisation",
+    rx_melt: "DGT Fonte", rx_swirl: "DGT Tourbillon", rx_stellar_swirl: "DGT Tourbillon stellaire", rx_electrocharged: "DGT Électrocution", rx_hyperbloom: "DGT Hyperfloraison",
+    rx_bloom: "DGT Floraison", rx_stellar_conduct: "DGT Conduction stellaire", rx_lunar_crystallize: "DGT Lunaire-Cristallisation", rx_lunar_bloom: "DGT Lunaire-Floraison", rx_lunar_charged: "DGT Lunaire-Foudroyage", rx_burgeon: "DGT Brasier", rx_shatter: "DGT Éclatement", rx_crystallize: "DGT Cristallisation",
+    shield: "Puissance de bouclier", def_red: "Réduction de DÉF ennemie", def_ign: "DÉF ignorée", autre: "Effet spécial",
 };
 const ELEMENTS_FR = { PYRO: "Pyro", HYDRO: "Hydro", ELECTRO: "Électro", CRYO: "Cryo", ANEMO: "Anémo", GEO: "Géo", DENDRO: "Dendro", PHYS: "Physique" };
 
@@ -42,11 +46,11 @@ export function libelleStat(s) {
     return s;
 }
 
-const POURCENT = new Set(["hp_pct", "atk_pct", "def_pct", "cr", "cd", "er", "dmg", "heal", "shield", "def_red", "def_ign"]);
+const POURCENT = new Set(["base_stellar", "stellar_direct", "hp_pct", "atk_pct", "def_pct", "cr", "cd", "er", "dmg", "heal", "shield", "def_red", "def_ign"]);
 
 export function formaterEffet(s, v) {
     if (v === undefined || v === null) return "";
-    const pct = POURCENT.has(s) || /^(dmg|res)_/.test(s);
+    const pct = POURCENT.has(s) || /^(dmg|res|rx)_/.test(s);
     const nombre = Number.isInteger(v) ? String(v) : String(Math.round(v * 10) / 10).replace(".", ",");
     return `${v >= 0 ? "+" : ""}${nombre}${pct ? " %" : ""}`;
 }
@@ -60,13 +64,15 @@ function nomAnglaisArme(id) {
 }
 
 // Un effet "brut" des données devient un ou plusieurs effets prêts à évaluer, avec une identité stable.
-function preparer(liste, origine, idBase, contexte) {
+function preparer(liste, origine, idBase, contexte, qui) {
     const sortie = [];
     (liste || []).forEach((eff, i) => {
         if (eff.cm && contexte.constellation < eff.cm) return;
         const valeur = Array.isArray(eff.v) ? eff.v[Math.min(4, Math.max(0, (contexte.raffinement || 1) - 1))] : eff.v;
         const stats = Array.isArray(eff.s) ? eff.s : [eff.s];
-        stats.forEach((s, j) => sortie.push({ ...eff, s, v: valeur, origine, id: `${idBase}:${i}${stats.length > 1 ? `.${j}` : ""}`, groupe: eff.g || null }));
+        const indice = Math.min(4, Math.max(0, (contexte.raffinement || 1) - 1));
+        const f = eff.f && Array.isArray(eff.f.k) ? { ...eff.f, k: eff.f.k[indice] } : eff.f;
+        stats.forEach((s, j) => sortie.push({ ...eff, f, s, v: valeur, origine, qui, id: `${idBase}:${i}${stats.length > 1 ? `.${j}` : ""}`, groupe: eff.g || null }));
     });
     return sortie;
 }
@@ -91,42 +97,42 @@ export function calculerCombat(perso, equipe, etat = {}) {
     const effets = [];
 
     // Personnage lui-même (sur le terrain)
-    effets.push(...preparer(b.persos[perso.en]?.on, `${perso.nom} (talents)`, `p:${perso.en}:on`, { constellation: perso.constellation }));
+    effets.push(...preparer(b.persos[perso.en]?.on, `${perso.nom} (talents)`, `p:${perso.en}:on`, { constellation: perso.constellation }, "p"));
 
     // Coéquipiers hors terrain : talents, arme, set
     membres.forEach((m, k) => {
         const info = ref.persos[m.id];
         const origine = info.nom;
-        effets.push(...preparer(b.persos[info.en]?.off, `${origine} (talents)`, `p:${info.en}:off`, { constellation: m.c || 0 }));
+        effets.push(...preparer(b.persos[info.en]?.off, `${origine} (talents)`, `p:${info.en}:off`, { constellation: m.c || 0 }, k));
         if (m.arme?.id) {
             const en = nomAnglaisArme(m.arme.id);
             const liste = (b.armes[en] || []).filter((x) => x.cible === "equipe");
-            effets.push(...preparer(liste, `${origine} : ${ref.armes[m.arme.id].nom}`, `a:${en}:${k}`, { constellation: 0, raffinement: m.arme.r || 1 }));
+            effets.push(...preparer(liste, `${origine} : ${ref.armes[m.arme.id].nom}`, `a:${en}:${k}`, { constellation: 0, raffinement: m.arme.r || 1 }, k));
         }
         const set = m.set || {};
         if (set.m === "4" && set.a && b.setsParId[set.a]) {
             const s = b.setsParId[set.a];
-            effets.push(...preparer(s.quatre.filter((x) => x.cible === "equipe"), `${origine} : ${s.fr} (4 pièces)`, `s:${s.id}:4:${k}`, { constellation: 0 }));
+            effets.push(...preparer(s.quatre.filter((x) => x.cible === "equipe"), `${origine} : ${s.fr} (4 pièces)`, `s:${s.id}:4:${k}`, { constellation: 0 }, k));
         }
     });
 
     // Arme et artéfacts du personnage
     if (perso.arme) {
         const en = nomAnglaisArme(perso.arme.id);
-        effets.push(...preparer(b.armes[en] || [], `${perso.nom} : ${perso.arme.nom}`, `a:${en}:soi`, { constellation: 0, raffinement: perso.arme.raffinement || 1 }));
+        effets.push(...preparer(b.armes[en] || [], `${perso.nom} : ${perso.arme.nom}`, `a:${en}:soi`, { constellation: 0, raffinement: perso.arme.raffinement || 1 }, "p"));
     }
     const decompte = {};
     for (const art of perso.artefacts || []) if (art.setHash) decompte[art.setHash] = (decompte[art.setHash] || 0) + 1;
     for (const [hash, n] of Object.entries(decompte)) {
         const s = b.setsParHash[hash];
         if (!s) continue;
-        if (n >= 2) effets.push(...preparer(s.deux.filter((x) => !x.perm), `${s.fr} (2 pièces)`, `s:${s.id}:2:soi`, { constellation: 0 }));
-        if (n >= 4) effets.push(...preparer(s.quatre, `${s.fr} (4 pièces)`, `s:${s.id}:4:soi`, { constellation: 0 }));
+        if (n >= 2) effets.push(...preparer(s.deux.filter((x) => !x.perm), `${s.fr} (2 pièces)`, `s:${s.id}:2:soi`, { constellation: 0 }, "p"));
+        if (n >= 4) effets.push(...preparer(s.quatre, `${s.fr} (4 pièces)`, `s:${s.id}:4:soi`, { constellation: 0 }, "p"));
     }
 
     // Résonances élémentaires
     for (const el of new Set(elements)) {
-        if (elements.filter((x) => x === el).length >= 2) effets.push(...preparer(b.resonances[el], `Résonance ${ELEMENTS_FR[el] || el}`, `r:${el}`, { constellation: 0 }));
+        if (elements.filter((x) => x === el).length >= 2) effets.push(...preparer(b.resonances[el], `Résonance ${ELEMENTS_FR[el] || el}`, `r:${el}`, { constellation: 0 }, "r"));
     }
 
     // Filtres de condition, état (activé ou non) et substitution de l'élément du bénéficiaire
@@ -198,7 +204,7 @@ export function calculerCombat(perso, equipe, etat = {}) {
         { cle: "atk", libelle: "ATQ", base: S.atk, final: f.atk, pct: false },
         { cle: "def", libelle: "DÉF", base: S.def, final: f.def, pct: false },
         { cle: "em", libelle: "Maîtrise élémentaire", base: S.em, final: f.em, pct: false },
-        { cle: "cr", libelle: "Taux CRIT", base: S.cr, final: f.cr, pct: true, crit: true },
+        { cle: "cr", libelle: "Taux CRIT", base: S.cr, final: f.cr, pct: true },
         { cle: "cd", libelle: "DGT CRIT", base: S.cd, final: f.cd, pct: true },
         { cle: "er", libelle: "Recharge d'énergie", base: S.er, final: f.er, pct: true },
         { cle: "dgt", libelle: `Bonus de DGT ${ELEMENTS_FR[cleElement] || ""}`.trim(), base: S.dgt?.[cleElement] || 0, final: dgtElement, pct: true },

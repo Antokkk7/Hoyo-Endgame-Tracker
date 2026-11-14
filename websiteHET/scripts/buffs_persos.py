@@ -115,7 +115,6 @@ PERSOS["Mitya"] = perso(off=[e("cd", 40, "C1 : zone du noyau", cm=1), e(["res_CR
 PERSOS["Valeriy"] = perso(off=[e("em", 100, "C2 : compétence", cm=2), e("cr", 10, "C6", cm=6, pour=["ELECTRO"]), e("cd", 40, "C6", cm=6, pour=["ELECTRO"])])
 PERSOS["Flins"] = perso(off=[e("res_ELECTRO", 25, "C2", cm=2)])
 PERSOS["Ineffa"] = perso(off=[e("em", 144, "A4 : 6 % de l'ATQ d'Ineffa (≈ 2400) après le déchaînement")])
-PERSOS["Alyosha"] = perso(off=[e("atk_pct", 21.2, "Compétence : cible marquée"), e("em", 100, "C6", cm=6)])
 PERSOS["Nicole"] = perso(off=[e("atk", 420, "Compétence : jusqu'à 600 d'ATQ (70 %)"), e(TOUS_RES, 25, "C2", cm=2)])
 
 # Anémo
@@ -150,7 +149,6 @@ PERSOS["Yun Jin"] = perso(off=[e("dmg_na", 15, "C2", cm=2)])
 PERSOS["Xilonen"] = perso(off=[e("res_GEO", 36, "Compétence : échantillon actif"), e("atk_pct", 45, "C2 : bénéficiaire Pyro", cm=2, pour=["PYRO"]), e("hp_pct", 45, "C2 : bénéficiaire Hydro", cm=2, pour=["HYDRO"]),
                                e("cd", 60, "C2 : bénéficiaire Cryo", cm=2, pour=["CRYO"]), e("dmg", 50, "C2 : bénéficiaire Géo", cm=2, pour=["GEO"])])
 PERSOS["Linnea"] = perso(off=[e("res_GEO", 15, "A1 : Lumi")])
-PERSOS["Durin"] = perso(off=[e(["res_PYRO", "res_DENDRO", "res_ELECTRO", "res_ANEMO", "res_GEO"], 20, "A1 : forme de pureté"), e("dmg_ELEM", 50, "C2 : après le déchaînement", cm=2), e("def_red", 30, "C6 : forme de lumière", cm=6)])
 
 # Dendro
 PERSOS["Tighnari"] = perso(on=[e("dmg_DENDRO", 20, "C2", cm=2)], off=[e("em", 60, "C4 : après le déchaînement", cm=4)])
@@ -168,5 +166,81 @@ PERSOS["Nefer"] = perso(off=[e("res_DENDRO", 20, "C4", cm=4)])
 # Autres
 PERSOS["Xinyan"] = deux([e("dmg_PHYS", 15, "A4 : avec un bouclier"), e("res_PHYS", 15, "C4", cm=4)])
 PERSOS["Aino"] = perso(off=[e("em", 80, "C1 : après la compétence", cm=1)])
-PERSOS["Odette"] = perso(off=[e(["res_CRYO", "res_ELECTRO", "res_ANEMO"], 20, "C2", cm=2)])
 PERSOS["Columbina"] = perso(off=[e("cd", 80, "C6 : Hydro, Électro, Dendro, Géo", cm=6, pour=["HYDRO", "ELECTRO", "DENDRO", "GEO"])])
+
+# Mise à jour d'après genshin.gg : bonus à leur maximum (paliers de statistiques atteints, cumuls à leur maximum).
+EL_SWIRL = ["PYRO", "HYDRO", "ELECTRO", "CRYO"]
+PERSOS["Alyosha"] = perso(
+    on=[e("dmg", 70, "A4 : +0,35 % de DGT par 1 % de recharge d'énergie (70 % max)"), e("rx_stellar_conduct", 20, "Passif : Conduction stellaire +20 %"),
+        e("em", 100, "C6 : 2 cumuls de Précision du chasseur", cm=6)],
+    off=[e("atk_pct", 21.2, "Compétence : cible marquée"), e("em", 100, "C6 : 2 cumuls de Précision du chasseur", cm=6)])
+PERSOS["Odette"] = perso(
+    on=[e("rx_stellar", 60, "A1 : Splendeur merveilleuse, 4 cumuls de +15 %"), e("rx_stellar", 50, "Déchaînement : +50 % pendant 20 s"),
+        e("base_stellar", 14, "Passif : DGT de base stellaires (plafond à 2000 ATQ)"), e("stellar_direct", 30, "A4 : DGT stellaires directs (plafond à 3000 ATQ)"),
+        e("atk_pct", 28, "C2 : +7 % d'ATQ par cumul (4 cumuls)", cm=2),
+        e(["res_CRYO", "res_ELECTRO", "res_ANEMO"], 20, "C2 : RÉS réduite près du double de danse", cm=2),
+        e("res_PHYS", 40, "Conduction stellaire : RÉS Physique -40 %"),
+        e("dmg_ELEM", 40, "Conduction stellaire : bonus Électro et Cryo (maximum 40 %)", pour=["ELECTRO", "CRYO"])],
+    off=[e("rx_stellar", 15, "A1 : 1 cumul de Splendeur merveilleuse", g="odette:a1"), e("base_stellar", 14, "Passif : DGT de base stellaires (plafond à 2000 ATQ)", g="stellar:base"),
+         e(["res_CRYO", "res_ELECTRO", "res_ANEMO"], 20, "C2 : RÉS réduite près du double de danse", cm=2),
+         e("res_PHYS", 40, "Conduction stellaire : RÉS Physique -40 %"),
+         e("dmg_ELEM", 40, "Conduction stellaire : bonus Électro et Cryo (maximum 40 %)", pour=["ELECTRO", "CRYO"])])
+PERSOS["Durin"] = perso(
+    on=[e(["res_PYRO", "res_DENDRO", "res_ELECTRO", "res_ANEMO", "res_GEO"], 35, "A1 : forme de flamme blanche (20 %, 35 % avec 2 Hexerei)"),
+        e(["rx_vaporize", "rx_melt"], 70, "A1 : forme de décomposition (40 %, 70 % avec 2 Hexerei)"),
+        e("dmg_burst", 75, "A4 : Fusion primordiale, +3 % par 100 ATQ (75 % max)"), e("dmg_burst", 40, "C4", cm=4),
+        e("dmg_PYRO", 50, "C2 : après le déchaînement", cm=2), e("dmg_ELEM", 50, "C2 : élément de la réaction", cm=2, pour=["HYDRO", "CRYO", "DENDRO", "ELECTRO"]),
+        e("def_ign", 30, "C6", cm=6), e("def_red", 30, "C6 : forme de pureté", cm=6)],
+    off=[e(["res_PYRO", "res_DENDRO", "res_ELECTRO", "res_ANEMO", "res_GEO"], 35, "A1 : forme de flamme blanche (20 %, 35 % avec 2 Hexerei)"),
+         e("dmg_PYRO", 50, "C2 : après le déchaînement", cm=2), e("dmg_ELEM", 50, "C2 : élément de la réaction", cm=2, pour=["HYDRO", "CRYO", "DENDRO", "ELECTRO"]),
+         e("def_red", 30, "C6 : forme de pureté", cm=6)])
+
+PERSOS["Arataki Itto"] = perso(
+    on=[e("atk", None, "Déchaînement : ATQ + 57,6 % de la DÉF", f={"b": "def", "k": 0.576}), e("cd", 70, "C6 : attaques chargées", cm=6),
+        e("atk_pct", 20, "C4 : fin du déchaînement", cm=4), e("def_pct", 20, "C4 : fin du déchaînement", cm=4)],
+    off=[e("atk_pct", 20, "C4 : fin du déchaînement", cm=4), e("def_pct", 20, "C4 : fin du déchaînement", cm=4)])
+PERSOS["Charlotte"] = perso(on=[e("heal", 15, "A4 : 3 autres Fontainais"), e("dmg_CRYO", 15, "A4 : 3 autres Fontainais"), e("atk_pct", 30, "C2 : 3 ennemis touchés", cm=2)])
+PERSOS["Chasca"] = perso(on=[e("dmg_ca", 65, "A1 : projectiles d'ombre brillante, 3 types d'éléments"), e("cd", 120, "C6 : projectiles d'ombre", cm=6)])
+PERSOS["Clorinde"] = perso(on=[e("cr", 20, "A4 : 2 cumuls de +10 %"), e("cr", 10, "C6", cm=6), e("cd", 70, "C6", cm=6)])
+PERSOS["Dahlia"] = deux([e("shield", 25, "C2 : bouclier issu d'une Faveur", cm=2)])
+PERSOS["Dehya"] = perso(on=[e("hp_pct", 20, "C1", cm=1), e("cr", 10, "C6 : Morsure léonine", cm=6), e("cd", 60, "C6 : 4 coups critiques", cm=6)])
+PERSOS["Dori"] = perso(off=[e("er", 30, "C4 : lien du Djinn, énergie sous 50 %", cm=4)])
+PERSOS["Freminet"] = perso(on=[e("dmg", 40, "A4 : Pression de l'éclat après un Éclatement"), e("cr", 15, "C1 : Pression de l'éclat", cm=1),
+                               e("atk_pct", 18, "C4 : 2 cumuls de +9 %", cm=4), e("cd", 24, "C6 : 2 cumuls de +12 % (2/3 de 3)", cm=6)])
+PERSOS["Ifa"] = perso(on=[e("em", 80, "A4 : après un Éclat d'âme nocturne"), e("em", 100, "C4 : après le champ de sédation", cm=4)])
+PERSOS["Illuga"] = deux([
+    e("cr", 5, "A1 : Serment du gardien de la lumière (DGT Géo)", pour=["GEO"]), e("cd", 10, "A1 : Serment du gardien de la lumière (DGT Géo)", pour=["GEO"]),
+    e("em", 50, "A1 : avec la Lueur ascendante"),
+    e("cr", 5, "C6 : Serment amélioré (DGT Géo, 10 % au total)", cm=6, pour=["GEO"]), e("cd", 20, "C6 : Serment amélioré (30 % au total)", cm=6, pour=["GEO"]),
+    e("em", 30, "C6 : Serment amélioré (80 au total)", cm=6), e("def", 200, "C4 : pendant le chant du loriot", cm=4)])
+PERSOS["Kachina"] = deux([e("def_pct", 20, "C4 : champ de forage, 4 ennemis ou plus", cm=4)])
+PERSOS["Kaveh"] = perso(on=[e("em", 100, "A4 : 4 cumuls de +25 pendant le déchaînement")])
+PERSOS["Kuki Shinobu"] = perso(on=[e("heal", 15, "A1 : PV à 50 % ou moins", d=True), e("em", 150, "C6 : PV sous 25 %", cm=6, d=True)])
+PERSOS["Layla"] = deux([e("shield", 24, "A1 : 4 Étoiles de nuit (rideau)")])
+PERSOS["Prune"] = perso(
+    on=[e("atk_pct", 60, "Hexerei : Rite secret (2 Hexerei dans l'équipe)", d=True), e("atk_pct", 40, "C2 : Cloche de sorcière", cm=2), e("atk", 350, "C6 : Rallye du tintement", cm=6)],
+    off=[e("dmg", 50, "A4 : Rallye du tintement, +0,025 % par ATQ au-dessus de 2000 (plafond à 4000)"), e("atk", 350, "C6 : Rallye du tintement", cm=6)])
+PERSOS["Sandrone"] = perso(
+    on=[e("em", 160, "A4 : +8 par 100 ATQ (plafond à 2000 ATQ)"), e("cd", 80, "C2 : +40 % puis 2 cumuls de +20 % (faisceaux de Fagio)", cm=2),
+        e("base_stellar", 14, "Passif : DGT de base Conduction stellaire +0,7 % par 100 ATQ (14 % max)", g="stellar:base"),
+        e("rx_stellar_conduct", 30, "C1", cm=1), e("rx_stellar_conduct", 20, "C6", cm=6)],
+    off=[e("base_stellar", 14, "Passif : DGT de base Conduction stellaire +0,7 % par 100 ATQ (14 % max)", g="stellar:base"), e("rx_stellar_conduct", 30, "C1", cm=1)])
+PERSOS["Sangonomiya Kokomi"] = perso(on=[e("dmg_HYDRO", 40, "C6 : après un soin à un allié à 80 % de PV ou plus", cm=6)])
+PERSOS["Shikanoin Heizou"] = perso(
+    on=[e("cr", 16, "C6 : 4 cumuls de +4 %", cm=6), e("cd", 32, "C6 : Conviction", cm=6)],
+    off=[e("em", 80, "A4 : après Heartstopper Strike (équipe sans Heizou)")])
+PERSOS["Skirk"] = perso(on=[e("atk_pct", 70, "C2 : 12,5 s après Havoc: Extinction", cm=2), e("atk_pct", 40, "C4 : 3 cumuls de Traversée de la mort", cm=4)])
+PERSOS["Thoma"] = deux([e("shield", 25, "A1 : 5 cumuls de +5 %"), e(["dmg_na", "dmg_ca", "dmg_pa"], 15, "C6 : Cœur brûlant", cm=6)])
+PERSOS["Varesa"] = perso(on=[e("atk_pct", 70, "A4 : 2 cumuls de +35 %"), e("cr", 10, "C6 : attaques plongeantes", cm=6), e("cd", 100, "C6 : attaques plongeantes", cm=6)])
+PERSOS["Varka"] = perso(
+    on=[e("dmg_ELEM", 25, "A1 : DGT Anémo (+10 % par 1000 ATQ, 25 % max)"), e("dmg_ELEM", 25, "A1 : DGT de l'élément du Tourbillon", pour=EL_SWIRL),
+        e(["dmg_na", "dmg_ca"], 30, "A4 : 4 cumuls de +7,5 %"), e("cd", 80, "C6 : 4 cumuls de +20 %", cm=6),
+        e("dmg_ELEM", 20, "C4 : après un Tourbillon", cm=4), e("dmg_ELEM", 20, "C4 : élément du Tourbillon", cm=4, pour=EL_SWIRL)],
+    off=[e("dmg_ANEMO", 20, "C4 : après un Tourbillon", cm=4), e("dmg_ELEM", 20, "C4 : élément du Tourbillon", cm=4, pour=EL_SWIRL)])
+PERSOS["Vesna"] = perso(on=[e("atk_pct", 18, "A4 : Tourbillon stellaire, 3 alliés Cryo ou Anémo"), e("atk_pct", 36, "C4 : bonus triplé (54 % au total)", cm=4),
+                            e("em", 75, "A4 : 3 alliés d'un autre élément"), e("em", 150, "C4 : bonus triplé (225 au total)", cm=4),
+                            e("atk_pct", 60, "C2 : 6 cumuls de Mesure disciplinaire", cm=2)])
+PERSOS["Yanfei"] = perso(on=[e("dmg_PYRO", 15, "A1 : 3 Sceaux consommés par une attaque chargée"), e("dmg_PYRO", 5, "C6 : 4e Sceau", cm=6), e("cr", 20, "C2 : ennemi sous 50 % de PV", cm=2)])
+PERSOS["Zibai"] = perso(
+    on=[e("def_pct", 15, "A4 : par coéquipier Géo", par="meme"), e("em", 60, "A4 : par coéquipier Hydro (1 compté)"), e("rx_lunar_crystallize", 30, "C2 : nuance de phase lunaire", cm=2)],
+    off=[e("rx_lunar_crystallize", 30, "C2 : nuance de phase lunaire", cm=2)])

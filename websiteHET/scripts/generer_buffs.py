@@ -10,7 +10,7 @@ import sys
 
 ici = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(ici))
-from buffs_armes import ARMES  # noqa: E402
+from buffs_armes import ARMES, BP  # noqa: E402
 from buffs_persos import PERSOS  # noqa: E402
 from buffs_sets import SETS  # noqa: E402
 
@@ -70,7 +70,7 @@ def principal():
     print("Personnages sans bonus renseignés :", len(sans))
     (DONNEES / "genshin_buffs_persos.json").write_text(json.dumps({
         "version": 1,
-        "regle": "Bonus variables à 70 % du maximum ; talents niveau 10 ; valeurs typiques pour les bonus dépendant d'une statistique.",
+        "regle": "Talents niveau 10 ; personnages mis à jour d'après genshin.gg avec les bonus à leur maximum (paliers de statistiques atteints) ; les 92 premiers : bonus variables à 70 % du maximum.",
         "resonances": RESONANCES, "persos": persos, "sans_bonus": sans,
     }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
@@ -81,7 +81,7 @@ def principal():
             print("Arme inconnue :", nom)
             continue
         armes[nom] = effets
-    (DONNEES / "genshin_buffs_armes.json").write_text(json.dumps({"version": 1, "armes": armes}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    (DONNEES / "genshin_buffs_armes.json").write_text(json.dumps({"version": 2, "regle": "R1 à R5 interpolés ; cumuls pris à 2/3 du maximum (arrondi supérieur) ; armes 3 et 4 étoiles en R5 par défaut, armes 5 étoiles et BP en R1.", "bp": BP, "armes": armes}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(len(sets), "sets,", len(persos), "personnages,", len(armes), "armes")
 
 
