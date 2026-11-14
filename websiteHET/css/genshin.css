@@ -115,3 +115,61 @@ body.genshin {
         text-align: left;
     }
 }
+
+.carte-carnage > summary {
+    list-style: none;
+    cursor: pointer;
+}
+
+.carte-carnage > summary::-webkit-details-marker {
+    display: none;
+}
+
+.carnage-resume {
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.carte-carnage[open] > .carnage-resume {
+    margin-bottom: 14px;
+}
+
+.carnage-total {
+    margin-left: auto;
+    color: var(--vert);
+    font-family: var(--police-titre);
+    font-weight: 700;
+}
+
+.carnage-difficulte {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.carnage-resume::after {
+    content: "\25BE";
+    color: var(--texte-doux);
+    transition: transform 0.15s;
+}
+
+.carte-carnage[open] > .carnage-resume::after {
+    transform: rotate(180deg);
+}
+
+.theatre-image {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.synthese-difficulte {
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+    object-fit: contain;
+}
+
+.carte-theatre .carte-tete {
+    align-items: center;
+}

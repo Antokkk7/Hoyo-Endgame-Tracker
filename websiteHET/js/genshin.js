@@ -1,12 +1,12 @@
 // Page Genshin Impact : historique des Abysses spiralées, du Théâtre de l'imaginarium et du Carnage chtonien.
 import { h, remplacer } from "./dom.js";
 import { rpc } from "./api.js";
-import { urlDifficulte } from "./donnees.js";
+import { imageDifficulte, imageTheatre } from "./donnees.js";
 import { formulaireAbysse, formulaireCarnage, formulaireTheatre } from "./edition-genshin.js";
 import { rangeeEquipe, normaliserMembre } from "./equipes.js";
 import { initJeu, pastille, pastilleElement, etoiles, vide } from "./jeu-commun.js";
 import { portrait } from "./portraits.js";
-import { bilanAbysse, bilanTheatre, couleurDifficulte, MOIS, secondesCarnage } from "./regles.js";
+import { bilanAbysse, bilanTheatre, MOIS, secondesCarnage } from "./regles.js";
 import { rendrePlanGenshin } from "./plan-genshin.js";
 import { rendreSuiviGenshin } from "./suivi-genshin.js";
 import { jeton } from "./session.js";
@@ -36,7 +36,8 @@ function carteTheatre(t) {
         h("div", { classe: "carte-tete" },
             h("h3", {}, `${MOIS[t.mois - 1] || t.mois} ${t.annee}`),
             h("span", { classe: "doux" }, t.patch ? `Patch ${t.patch}` : ""),
-            h("span", { classe: "carte-total" }, `${compteur}`, h("small", {}, ` / ${flags.length} ★`))),
+            h("span", { classe: "carte-total" }, `${compteur}`, h("small", {}, ` / ${flags.length} ★`)),
+            imageTheatre(t, { mode, total: compteur, max: flags.length }, "theatre-image")),
         h("div", { classe: "pastilles" },
             pastille(mode.nom, "#3FD0C0"),
             t.arcanum ? pastille(`Arcanum ${t.arcanum}`, "#C77DFF") : null,
@@ -53,19 +54,26 @@ function mvp(t) {
         h("div", {}, h("strong", {}, m.nom), h("div", { classe: "doux petit" }, t.mvp_pret ? "MVP · personnage de prêt" : "MVP")));
 }
 
+// Cartes de Carnage dépliées, conservées quand la liste est redessinée (modifier, supprimer).
+const carnagesOuverts = new Set();
+
+// Replié : patch, période, temps total et image de la difficulté. Déplié : les boss et leurs équipes, puis les actions.
 function carteCarnage(c) {
-    const couleur = couleurDifficulte(c.difficulte);
-    return h("article", { classe: "carte" },
-        h("div", { classe: "carte-tete" },
+    const carte = h("details", { classe: "carte carte-carnage" },
+        h("summary", { classe: "carte-tete carnage-resume" },
             h("h3", {}, `Patch ${c.patch}`),
             h("span", { classe: "doux" }, c.periode || ""),
-            h("span", { classe: "badge-difficulte", style: `--couleur:${couleur};margin-left:auto`, title: `Difficulté ${c.difficulte}` }, String(c.difficulte))),
+            h("span", { classe: "carnage-total", title: "Temps total" }, `${secondesCarnage(c)} s`),
+            imageDifficulte(c.difficulte, "carnage-difficulte")),
         (c.boss || []).map((b) =>
             h("div", { classe: "carnage-boss" },
                 h("div", { classe: "carnage-boss-tete" },
                     h("strong", {}, String(b.name || "").replace(/([a-z])([A-Z])/g, "$1 $2")),
                     h("span", { classe: "carnage-temps" }, `${b.seconds} s`)),
                 rangeeEquipe(JEU, b.team, PREFIXES))));
+    carte.open = carnagesOuverts.has(c.id);
+    carte.addEventListener("toggle", () => (carte.open ? carnagesOuverts.add(c.id) : carnagesOuverts.delete(c.id)));
+    return carte;
 }
 
 const TYPES = {
@@ -97,10 +105,11 @@ function carteAccueil(type, donnees, ouvrir) {
     } else if (type === "theatre") {
         const b = dernier ? bilanTheatre(dernier) : null;
         const arcanum = dernier && dernier.mode === "LUNAR" ? ` · Arcanum ${dernier.arcanum}/2` : "";
-        droite = [h("span", { classe: "eg-grand magenta" }, b ? `${b.total}/${b.max}` : "-"), h("span", { classe: "eg-legende" }, b ? `astres${arcanum}` : "aucun clear")];
+        const image = b ? imageTheatre(dernier, b, "eg-difficulte") : null;
+        droite = [image || h("span", { classe: "eg-grand magenta" }, b ? `${b.total}/${b.max}` : "-"), h("span", { classe: "eg-legende" }, b ? `${image ? `${b.total}/${b.max} ` : ""}astres${arcanum}` : "aucun clear")];
     } else {
         droite = dernier
-            ? [h("img", { classe: "eg-difficulte", src: urlDifficulte(dernier.difficulte), alt: `Difficulté ${dernier.difficulte}`, onerror: (e) => e.target.replaceWith(h("span", { classe: "badge-difficulte", style: `--couleur:${couleurDifficulte(dernier.difficulte)}` }, String(dernier.difficulte))) }),
+            ? [imageDifficulte(dernier.difficulte, "eg-difficulte"),
                 h("span", { classe: "eg-legende" }, `${secondesCarnage(dernier)} s`)]
             : [h("span", { classe: "eg-grand cyan" }, "-"), h("span", { classe: "eg-legende" }, "aucun clear")];
     }

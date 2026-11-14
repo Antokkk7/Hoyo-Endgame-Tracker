@@ -1,6 +1,8 @@
 // Données statiques générées depuis l'application de bureau (scripts/generer_donnees.py) :
 // noms des armes et cônes, boss du Carnage chtonien par patch. Les icônes d'armes viennent d'Enka (js/icones.js).
+import { h } from "./dom.js";
 import { chargerIcones } from "./icones.js";
+import { couleurDifficulte } from "./regles.js";
 
 let armes = { genshin: [], starrail: [] };
 let boss = {};
@@ -40,4 +42,24 @@ export function urlBoss(cle) {
 
 export function urlDifficulte(n) {
     return new URL(`../assets/img/difficulte/diff${n}.png`, import.meta.url).href;
+}
+
+// Image de la difficulté du Carnage chtonien ; le chiffre coloré si l'image est introuvable.
+export function imageDifficulte(n, classe = "") {
+    return h("img", {
+        classe, src: urlDifficulte(n), alt: `Difficulté ${n}`, title: `Difficulté ${n}`,
+        onerror: (e) => e.target.replaceWith(h("span", { classe: "badge-difficulte", style: `--couleur:${couleurDifficulte(n)}`, title: `Difficulté ${n}` }, String(n))),
+    });
+}
+
+const IMAGE_THEATRE = { EASY: 1, NORMAL: 2, HARD: 3, VISIONARY: 4, LUNAR: 5 };
+
+// Image du mode du Théâtre de l'imaginarium, seulement quand tous les astres du mode sont obtenus (sinon null).
+export function imageTheatre(t, bilan, classe = "") {
+    const n = IMAGE_THEATRE[t.mode];
+    if (!n || !bilan.max || bilan.total < bilan.max) return null;
+    return h("img", {
+        classe, alt: bilan.mode.nom, title: `${bilan.mode.nom} : tous les astres`,
+        src: new URL(`../assets/img/difficulte/Theater_${n}.webp`, import.meta.url).href, onerror: (e) => e.target.remove(),
+    });
 }

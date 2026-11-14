@@ -94,5 +94,21 @@
    "Automaton",
    "Pavlina"
   ]
+ },
+ "7.2": {
+  "periode": "2026.11.11 - 2026.12.15",
+  "boss": [
+   "Gragas",
+   "PyroCrab",
+   "Gecko"
+  ]
+ },
+ "7.3": {
+  "periode": "2026.12.16 - 2027.01.27",
+  "boss": [
+   "Castor",
+   "Pavlina",
+   "LoupGlacial"
+  ]
  }
 }

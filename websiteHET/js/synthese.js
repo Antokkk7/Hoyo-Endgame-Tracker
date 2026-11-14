@@ -1,7 +1,8 @@
 // Résumé des derniers clears de chaque jeu, comme l'accueil de l'application de bureau.
 import { h, nombre } from "./dom.js";
 import { rpc } from "./api.js";
-import { bilanAbysse, bilanApoc, bilanArbitre, bilanMoc, couleurDifficulte, scoreSallePf, secondesCarnage, bilanTheatre } from "./regles.js";
+import { bilanAbysse, bilanApoc, bilanArbitre, bilanMoc, scoreSallePf, secondesCarnage, bilanTheatre } from "./regles.js";
+import { imageDifficulte, imageTheatre } from "./donnees.js";
 import { jeton } from "./session.js";
 
 function ligne(nom, valeur, detail, { couleur = null, image = null } = {}) {
@@ -31,10 +32,10 @@ function carteGenshin(d, personnages) {
         a ? (() => { const b = bilanAbysse(a); return ligne("Abysses spiralées", `${b.total} / ${b.max} ★`, `Patch ${a.patch} · Étage ${a.etage}`); })() : ligneVide("Abysses spiralées"),
         t ? (() => {
             const b = bilanTheatre(t);
-            return ligne("Théâtre de l'imaginarium", `${b.total} / ${b.max} astres`, [b.mode.nom, t.arcanum ? `Arcanum ${t.arcanum}` : null, t.patch ? `Patch ${t.patch}` : null].filter(Boolean).join(" · "));
+            return ligne("Théâtre de l'imaginarium", [imageTheatre(t, b, "synthese-difficulte"), `${b.total} / ${b.max} astres`].filter(Boolean), [b.mode.nom, t.arcanum ? `Arcanum ${t.arcanum}` : null, t.patch ? `Patch ${t.patch}` : null].filter(Boolean).join(" · "));
         })() : ligneVide("Théâtre de l'imaginarium"),
         c ? ligne("Carnage chtonien",
-            [h("span", { classe: "badge-difficulte", style: `--couleur:${couleurDifficulte(c.difficulte)}` }, String(c.difficulte)), ` ${secondesCarnage(c)} s`],
+            [imageDifficulte(c.difficulte, "synthese-difficulte"), ` ${secondesCarnage(c)} s`],
             `Patch ${c.patch}`) : ligneVide("Carnage chtonien"),
     ];
     return carte("Genshin Impact", lignes, pied(d.equipes, personnages), "synthese-genshin");
