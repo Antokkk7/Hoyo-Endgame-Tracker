@@ -2,7 +2,9 @@
 // Les données sont lues dans le cache Supabase ; elles ne sont rechargées que lorsque l'UID est renvoyé.
 import { h, nombre, remplacer } from "./dom.js";
 import { rpc } from "./api.js";
+import { chargerBuffs } from "./combat-genshin.js";
 import { chargerReferenceEnka, normaliserEnka, recupererEnka, urlIconeEnka } from "./enka.js";
+import { blocCombat } from "./equipe-combat.js";
 import { element as infoElement } from "./elements.js";
 import { portrait } from "./portraits.js";
 import { jeton } from "./session.js";
@@ -65,15 +67,19 @@ function colonnePersonnage(p) {
             : h("div", { classe: "sg-arme" }, h("span", { classe: "doux" }, "Aucune arme équipée")));
 }
 
-function colonneStats(p) {
+function colonneStats(p, combat) {
     return h("div", { classe: "sg-col sg-stats" },
-        h("section", { classe: "sg-bloc" }, h("h3", {}, "Statistiques"),
-            h("ul", { classe: "sg-liste-stats" }, p.stats.map((s) => h("li", { classe: s.crit ? "crit" : "" }, h("span", {}, s.libelle), h("strong", {}, format(s.valeur, s.pct)))))),
-        h("section", { classe: "sg-bloc sg-sets" }, h("h3", {}, "Sets équipés"),
-            p.sets.length
-                ? p.sets.map((s) => h("div", { classe: "sg-set" }, h("span", { classe: "sg-pieces" }, `${s.pieces}P`), s.nom))
-                : h("p", { classe: "doux petit" }, "Aucun bonus de set actif."),
+        h("section", { classe: "sg-bloc" }, h("h3", {}, p.brutes ? "Statistiques en combat" : "Statistiques"),
+            p.brutes
+                ? combat.resultat
+                : [h("ul", { classe: "sg-liste-stats" }, p.stats.map((s) => h("li", { classe: s.crit ? "crit" : "" }, h("span", {}, s.libelle), h("strong", {}, format(s.valeur, s.pct))))), combat.resultat],
             h("div", { classe: "sg-cv" }, h("span", { classe: "doux" }, "Valeur critique totale"), h("strong", {}, format(p.cvTotal, false)))));
+}
+
+function ligneEquipe(combat) {
+    return h("section", { classe: "sg-bloc sg-sets sg-equipe-ligne" }, h("h3", {}, "Équipe"),
+        h("p", { classe: "doux petit" }, "Choisissez les 3 coéquipiers : leurs bonus hors terrain, armes et sets d'artéfacts s'ajoutent aux statistiques."),
+        combat.equipe, combat.details);
 }
 
 function colonneArtefacts(p) {
@@ -81,10 +87,11 @@ function colonneArtefacts(p) {
         p.artefacts.length ? p.artefacts.map(carteArtefact) : h("div", { classe: "etat-vide" }, "Aucun artefact équipé."));
 }
 
-function carteGlobale(cache, choisi, surChoix) {
+function carteGlobale(cache, choisi, surChoix, contexte) {
     const { donnees } = cache;
     const p = donnees.personnages.find((x) => x.id === choisi) || donnees.personnages[0];
     const j = donnees.joueur;
+    const combat = blocCombat(p, contexte.equipes[p.id], (d) => contexte.sauver(p.id, d));
     const details = [
         j.niveau ? `Rang d'aventure ${j.niveau}` : null, j.niveauMonde ? `NM ${j.niveauMonde}` : null, `UID ${cache.uid}`,
         `Dernière mise à jour : ${FORMAT_DATE.format(new Date(cache.maj_le))}`,
@@ -98,15 +105,33 @@ function carteGlobale(cache, choisi, surChoix) {
                     classe: "sg-chip", type: "button", role: "tab", "aria-selected": String(x.id === p.id), title: `${x.nom} · Niv.${x.niveau}`,
                     style: `--element:${infoElement(x.element).couleur}`, onclick: () => surChoix(x.id),
                 }, portrait("genshin", x.en || x.nom, { taille: 46, rond: true, elementCle: x.element }))))),
-        h("div", { classe: "sg-corps" }, colonnePersonnage(p), colonneStats(p), colonneArtefacts(p)));
+        h("div", { classe: "sg-corps" }, colonnePersonnage(p), colonneStats(p, combat), colonneArtefacts(p)),
+        ligneEquipe(combat));
 }
 
 export async function rendreSuiviGenshin(zone) {
-    const [uidEnregistre, cacheInitial] = await Promise.all([
+    const [uidEnregistre, cacheInitial, equipesEnregistrees] = await Promise.all([
         rpc("uid_lire", { p_token: jeton(), p_jeu: "genshin" }),
         rpc("enka_lire", { p_token: jeton() }),
+        rpc("suivi_equipe_lire", { p_token: jeton() }).catch(() => ({})),
         chargerReferenceEnka(),
+        chargerBuffs(),
     ]);
+    const equipes = equipesEnregistrees || {};
+    const minuteries = {};
+    const contexte = {
+        equipes,
+        sauver(persoId, donnees) {
+            equipes[persoId] = donnees;
+            clearTimeout(minuteries[persoId]);
+            minuteries[persoId] = setTimeout(() => {
+                rpc("suivi_equipe_enregistrer", { p_token: jeton(), p_perso_id: String(persoId), p_donnees: donnees }).catch((err) => {
+                    message.className = "message erreur";
+                    message.textContent = err.message;
+                });
+            }, 500);
+        },
+    };
     let cache = cacheInitial && String(cacheInitial.uid) === String(uidEnregistre) ? cacheInitial : null;
     let choisi = null;
 
@@ -124,7 +149,7 @@ export async function rendreSuiviGenshin(zone) {
         remplacer(zoneCarte, carteGlobale(cache, choisi, (id) => {
             choisi = id;
             dessiner();
-        }));
+        }, contexte));
     }
 
     const formulaire = h("form", {

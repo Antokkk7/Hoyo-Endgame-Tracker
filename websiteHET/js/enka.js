@@ -100,6 +100,7 @@ function normaliserArme(item) {
     const sous = stats.find((s) => s.appendPropId !== "FIGHT_PROP_BASE_ATTACK");
     const affixes = Object.values(item.weapon?.affixMap || {});
     return {
+        id: String(item.itemId || ""),
         nom: ref.noms[String(flat.nameTextMapHash)] || ref.armes[String(item.itemId)]?.nom || "Arme",
         niveau: item.weapon?.level || 1, raffinement: (affixes.length ? Math.max(...affixes) : 0) + 1, rarete: flat.rankLevel || 3,
         icone: flat.icon || null, atq: arrondi(valeurStat(stats.find((s) => s.appendPropId === "FIGHT_PROP_BASE_ATTACK")), 0),
@@ -128,6 +129,16 @@ function normaliserPersonnage(a) {
     if (fp["26"]) stats.push({ libelle: ref.libelles.FIGHT_PROP_HEAL_ADD || "Bonus de soins", valeur: arrondi(fp["26"] * 100), pct: true });
     if (fp["30"]) stats.push({ libelle: ref.libelles.FIGHT_PROP_PHYSICAL_ADD_HURT || "Bonus de DGT physiques", valeur: arrondi(fp["30"] * 100), pct: true });
 
+    const dgt = { PHYS: fp["30"] || 0 };
+    for (const [el, k] of Object.entries(BONUS_ELEMENT)) dgt[el] = fp[k] || 0;
+    // Statistiques numériques complètes (pourcentages en points) pour le calcul des statistiques en combat
+    const brutes = {
+        hp: fp["2000"] || 0, atk: fp["2001"] || 0, def: fp["2002"] || 0, em: fp["28"] || 0, cr: (fp["20"] || 0) * 100, cd: (fp["22"] || 0) * 100,
+        er: (fp["23"] || 0) * 100, heal: (fp["26"] || 0) * 100, bhp: fp["1"] || 0, batk: fp["4"] || 0, bdef: fp["7"] || 0,
+        dgt: Object.fromEntries(Object.entries(dgt).map(([k, v]) => [k, arrondi(v * 100, 2)])),
+    };
+    for (const k of ["hp", "atk", "def", "em", "cr", "cd", "er", "heal", "bhp", "batk", "bdef"]) brutes[k] = arrondi(brutes[k], 2);
+
     const equipements = a.equipList || [];
     const artefacts = equipements.filter((e) => e.flat?.itemType === "ITEM_RELIQUARY").map(normaliserArtefact).sort((x, y) => x.rang - y.rang);
     const armeBrute = equipements.find((e) => e.flat?.itemType === "ITEM_WEAPON");
@@ -142,7 +153,7 @@ function normaliserPersonnage(a) {
             return { niveau: Number(a.skillLevelMap?.[String(id)] || 1) + bonus, bonus };
         }),
         portrait: info.portrait || null, icone: info.icone || null,
-        stats, arme: armeBrute ? normaliserArme(armeBrute) : null, artefacts,
+        stats, brutes, arme: armeBrute ? normaliserArme(armeBrute) : null, artefacts,
         sets: Object.values(parSet).filter((s) => s.pieces >= 2).map((s) => ({ nom: s.nom, pieces: s.pieces >= 4 ? 4 : 2 })),
         cvTotal: arrondi(artefacts.reduce((somme, art) => somme + art.cv, 0)),
     };
@@ -163,7 +174,7 @@ export function normaliserEnka(brut) {
     const ref = referenceEnka();
     const avatarId = String(joueur.profilePicture?.avatarId ?? joueur.profilePicture?.id ?? "");
     return {
-        version: 1,
+        version: 2,
         joueur: {
             pseudo: joueur.nickname || "", niveau: joueur.level || 0, niveauMonde: joueur.worldLevel || 0, succes: joueur.finishAchievementNum || 0,
             abysse: joueur.towerFloorIndex ? `${joueur.towerFloorIndex}-${joueur.towerLevelIndex || 0}` : "", signature: joueur.signature || "",

@@ -409,3 +409,41 @@
         grid-column: 1 / -1;
     }
 }
+
+/* Équipe et statistiques en combat */
+.sg-combat-tete { display: grid; grid-template-columns: minmax(0, 1fr) 64px 76px; gap: 8px; padding: 0 0 6px; text-align: right; }
+.sg-combat-tete span:first-child { text-align: left; }
+.sg-liste-combat li { display: grid; grid-template-columns: minmax(0, 1fr) 64px 76px; gap: 8px; align-items: baseline; }
+.sg-liste-combat li > :nth-child(n+2) { text-align: right; }
+.sg-liste-combat strong.plus { color: var(--vert); }
+.sg-autres { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--bordure); }
+.sg-autres ul { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; font-size: .85rem; }
+.sg-autres li { display: flex; justify-content: space-between; gap: 8px; }
+.sg-autres strong { color: var(--vert); white-space: nowrap; }
+
+.sg-equipe { display: grid; gap: 10px; margin-top: 10px; }
+.sg-slot { display: grid; gap: 6px; padding: 10px; background: var(--surface-2); border: 1px solid var(--bordure); border-radius: var(--rayon); }
+.sg-slot-titre { font-size: .8rem; color: var(--texte-doux); font-weight: 500; }
+.sg-slot-ligne { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: center; }
+.sg-slot-ligne > .sg-slot-champ:only-child { grid-column: 1 / -1; }
+.sg-slot select { padding: 7px 8px; background: var(--surface); color: var(--texte); border: 1px solid var(--bordure); border-radius: var(--rayon); font: inherit; }
+.sg-mini { width: 28px; height: 28px; object-fit: contain; flex: none; }
+.sg-modes { display: flex; gap: 6px; }
+.sg-mode { flex: 1; padding: 5px 6px; background: var(--surface); color: var(--texte); border: 1px solid var(--bordure); border-radius: var(--rayon); font: inherit; font-size: .8rem; cursor: pointer; }
+.sg-mode.actif { border-color: var(--accent); color: var(--accent); }
+
+.sg-effets { margin-top: 12px; font-size: .85rem; }
+.sg-effets summary { cursor: pointer; color: var(--texte-doux); }
+.sg-effets-liste { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; max-height: 320px; overflow: auto; }
+.sg-effet label { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: start; }
+.sg-effet-texte { display: grid; }
+.sg-effet-texte strong { font-weight: 500; }
+.sg-effet-valeur { color: var(--vert); white-space: nowrap; }
+.sg-effet.inactif, .sg-effet.hors { opacity: .5; }
+.sg-effet.doublon .sg-effet-valeur { text-decoration: line-through; color: var(--texte-doux); }
+.sg-effet-note { display: block; margin-left: 26px; color: var(--texte-doux); }
+
+.sg-equipe-ligne { margin-top: 16px; }
+.sg-equipe-ligne .sg-equipe { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sg-equipe-ligne .sg-effets-liste { max-height: 360px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 900px) { .sg-equipe-ligne .sg-equipe, .sg-equipe-ligne .sg-effets-liste { grid-template-columns: 1fr; } }
