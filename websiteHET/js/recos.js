@@ -44,7 +44,10 @@ function ligneBuild(jeu, option) {
 }
 
 function carteCategorie(jeu, cat, catalogue) {
-    const slots = cat.slots.map((s) => (Array.isArray(s) ? s : [s]).filter((o) => o && o.perso));
+    // Tolère un niveau de tableau en trop (JSON collé avec des crochets supplémentaires) et ignore les emplacements vides.
+    let brut = cat.slots;
+    while (Array.isArray(brut) && brut.length === 1 && Array.isArray(brut[0]) && Array.isArray(brut[0][0])) brut = brut[0];
+    const slots = (Array.isArray(brut) ? brut : []).map((s) => (Array.isArray(s) ? s : [s]).filter((o) => o && o.perso)).filter((s) => s.length);
     const choix = slots.map(() => 0);
     const infos = (nom) => catalogue.find((c) => c.nom.toLowerCase() === String(nom).toLowerCase());
     let ouvert = true;
@@ -86,6 +89,7 @@ function carteCategorie(jeu, cat, catalogue) {
     }
 
     dessiner();
+    if (!slots.length) return h("div", { classe: "etat-vide" }, `La catégorie « ${cat.titre} » est vide ou mal formée (voir le format dans sql/09_recommandations.sql).`);
     return h("section", { classe: "reco-categorie" },
         h("div", { classe: "reco-titre" }, h("h3", {}, cat.titre), cat.gameplay ? h("span", { classe: "doux petit" }, cat.gameplay) : null),
         carte);
@@ -128,13 +132,10 @@ export async function rendreRecos(zone, cfg, contexte = null) {
         }
     }
 
-    const retour = depuisPerso
-        ? h("button", { classe: "bouton bouton-petit", type: "button", onclick: () => window.dispatchEvent(new CustomEvent("het:onglet", { detail: { id: "suivi" } })) }, "← Retour au suivi")
-        : null;
     remplacer(zone,
         h("div", { classe: "reco-recherche" },
             h("div", { classe: "champ" }, h("label", {}, "Personnage"), choixPerso.element),
-            resume, retour),
+            resume),
         resultats);
     if (!catalogue.length) {
         resultats.append(h("div", { classe: "etat-vide" }, "Le catalogue de personnages est vide (voir sql/03_donnees_reference.sql)."));
