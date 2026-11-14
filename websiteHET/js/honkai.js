@@ -1,10 +1,11 @@
 // Page Honkai: Star Rail : historique de la Salle oubliée, de la Pure fiction, des Fantômes de l'apocalypse
 // et de l'Arbitre de l'instable.
-import { h } from "./dom.js";
-import { nombre } from "./dom.js";
+import { h, nombre, remplacer } from "./dom.js";
 import { rpc } from "./api.js";
 import { rangeeEquipe } from "./equipes.js";
+import { formulaireApoc, formulaireArbitre, formulaireMoc, formulairePf } from "./edition-starrail.js";
 import { initJeu, pastille, etoiles, sousOnglets, vide } from "./jeu-commun.js";
+import { rendreSuiviStarRail } from "./suivi-starrail.js";
 import { bilanApoc, bilanArbitre, bilanMoc, cycles, maxSallePf, SCORE_BOSS, scoreSallePf } from "./regles.js";
 import { jeton } from "./session.js";
 
@@ -83,19 +84,75 @@ function carteArbitre(c) {
         c.equipe_roi?.length ? h("div", {}, h("div", { classe: "equipe-titre" }, "Le King"), rangeeEquipe(JEU, c.equipe_roi, PREFIXES)) : null);
 }
 
-function liste(elements, rendu, texteVide) {
-    if (!elements.length) return vide(texteVide);
-    return h("div", { classe: "historique" }, elements.map(rendu));
-}
+const TYPES = [
+    { cle: "moc", titre: "Salle oubliée", carte: carteMoc, formulaire: formulaireMoc, enregistrer: "moc_enregistrer", vide: "Aucun clear de Salle oubliée enregistré." },
+    { cle: "pf", titre: "Pure fiction", carte: cartePf, formulaire: formulairePf, enregistrer: "pf_enregistrer", vide: "Aucun clear de Pure fiction enregistré." },
+    { cle: "apoc", titre: "Fantômes de l'apocalypse", carte: carteApoc, formulaire: formulaireApoc, enregistrer: "apoc_enregistrer", vide: "Aucun clear des Fantômes de l'apocalypse enregistré." },
+    { cle: "arbitre", titre: "Arbitre de l'instable", carte: carteArbitre, formulaire: formulaireArbitre, enregistrer: "arbitre_enregistrer", vide: "Aucun clear de l'Arbitre enregistré." },
+];
 
 async function endgames(zone) {
-    const d = await rpc("endgames_starrail", { p_token: jeton() });
-    sousOnglets(zone, [
-        { titre: "Salle oubliée", rendu: () => liste(d.moc, carteMoc, "Aucun clear de Salle oubliée enregistré.") },
-        { titre: "Pure fiction", rendu: () => liste(d.pf, cartePf, "Aucun clear de Pure fiction enregistré.") },
-        { titre: "Fantômes de l'apocalypse", rendu: () => liste(d.apoc, carteApoc, "Aucun clear des Fantômes de l'apocalypse enregistré.") },
-        { titre: "Arbitre de l'instable", rendu: () => liste(d.arbitre, carteArbitre, "Aucun clear de l'Arbitre enregistré.") },
-    ]);
+    let donnees = await rpc("endgames_starrail", { p_token: jeton() });
+    const catalogue = await rpc("catalogue", { p_jeu: JEU });
+    let ongletCourant = 0;
+    let aSupprimer = null;
+    let erreur = null;
+
+    function afficherListe() {
+        sousOnglets(zone, TYPES.map((def) => ({ titre: def.titre, rendu: () => contenu(def) })), ongletCourant, (i) => {
+            if (i !== ongletCourant) {
+                ongletCourant = i;
+                aSupprimer = null;
+                erreur = null;
+            }
+        });
+    }
+
+    function contenu(def) {
+        const clears = donnees[def.cle];
+        return h("div", {},
+            h("div", { classe: "barre-actions" },
+                h("h2", { classe: "titre-historique" }, def.titre),
+                h("button", { classe: "bouton bouton-principal", type: "button", onclick: () => formulaire(def, null) }, "Ajouter un clear")),
+            erreur ? h("p", { classe: "message erreur", role: "alert" }, erreur) : null,
+            clears.length
+                ? h("div", { classe: "historique" }, clears.map((c) => {
+                    const carte = def.carte(c);
+                    carte.append(h("div", { classe: "carte-actions" },
+                        h("button", { classe: "bouton bouton-petit", type: "button", onclick: () => formulaire(def, c) }, "Modifier"),
+                        aSupprimer === c.id
+                            ? [h("button", { classe: "bouton bouton-petit bouton-danger", type: "button", onclick: () => supprimer(def, c) }, "Confirmer la suppression"),
+                                h("button", { classe: "bouton bouton-petit", type: "button", onclick: () => { aSupprimer = null; afficherListe(); } }, "Garder")]
+                            : h("button", { classe: "bouton bouton-petit bouton-danger", type: "button", onclick: () => { aSupprimer = c.id; afficherListe(); } }, "Supprimer")));
+                    return carte;
+                }))
+                : vide(def.vide));
+    }
+
+    async function supprimer(def, clear) {
+        aSupprimer = null;
+        erreur = null;
+        try {
+            donnees = await rpc("clear_starrail_supprimer", { p_token: jeton(), p_type: def.cle, p_id: clear.id });
+        } catch (err) {
+            erreur = err.message;
+        }
+        afficherListe();
+    }
+
+    function formulaire(def, existant) {
+        remplacer(zone, def.formulaire({
+            catalogue, equipes: donnees.equipes, existant,
+            annuler: () => afficherListe(),
+            surFin: async (payload) => {
+                donnees = await rpc(def.enregistrer, { p_token: jeton(), p_id: existant?.id ?? null, p_data: payload });
+                erreur = null;
+                afficherListe();
+            },
+        }));
+    }
+
+    afficherListe();
 }
 
-initJeu({ jeu: JEU, nomJeu: "Honkai: Star Rail", prefixes: PREFIXES, endgames });
+initJeu({ jeu: JEU, nomJeu: "Honkai: Star Rail", prefixes: PREFIXES, endgames, suivi: rendreSuiviStarRail });

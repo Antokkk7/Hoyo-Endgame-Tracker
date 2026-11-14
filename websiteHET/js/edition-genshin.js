@@ -1,6 +1,7 @@
 // Formulaires d'ajout et de modification des clears Genshin Impact : Abysses, Théâtre et Carnage chtonien.
 // Chaque formulaire remplace la liste dans la page (pas de fenêtre séparée) ; surFin(donnees) enregistre.
 import { h, remplacer } from "./dom.js";
+import { cadre, champ, entier, nombreChamp, section } from "./edition-commun.js";
 import { bossDuPatch, nomBoss, urlBoss, urlDifficulte } from "./donnees.js";
 import { editeurEquipe } from "./editeur-equipe.js";
 import { ELEMENTS } from "./elements.js";
@@ -8,58 +9,6 @@ import { portrait } from "./portraits.js";
 import { COULEURS_DIFFICULTE, MODES_THEATRE, MOIS } from "./regles.js";
 
 const ELEMENTS_GENSHIN = ["PYRO", "HYDRO", "ANEMO", "ELECTRO", "DENDRO", "CRYO", "GEO"];
-
-function champ(libelle, controle, classe = "") {
-    return h("div", { classe: `champ ${classe}`.trim() }, h("label", {}, libelle), controle);
-}
-
-function section(titre, ...contenu) {
-    return h("section", { classe: "section-edition" }, h("h3", {}, titre), ...contenu);
-}
-
-function nombreChamp(valeur, min, max, { largeur = null, id = null } = {}) {
-    return h("input", { type: "number", min: String(min), max: String(max), value: String(valeur), id, style: largeur ? `max-width:${largeur}` : null });
-}
-
-function entier(el, defaut = 0) {
-    const n = parseInt(el.value, 10);
-    return Number.isFinite(n) ? n : defaut;
-}
-
-// Enveloppe commune : titre, message d'erreur, boutons Annuler / Enregistrer.
-function cadre(titre, sousTitre, sections, { surFin, annuler, collecter, libelleEnregistrer }) {
-    const message = h("p", { classe: "message", role: "alert" });
-    const enregistrer = h("button", { classe: "bouton bouton-principal", type: "submit" }, libelleEnregistrer);
-    const form = h("form", {
-        classe: "edition", novalidate: true,
-        onsubmit: async (e) => {
-            e.preventDefault();
-            message.className = "message";
-            message.textContent = "";
-            let donnees;
-            try {
-                donnees = collecter();
-            } catch (err) {
-                message.className = "message erreur";
-                message.textContent = err.message;
-                return;
-            }
-            enregistrer.disabled = true;
-            try {
-                await surFin(donnees);
-            } catch (err) {
-                message.className = "message erreur";
-                message.textContent = err.message;
-                enregistrer.disabled = false;
-            }
-        },
-    },
-    h("header", { classe: "edition-tete" }, h("h2", {}, titre), h("p", { classe: "doux" }, sousTitre)),
-    sections, message,
-    h("div", { classe: "edition-actions" },
-        h("button", { classe: "bouton", type: "button", onclick: annuler }, "Annuler"), enregistrer));
-    return form;
-}
 
 export function formulaireAbysse({ catalogue, equipes, existant, surFin, annuler }) {
     const patch = h("input", { type: "text", value: existant?.patch || "", placeholder: "ex. 7.1", maxlength: "6", style: "max-width:120px" });

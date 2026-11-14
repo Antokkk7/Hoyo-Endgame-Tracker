@@ -9,8 +9,8 @@ import { portrait } from "./portraits.js";
 import { selecteur } from "./selecteur.js";
 
 const TEXTES = {
-    genshin: { armes: "Meilleures armes" },
-    starrail: { armes: "Meilleurs cônes" },
+    genshin: { armes: "Meilleures armes", sets: "Sets d'artéfacts" },
+    starrail: { armes: "Meilleurs cônes", sets: "Sets de reliques et ornements" },
 };
 
 function pluriel(n, mot) {
@@ -40,7 +40,7 @@ function ligneBuild(jeu, option) {
                     h("span", { classe: `reco-puce${i === 0 ? " premier" : ""}` }, iconeArme(jeu, a), h("span", { classe: "reco-rang" }, `#${i + 1}`), h("span", { classe: "reco-nom" }, a))))
                 : h("span", { classe: "doux petit" }, "Pas de recommandation pour l'instant.")),
         h("div", { classe: "reco-bloc" },
-            h("span", { classe: "reco-etiquette" }, "Sets d'artéfacts"),
+            h("span", { classe: "reco-etiquette" }, TEXTES[jeu].sets),
             sets.length
                 ? h("div", { classe: "reco-puces" }, sets.map((s, i) =>
                     h("span", { classe: `reco-puce${i === 0 ? " premier" : ""}` },

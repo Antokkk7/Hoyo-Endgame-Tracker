@@ -1,4 +1,5 @@
-// Fonction Vercel : relaie la requête vers l'API publique d'Enka Network (https://enka.network/api/uid/UID).
+// Fonction Vercel : relaie la requête vers l'API publique d'Enka Network (https://enka.network/api/uid/UID pour Genshin Impact,
+// https://enka.network/api/hsr/uid/UID pour Honkai: Star Rail avec ?jeu=starrail).
 // Elle existe pour envoyer le User-Agent exigé par Enka (impossible depuis un navigateur) et pour limiter
 // la requête à ce seul service. Elle ne lit ni n'écrit rien : la mise en cache se fait dans Supabase.
 const USER_AGENT = "HoyoEndgameTracker/1.0 (+https://github.com/Antokkk7/Hoyo-Endgame-Tracker)";
@@ -9,8 +10,9 @@ module.exports = async function handler(req, res) {
         res.status(400).json({ erreur: "uid_invalide" });
         return;
     }
+    const chemin = req.query && req.query.jeu === "starrail" ? "hsr/uid" : "uid";
     try {
-        const reponse = await fetch(`https://enka.network/api/uid/${uid}`, {
+        const reponse = await fetch(`https://enka.network/api/${chemin}/${uid}`, {
             headers: { "User-Agent": USER_AGENT, Accept: "application/json" },
             signal: AbortSignal.timeout(9000),
         });

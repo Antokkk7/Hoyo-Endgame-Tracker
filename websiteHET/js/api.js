@@ -34,6 +34,7 @@ const MESSAGES = {
     enka_500: "Enka Network rencontre un problème. Réessayez plus tard.",
     enka_503: "Enka Network est indisponible. Réessayez plus tard.",
     enka_indisponible: "Impossible de joindre Enka Network. Réessayez plus tard.",
+    enka_vitrine_vide_hsr: "Aucun personnage n'est affiché dans votre profil. Dans le jeu : Profil > Vitrine des personnages (Support), ajoutez-en et autorisez l'affichage des détails.",
     enka_vitrine_vide: "Aucun personnage n'est affiché dans la vitrine de votre profil. Dans le jeu : Profil > Vitrine des personnages, ajoutez-en et autorisez l'affichage des détails.",
 };
 

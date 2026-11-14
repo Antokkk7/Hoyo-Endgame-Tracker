@@ -143,16 +143,17 @@ export function initJeu(cfg) {
 }
 
 // Barre de sous-onglets (par exemple un endgame par bouton) ; renvoie le conteneur à remplir.
-export function sousOnglets(zone, entrees) {
+export function sousOnglets(zone, entrees, initial = 0, surChoix = null) {
     const barre = h("div", { classe: "sous-onglets", role: "tablist" });
     const contenu = h("div", {});
     function choisir(entree) {
         [...barre.children].forEach((b, i) => b.setAttribute("aria-selected", String(entrees[i] === entree)));
         remplacer(contenu, entree.rendu());
+        surChoix?.(entrees.indexOf(entree));
     }
     entrees.forEach((entree) => barre.append(h("button", { type: "button", role: "tab", onclick: () => choisir(entree) }, entree.titre)));
     remplacer(zone, barre, contenu);
-    choisir(entrees[0]);
+    choisir(entrees[initial] || entrees[0]);
 }
 
 export function pastille(texte, couleur) {

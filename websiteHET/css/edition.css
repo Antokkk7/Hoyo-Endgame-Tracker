@@ -499,3 +499,22 @@
 .edition-actions {
     margin-bottom: 8px;
 }
+
+/* Clears Star Rail */
+
+.case-edition {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    cursor: pointer;
+}
+
+.equipe-edition {
+    margin-bottom: 14px;
+}
+
+.equipe-edition h4 {
+    margin: 0 0 8px;
+    font-size: 0.95rem;
+}

@@ -44,3 +44,13 @@ body.honkai {
     font-weight: 700;
     color: var(--cadre, var(--texte-doux));
 }
+
+/* Suivi des personnages : pas d'illustration pleine hauteur, un portrait suffit */
+
+.suivi-global .sg-perso .sg-illustration,
+.suivi-global .sg-perso .sg-illustration-repli {
+    flex: none;
+    min-height: 0;
+    height: auto;
+    padding: 18px 0;
+}
