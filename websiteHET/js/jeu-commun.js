@@ -7,6 +7,7 @@ import { initConnexion, ouvrirConnexion } from "./connexion.js";
 import { element } from "./elements.js";
 import { chargerDonnees } from "./donnees.js";
 import { rendreEquipes } from "./page-equipes.js";
+import { rendreRecos } from "./recos.js";
 import { chargerManifeste, portrait } from "./portraits.js";
 import { estConnecte, jeton } from "./session.js";
 
@@ -70,49 +71,6 @@ async function rendrePlanificateur(zone, cfg) {
             h("div", {}, h("strong", {}, b.personnage), h("div", { classe: "doux petit" }, [b.nom_build, b.arme].filter(Boolean).join(" · ")))))));
 }
 
-async function rendreRecos(zone, cfg) {
-    const catalogue = await rpc("catalogue", { p_jeu: cfg.jeu });
-    const resultats = h("div", {});
-    const liste = h("datalist", { id: "liste-persos" }, catalogue.map((c) => h("option", { value: c.nom })));
-    const champ = h("input", { id: "champ-perso", type: "text", list: "liste-persos", autocomplete: "off", placeholder: "Tapez le nom d'un personnage" });
-
-    async function chercher() {
-        const saisie = champ.value.trim().toLowerCase();
-        const perso = catalogue.find((c) => c.nom.toLowerCase() === saisie);
-        if (!perso) {
-            remplacer(resultats);
-            return;
-        }
-        try {
-            const recos = await rpc("recos", { p_jeu: cfg.jeu, p_personnage: perso.nom });
-            if (!recos.length) {
-                remplacer(resultats, h("div", { classe: "etat-vide" }, `Aucune équipe recommandée pour ${perso.nom} pour l'instant.`));
-                return;
-            }
-            remplacer(resultats, recos.map((r) =>
-                h("article", { classe: "reco" },
-                    h("div", { classe: "equipe" }, r.membres.map((nom) => {
-                        const info = catalogue.find((c) => c.nom.toLowerCase() === nom.toLowerCase());
-                        return h("div", { classe: "membre" },
-                            portrait(cfg.jeu, nom, { taille: 60, elementCle: info?.element }),
-                            h("span", { classe: "membre-meta" }, nom));
-                    })),
-                    h("div", { classe: "reco-noms" },
-                        h("strong", {}, r.membres.join(", ")),
-                        r.note ? h("span", { classe: "doux petit" }, r.note) : null))));
-        } catch (err) {
-            afficherErreur(resultats, err);
-        }
-    }
-    champ.addEventListener("input", chercher);
-    champ.addEventListener("change", chercher);
-    remplacer(zone, h("div", { classe: "recherche-perso" },
-        h("div", { classe: "champ" }, h("label", { for: "champ-perso" }, "Personnage"), champ, liste)), resultats);
-    if (!catalogue.length) {
-        resultats.append(h("div", { classe: "etat-vide" }, "Le catalogue de personnages est vide (voir sql/03_donnees_reference.sql)."));
-    }
-}
-
 export function initJeu(cfg) {
     initConnexion();
     if (!baseConfiguree()) {
@@ -131,7 +89,7 @@ export function initJeu(cfg) {
             if (!estConnecte()) return exigerConnexion(zone, "Connectez-vous pour gérer vos équipes.");
             await rendreEquipes(zone, cfg);
         },
-        recos: (zone) => rendreRecos(zone, cfg),
+        recos: (zone) => rendreRecos(zone, cfg, contexteRecos),
         endgames: async (zone) => {
             if (!estConnecte()) return exigerConnexion(zone, "Connectez-vous pour voir l'historique de vos endgames.");
             await cfg.endgames(zone);
@@ -139,6 +97,7 @@ export function initJeu(cfg) {
     };
     const faits = new Set();
     let courant = "suivi";
+    let contexteRecos = null;
 
     async function rendre(id) {
         if (faits.has(id)) return;
@@ -160,7 +119,20 @@ export function initJeu(cfg) {
         rendre(id);
     }
 
-    boutons.forEach((b) => b.addEventListener("click", () => afficher(b.dataset.onglet)));
+    boutons.forEach((b) => b.addEventListener("click", () => {
+        // Arrivée directe sur les recommandations : interface de recherche seule, sans personnage présélectionné.
+        if (b.dataset.onglet === "recos" && courant !== "recos") {
+            contexteRecos = null;
+            faits.delete("recos");
+        }
+        afficher(b.dataset.onglet);
+    }));
+    window.addEventListener("het:recos", (e) => {
+        contexteRecos = { personnage: e.detail?.personnage, depuisPerso: true };
+        faits.delete("recos");
+        afficher("recos");
+    });
+    window.addEventListener("het:onglet", (e) => afficher(e.detail?.id));
     window.addEventListener("het:session", () => {
         faits.clear();
         rendre(courant);

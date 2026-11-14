@@ -1,0 +1,325 @@
+/* Page Recommandations d'équipes (Genshin Impact et Honkai: Star Rail). */
+
+.reco-recherche {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    border: 1px solid var(--bordure);
+    border-radius: 12px;
+    background: var(--surface);
+}
+
+.reco-recherche .champ {
+    flex: 0 1 380px;
+    min-width: 240px;
+    margin: 0;
+}
+
+.reco-chip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.reco-chip strong {
+    display: block;
+}
+
+.reco-resultats {
+    display: grid;
+    gap: 28px;
+}
+
+.reco-titre {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 4px solid var(--prisme);
+}
+
+.reco-titre h3 {
+    font-size: 1.3rem;
+}
+
+.reco-carte {
+    border: 1px solid var(--bordure);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.reco-tete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 28px;
+    padding: 18px 20px;
+}
+
+.reco-tuiles {
+    display: flex;
+    gap: 14px;
+}
+
+.reco-tuile {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    width: 76px;
+}
+
+.reco-tuile-nom {
+    max-width: 100%;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.72rem;
+    color: var(--texte-doux);
+}
+
+.reco-resume {
+    display: grid;
+    flex: 1 1 220px;
+    gap: 2px;
+    min-width: 0;
+}
+
+.reco-resume strong {
+    font-size: 1.05rem;
+}
+
+.reco-bascule {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    border: 1px solid var(--bordure);
+    border-radius: 50%;
+    background: var(--surface-2);
+    color: var(--texte);
+    cursor: pointer;
+}
+
+.reco-chevron {
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid currentColor;
+    border-left: 2px solid currentColor;
+    transform: translateY(2px) rotate(45deg);
+    transition: transform 0.15s;
+}
+
+.reco-chevron:not(.ouvert) {
+    transform: translateY(-2px) rotate(225deg);
+}
+
+.reco-corps {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    border-top: 1px solid var(--bordure);
+}
+
+.reco-gauche {
+    display: grid;
+    min-width: 0;
+    padding: 4px 20px;
+}
+
+.reco-ligne {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 18px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--bordure);
+}
+
+.reco-ligne:last-child {
+    border-bottom: 0;
+}
+
+.reco-perso {
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 2px;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.reco-build {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+}
+
+.reco-bloc {
+    display: grid;
+    gap: 6px;
+}
+
+.reco-etiquette {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--texte-doux);
+}
+
+.reco-puces {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.reco-puce {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    padding: 7px 12px;
+    border: 1px solid var(--bordure);
+    border-radius: 8px;
+    background: var(--surface-2);
+    font-size: 0.85rem;
+}
+
+.reco-puce.premier {
+    border-color: color-mix(in srgb, var(--prisme) 70%, transparent);
+    background: color-mix(in srgb, var(--prisme) 14%, var(--surface-2));
+}
+
+.reco-rang {
+    color: var(--texte-doux);
+}
+
+.reco-nom {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reco-arme-icone {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.reco-arme-glyphe {
+    flex: none;
+    color: var(--texte-doux);
+}
+
+.reco-badge {
+    flex: none;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: #3a3d52;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #07070d;
+}
+
+.reco-badge.b0 {
+    background: var(--or);
+}
+
+.reco-badge.b1 {
+    background: var(--prisme);
+}
+
+.reco-badge.b2 {
+    background: #9aa0b8;
+}
+
+.reco-droite {
+    padding: 18px 20px;
+    border-left: 1px solid var(--bordure);
+}
+
+.reco-droite h4 {
+    margin: 0 0 14px;
+    font-size: 1rem;
+}
+
+.reco-slot {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: start;
+    padding: 10px 0;
+    border-top: 1px solid var(--bordure);
+}
+
+.reco-slot-num {
+    padding-top: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--texte-doux);
+}
+
+.reco-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.reco-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    padding: 5px 12px 5px 6px;
+    border: 1px solid var(--bordure);
+    border-radius: 8px;
+    background: var(--surface-2);
+    color: var(--texte);
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.reco-option:hover {
+    border-color: color-mix(in srgb, var(--prisme) 50%, transparent);
+}
+
+.reco-option.choisi {
+    border-color: var(--prisme);
+    background: color-mix(in srgb, var(--prisme) 22%, var(--surface-2));
+}
+
+.reco-toujours {
+    padding-top: 8px;
+    font-size: 0.75rem;
+    color: var(--texte-doux);
+}
+
+@media (max-width: 960px) {
+    .reco-corps {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .reco-droite {
+        border-top: 1px solid var(--bordure);
+        border-left: 0;
+    }
+}
+
+@media (max-width: 560px) {
+    .reco-ligne {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .reco-tuiles {
+        flex-wrap: wrap;
+    }
+}

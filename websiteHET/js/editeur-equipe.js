@@ -57,13 +57,11 @@ export function editeurEquipe({ jeu, catalogue, colonnes = 2, modeles = null }) 
     function creerSlot(numero) {
         const infos = { perso: "" };
         const boite = h("div", { classe: "slot" });
-        const tuile = h("span", { classe: "slot-tuile" });
         const niveau = h("input", { type: "number", min: "1", max: String(t.niveauMax), value: String(t.niveauMax), "aria-label": `Niveau du personnage ${numero}` });
         const doublons = pilules([0, 1, 2, 3, 4, 5, 6], t.doublons);
         const raffinement = pilules([1, 2, 3, 4, 5], t.raff);
         const persoSel = selecteur({ placeholder: `Personnage ${numero}`, options: optionsPersonnages, onChoix: (o) => majPerso(o?.id || "") });
         const armeSel = selecteur({ placeholder: t.choisirArme, options: optionsArmes, libre: true, onChoix: majArme });
-        const tuileArme = h("span", {});
 
         function majPerso(nom) {
             infos.perso = nom;
@@ -71,20 +69,16 @@ export function editeurEquipe({ jeu, catalogue, colonnes = 2, modeles = null }) 
             const couleur = c ? infoElement(c.element).couleur : null;
             boite.style.cssText = couleur ? `--couleur:${couleur}` : "";
             boite.classList.toggle("rempli", Boolean(nom));
-            remplacer(tuile, nom ? portrait(jeu, nom, { taille: 52, elementCle: c?.element }) : h("span", { classe: "doux" }, "?"));
         }
 
-        function majArme(o) {
-            remplacer(tuileArme, visuelArme(o?.id || ""));
-        }
+        function majArme() {}
 
         boite.append(
-            h("div", { classe: "slot-haut" }, tuile,
+            h("div", { classe: "slot-haut" },
                 h("div", { classe: "champ slot-perso" }, h("label", {}, `Personnage ${numero}`), persoSel.element),
                 h("div", { classe: "champ slot-niveau" }, h("label", {}, "Niveau"), niveau)),
             h("div", { classe: "champ" }, h("label", {}, "Doublons du personnage"), doublons.element),
             h("div", { classe: "slot-arme" },
-                tuileArme,
                 h("div", { classe: "champ slot-arme-choix" }, h("label", {}, t.arme), armeSel.element),
                 h("div", { classe: "champ" }, h("label", {}, t.raffinement), raffinement.element)));
         majPerso("");

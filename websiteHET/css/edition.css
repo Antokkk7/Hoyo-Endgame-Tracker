@@ -256,14 +256,6 @@
     gap: 10px;
 }
 
-.slot-tuile {
-    display: inline-grid;
-    place-items: center;
-    flex: none;
-    min-width: 52px;
-    min-height: 52px;
-}
-
 .slot-perso {
     flex: 1;
     min-width: 0;
@@ -274,14 +266,14 @@
 }
 
 .slot-arme {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
+    display: grid;
     gap: 10px;
+    min-width: 0;
 }
 
-.slot-arme-choix {
-    flex: 1 1 160px;
+.slot-arme-choix,
+.slot-arme .champ,
+.slot .selecteur {
     min-width: 0;
 }
 

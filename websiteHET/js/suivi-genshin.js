@@ -36,24 +36,26 @@ function carteArtefact(art) {
     return h("article", { classe: "sg-artefact" },
         h("div", { classe: "sg-artefact-gauche" },
             art.icone ? image(urlIconeEnka(art.icone), art.emplacement, "sg-artefact-icone") : h("span", { classe: "sg-artefact-icone vide" }),
-            h("span", { classe: "doux petit" }, `${art.emplacement} · +${art.niveau}`),
+            h("span", { classe: "doux petit" }, `${art.emplacement} +${art.niveau}`),
             h("strong", { classe: "sg-principale" }, art.principale.libelle, h("span", {}, format(art.principale.valeur, art.principale.pct)))),
         h("ul", { classe: "sg-sous" }, art.sous.map((s) =>
             h("li", {}, h("span", {}, s.libelle), h("span", { classe: "sg-sous-valeur" }, format(s.valeur, s.pct),
-                h("span", { classe: `sg-lancers l${Math.min(3, s.lancers)}`, title: `${s.lancers} amélioration${s.lancers > 1 ? "s" : ""}` }, String(s.lancers)))))),
+                s.lancers > 1
+                    ? h("span", { classe: `sg-lancers l${Math.min(3, s.lancers)}`, title: `${s.lancers - 1} amélioration${s.lancers > 2 ? "s" : ""}` }, String(s.lancers - 1))
+                    : null)))),
         h("span", { classe: `sg-note ${note.classe}`, title: `Valeur critique : ${format(art.cv, false)}` }, note.texte));
 }
 
-function colonnePersonnage(p) {
+function colonnePersonnage(p, contexte) {
     const el = infoElement(p.element);
     const splash = p.portrait ? urlIconeEnka(p.portrait) : null;
     const repli = () => h("div", { classe: "sg-illustration-repli" }, portrait("genshin", p.en || p.nom, { taille: 140, elementCle: p.element }));
     return h("div", { classe: "sg-col sg-perso", style: `--element:${el.couleur}` },
         h("div", { classe: "sg-carte-perso" },
             h("div", { classe: "sg-nom-ligne" }, h("h3", {}, p.nom), h("span", { classe: "sg-niveau" }, `Niv.${p.niveau}`)),
-            h("p", { classe: "petit" }, `${el.nom || "-"} · Arme : ${TYPES_ARME[p.typeArme] || "-"}`),
+            h("p", { classe: "petit" }, `${el.nom || "-"} - ${TYPES_ARME[p.typeArme] || "-"}`),
             h("div", { classe: "sg-illustration" }, splash ? image(splash, p.nom, "sg-splash", repli) : repli()),
-            h("p", { classe: "petit sg-constellations-titre" }, `Constellations · C${p.constellation}`),
+            h("p", { classe: "petit sg-constellations-titre" }, `Constellations : C${p.constellation}`),
             h("div", { classe: "sg-constellations" }, [1, 2, 3, 4, 5, 6].map((n) =>
                 h("span", { classe: "sg-constellation" + (n <= p.constellation ? " active" : ""), "aria-label": `Constellation ${n}` }, String(n))))),
         h("div", { classe: "sg-talents" }, [["Attaque normale", 0], ["Compétence", 1], ["Déchaînement", 2]].map(([nom, i]) =>
@@ -64,7 +66,19 @@ function colonnePersonnage(p) {
                 h("div", {}, h("span", { classe: "sg-etiquette" }, "Arme"), h("strong", {}, p.arme.nom),
                     h("span", { classe: "doux petit" }, `Niv. ${p.arme.niveau} · Raffinement R${p.arme.raffinement}`),
                     h("span", { classe: "doux petit" }, [`ATQ de base ${nombre(p.arme.atq)}`, p.arme.sous ? `${p.arme.sous.libelle} ${format(p.arme.sous.valeur, p.arme.sous.pct)}` : null].filter(Boolean).join(" · "))))
-            : h("div", { classe: "sg-arme" }, h("span", { classe: "doux" }, "Aucune arme équipée")));
+            : h("div", { classe: "sg-arme" }, h("span", { classe: "doux" }, "Aucune arme équipée")),
+        boutonRecos(p, contexte));
+}
+
+// Bouton vers les équipes recommandées, affiché seulement si le personnage est le principal d'une recommandation.
+function boutonRecos(p, contexte) {
+    const nom = String(p.en || p.nom || "");
+    const n = contexte.recos.get(nom.toLowerCase());
+    if (!n) return null;
+    return h("button", {
+        classe: "bouton bouton-principal sg-reco-bouton", type: "button",
+        onclick: () => window.dispatchEvent(new CustomEvent("het:recos", { detail: { personnage: nom } })),
+    }, `Équipes recommandées (${n})`);
 }
 
 function colonneStats(p, combat) {
@@ -104,22 +118,25 @@ function carteGlobale(cache, choisi, surChoix, contexte) {
                     classe: "sg-chip", type: "button", role: "tab", "aria-selected": String(x.id === p.id), title: `${x.nom} · Niv.${x.niveau}`,
                     style: `--element:${infoElement(x.element).couleur}`, onclick: () => surChoix(x.id),
                 }, portrait("genshin", x.en || x.nom, { taille: 46, rond: true, elementCle: x.element }))))),
-        h("div", { classe: "sg-corps" }, colonnePersonnage(p), colonneStats(p, combat), colonneArtefacts(p)),
+        h("div", { classe: "sg-corps" }, colonnePersonnage(p, contexte), colonneStats(p, combat), colonneArtefacts(p)),
         ligneEquipe(combat));
 }
 
 export async function rendreSuiviGenshin(zone) {
-    const [uidEnregistre, cacheInitial, equipesEnregistrees] = await Promise.all([
+    const [uidEnregistre, cacheInitial, equipesEnregistrees, indexRecos] = await Promise.all([
         rpc("uid_lire", { p_token: jeton(), p_jeu: "genshin" }),
         rpc("enka_lire", { p_token: jeton() }),
         rpc("suivi_equipe_lire", { p_token: jeton() }).catch(() => ({})),
+        rpc("recos_personnages", { p_jeu: "genshin" }).catch(() => []),
         chargerReferenceEnka(),
         chargerBuffs(),
     ]);
     const equipes = equipesEnregistrees || {};
+    const recos = new Map((indexRecos || []).map((r) => [String(r.personnage).toLowerCase(), r.categories]));
     const minuteries = {};
     const contexte = {
         equipes,
+        recos,
         sauver(persoId, donnees) {
             equipes[persoId] = donnees;
             clearTimeout(minuteries[persoId]);
